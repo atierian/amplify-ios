@@ -8,15 +8,7 @@ PODS:
     - AWSCognitoIdentityProviderASF (~> 2.25.0)
     - AWSCore (~> 2.25.0)
     - AWSMobileClient (~> 2.25.0)
-    - AWSPluginsCore (= 1.13.4)
-  - AmplifyTestCommon (1.13.4):
-    - Amplify (= 1.13.4)
-    - AmplifyTestCommon/AWSPluginsTestCommon (= 1.13.4)
-  - AmplifyTestCommon/AWSPluginsTestCommon (1.13.4):
-    - Amplify (= 1.13.4)
-    - AWSCore (~> 2.25.0)
-    - AWSMobileClient (~> 2.25.0)
-    - AWSPluginsCore (= 1.13.4)
+    - AWSPluginsCore (= 1.13.3)
   - AWSAuthCore (2.25.0):
     - AWSCore (= 2.25.0)
   - AWSCognitoIdentityProvider (2.25.0):
@@ -53,7 +45,6 @@ PODS:
 DEPENDENCIES:
   - Amplify (from `../../`)
   - AmplifyPlugins/AWSCognitoAuthPlugin (from `../../`)
-  - AmplifyTestCommon (from `../../`)
   - AWSComprehend (~> 2.25.0)
   - AWSPluginsCore (from `../../`)
   - AWSPolly (~> 2.25.0)
@@ -87,8 +78,6 @@ EXTERNAL SOURCES:
     :path: "../../"
   AmplifyPlugins:
     :path: "../../"
-  AmplifyTestCommon:
-    :path: "../../"
   AWSPluginsCore:
     :path: "../../"
   CwlCatchException:
@@ -107,9 +96,8 @@ CHECKOUT OPTIONS:
     :tag: 1.2.0
 
 SPEC CHECKSUMS:
-  Amplify: 11b9c65b428f4897bbacc64983af94ba4ff187d7
-  AmplifyPlugins: 290f52ebdc10a84af0b0408d52b6153b0806e31f
-  AmplifyTestCommon: e8e710f1f6b637abd7f0811c3de99b939f740f1b
+  Amplify: 533d502d872cf91c09861720d59f5ec916cc1c33
+  AmplifyPlugins: 55040abe0ddf3c60e6f8c82fbc23ed14d1a108a2
   AWSAuthCore: c1ea75ec283e5ac3eb042de21f7ab127ad50de11
   AWSCognitoIdentityProvider: f52be11a4b2f2e9971ef0559da24e288d5c28869
   AWSCognitoIdentityProviderASF: d58893fe74d0db1817e77592eed30c4f5b5a2672
@@ -127,6 +115,6 @@ SPEC CHECKSUMS:
   SwiftFormat: 3b5caa6389b2b9adbc00e133b3ccc8c6e687a6a4
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
 
-PODFILE CHECKSUM: 65cca76c6059f8ccc8628936971fb9e4b035fb10
+PODFILE CHECKSUM: 359e5e54f0b35ed310c3d521aa35d3d628630460
 
 COCOAPODS: 1.10.1
