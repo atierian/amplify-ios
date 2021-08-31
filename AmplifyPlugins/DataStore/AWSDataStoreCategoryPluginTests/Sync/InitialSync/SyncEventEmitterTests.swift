@@ -17,7 +17,7 @@ class SyncEventEmitterTests: XCTestCase {
     var initialSyncOrchestrator: MockAWSInitialSyncOrchestrator?
     var reconciliationQueue: MockAWSIncomingEventReconciliationQueue?
     var syncEventEmitter: SyncEventEmitter?
-
+    var storageAdapter: MockSQLiteStorageEngineAdapter?
     override func setUp() {
         super.setUp()
 
@@ -77,9 +77,10 @@ class SyncEventEmitterTests: XCTestCase {
                                                                  api: nil,
                                                                  reconciliationQueue: nil,
                                                                  storageAdapter: nil)
-
+        storageAdapter = MockSQLiteStorageEngineAdapter()
         syncEventEmitter = SyncEventEmitter(initialSyncOrchestrator: initialSyncOrchestrator,
-                                            reconciliationQueue: reconciliationQueue)
+                                            reconciliationQueue: reconciliationQueue,
+                                            storageAdapter: storageAdapter)
 
         initialSyncOrchestrator?.initialSyncOrchestratorTopic.send(.started(modelName: Post.modelName,
                                                                             syncType: .fullSync))
@@ -154,9 +155,10 @@ class SyncEventEmitterTests: XCTestCase {
                                                                  api: nil,
                                                                  reconciliationQueue: nil,
                                                                  storageAdapter: nil)
-
+        storageAdapter = MockSQLiteStorageEngineAdapter()
         syncEventEmitter = SyncEventEmitter(initialSyncOrchestrator: initialSyncOrchestrator,
-                                            reconciliationQueue: reconciliationQueue)
+                                            reconciliationQueue: reconciliationQueue,
+                                            storageAdapter: storageAdapter)
 
         initialSyncOrchestrator?.initialSyncOrchestratorTopic.send(.started(modelName: Post.modelName, syncType: .fullSync))
         initialSyncOrchestrator?.initialSyncOrchestratorTopic.send(.finished(modelName: Post.modelName))
@@ -249,9 +251,10 @@ class SyncEventEmitterTests: XCTestCase {
                                                                  api: nil,
                                                                  reconciliationQueue: nil,
                                                                  storageAdapter: nil)
-
+        storageAdapter = MockSQLiteStorageEngineAdapter()
         syncEventEmitter = SyncEventEmitter(initialSyncOrchestrator: initialSyncOrchestrator,
-                                            reconciliationQueue: reconciliationQueue)
+                                            reconciliationQueue: reconciliationQueue,
+                                            storageAdapter: storageAdapter)
 
         initialSyncOrchestrator?.initialSyncOrchestratorTopic.send(.started(modelName: Post.modelName,
                                                                             syncType: .fullSync))

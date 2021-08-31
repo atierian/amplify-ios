@@ -15,7 +15,8 @@ final class SyncEventEmitter {
     var initialSyncCompleted: AnyCancellable?
 
     init(initialSyncOrchestrator: InitialSyncOrchestrator?,
-         reconciliationQueue: IncomingEventReconciliationQueue?) {
+         reconciliationQueue: IncomingEventReconciliationQueue?,
+         storageAdapter: StorageEngineAdapter?) {
         self.modelSyncedEventEmitters = [String: ModelSyncedEventEmitter]()
 
         let syncableModelSchemas = ModelRegistry.modelSchemas.filter { $0.isSyncable }
@@ -24,7 +25,8 @@ final class SyncEventEmitter {
         for syncableModelSchema in syncableModelSchemas {
             let modelSyncedEventEmitter = ModelSyncedEventEmitter(modelSchema: syncableModelSchema,
                                                                   initialSyncOrchestrator: initialSyncOrchestrator,
-                                                                  reconciliationQueue: reconciliationQueue)
+                                                                  reconciliationQueue: reconciliationQueue,
+                                                                  storageAdapter: storageAdapter)
             modelSyncedEventEmitters[syncableModelSchema.name] = modelSyncedEventEmitter
             publishers.append(modelSyncedEventEmitter.publisher)
         }

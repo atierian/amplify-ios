@@ -15,6 +15,8 @@ extension ModelSyncMetadata {
     public enum CodingKeys: String, ModelKey {
         case id
         case lastSync
+        case initialSyncTime
+        case modelSyncedTime
     }
 
     public static let keys = CodingKeys.self
@@ -27,7 +29,9 @@ extension ModelSyncMetadata {
 
         definition.fields(
             .id(),
-            .field(keys.lastSync, is: .optional, ofType: .int)
+            .field(keys.lastSync, is: .optional, ofType: .int),
+            .field(keys.initialSyncTime, is: .optional, ofType: .int),
+            .field(keys.modelSyncedTime, is: .optional, ofType: .int)
         )
     }
 }

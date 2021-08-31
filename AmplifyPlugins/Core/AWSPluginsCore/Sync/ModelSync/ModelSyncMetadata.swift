@@ -14,9 +14,19 @@ public struct ModelSyncMetadata: Model {
     /// The timestamp (in Unix seconds) at which the last sync was started, as reported by the service
     public var lastSync: Int?
 
+    /// The timestamp (in Unix seconds) at which the initial sync started
+    public var initialSyncTime: Int?
+
+    /// The timestamp (in Unix seconds) at which the last modelSynced event was emitted
+    public var modelSyncedTime: Int?
+
     public init(id: String,
-                lastSync: Int?) {
+                lastSync: Int?,
+                initialSyncTime: Int?,
+                modelSyncedTime: Int?) {
         self.id = id
         self.lastSync = lastSync
+        self.initialSyncTime = initialSyncTime
+        self.modelSyncedTime = modelSyncedTime
     }
 }

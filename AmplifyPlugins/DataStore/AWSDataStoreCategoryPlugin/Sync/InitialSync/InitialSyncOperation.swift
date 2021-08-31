@@ -60,20 +60,19 @@ final class InitialSyncOperation: AsynchronousOperation {
         }
 
         log.info("Beginning sync for \(modelSchema.name)")
-        let lastSyncTime = getLastSyncTime()
-        let syncType: SyncType = lastSyncTime == nil ? .fullSync : .deltaSync
-        initialSyncOperationTopic.send(.started(modelName: modelSchema.name, syncType: syncType))
-        query(lastSyncTime: lastSyncTime)
+        let modelSyncMetadata = getModelSyncMetadata()
+        saveModelSyncMetadata(lastSync: modelSyncMetadata?.lastSync,
+                              initialSyncTime: Int(Date().timeIntervalSince1970),
+                              modelSyncedTime: modelSyncMetadata?.modelSyncedTime) {
+            let lastSyncTime = self.getLastSyncTime(modelSyncMetadata: modelSyncMetadata)
+            let syncType: SyncType = lastSyncTime == nil ? .fullSync : .deltaSync
+            self.initialSyncOperationTopic.send(.started(modelName: self.modelSchema.name, syncType: syncType))
+            self.query(lastSyncTime: lastSyncTime)
+        }
     }
 
-    private func getLastSyncTime() -> Int? {
-        guard !isCancelled else {
-            finish(result: .successfulVoid)
-            return nil
-        }
-
-        let lastSyncMetadata = getLastSyncMetadata()
-        guard let lastSync = lastSyncMetadata?.lastSync else {
+    private func getLastSyncTime(modelSyncMetadata: ModelSyncMetadata?) -> Int? {
+        guard let lastSync = modelSyncMetadata?.lastSync else {
             return nil
         }
 
@@ -88,26 +87,6 @@ final class InitialSyncOperation: AsynchronousOperation {
 
         let shouldDoDeltaQuery = secondsSinceLastSync < dataStoreConfiguration.syncInterval
         return shouldDoDeltaQuery ? lastSync : nil
-    }
-
-    private func getLastSyncMetadata() -> ModelSyncMetadata? {
-        guard !isCancelled else {
-            finish(result: .successfulVoid)
-            return nil
-        }
-
-        guard let storageAdapter = storageAdapter else {
-            log.error(error: DataStoreError.nilStorageAdapter())
-            return nil
-        }
-
-        do {
-            let modelSyncMetadata = try storageAdapter.queryModelSyncMetadata(for: modelSchema)
-            return modelSyncMetadata
-        } catch {
-            log.error(error: error)
-            return nil
-        }
     }
 
     private func query(lastSyncTime: Int?, nextToken: String? = nil) {
@@ -194,11 +173,41 @@ final class InitialSyncOperation: AsynchronousOperation {
             }
         } else {
             initialSyncOperationTopic.send(.finished(modelName: modelSchema.name))
-            updateModelSyncMetadata(lastSyncTime: syncQueryResult.startedAt)
+            let modelSyncMetadata = getModelSyncMetadata()
+            saveModelSyncMetadata(lastSync: syncQueryResult.startedAt,
+                                  initialSyncTime: modelSyncMetadata?.initialSyncTime,
+                                  modelSyncedTime: modelSyncMetadata?.modelSyncedTime) {
+                self.finish(result: .successfulVoid)
+            }
         }
     }
 
-    private func updateModelSyncMetadata(lastSyncTime: Int?) {
+    // MARK: - ModelSyncMetadata
+
+    private func getModelSyncMetadata() -> ModelSyncMetadata? {
+        guard !isCancelled else {
+            finish(result: .successfulVoid)
+            return nil
+        }
+
+        guard let storageAdapter = storageAdapter else {
+            log.error(error: DataStoreError.nilStorageAdapter())
+            return nil
+        }
+
+        do {
+            let modelSyncMetadata = try storageAdapter.queryModelSyncMetadata(for: modelSchema)
+            return modelSyncMetadata
+        } catch {
+            log.error(error: error)
+            return nil
+        }
+    }
+
+    private func saveModelSyncMetadata(lastSync: Int?,
+                                       initialSyncTime: Int?,
+                                       modelSyncedTime: Int?,
+                                       onComplete: @escaping () -> Void) {
         guard !isCancelled else {
             finish(result: .successfulVoid)
             return
@@ -208,14 +217,16 @@ final class InitialSyncOperation: AsynchronousOperation {
             finish(result: .failure(DataStoreError.nilStorageAdapter()))
             return
         }
-
-        let syncMetadata = ModelSyncMetadata(id: modelSchema.name, lastSync: lastSyncTime)
+        let syncMetadata = ModelSyncMetadata(id: modelSchema.name,
+                                             lastSync: lastSync,
+                                             initialSyncTime: initialSyncTime,
+                                             modelSyncedTime: modelSyncedTime)
         storageAdapter.save(syncMetadata, condition: nil) { result in
             switch result {
             case .failure(let dataStoreError):
                 self.finish(result: .failure(dataStoreError))
             case .success:
-                self.finish(result: .successfulVoid)
+                onComplete()
             }
         }
     }

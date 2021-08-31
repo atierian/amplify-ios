@@ -25,8 +25,8 @@ class InitialSyncOperationTests: XCTestCase {
     /// - When:
     ///    - I invoke main()
     /// - Then:
-    ///    - It reads sync metadata from storage
-    func testReadsMetadata() {
+    ///    - It reads/write sync metadata from storage twice, when invoked and when finishing
+    func testReadAndWriteMetadata() {
         let responder = QueryRequestListenerResponder<PaginatedList<AnyModel>> { _, listener in
             let startDateMilliseconds = Int(Date().timeIntervalSince1970) * 1_000
             let list = PaginatedList<AnyModel>(items: [], nextToken: nil, startedAt: startDateMilliseconds)
@@ -40,6 +40,7 @@ class InitialSyncOperationTests: XCTestCase {
 
         let storageAdapter = MockSQLiteStorageEngineAdapter()
         let metadataQueryReceived = expectation(description: "Metadata query received by storage adapter")
+        metadataQueryReceived.expectedFulfillmentCount = 2
         storageAdapter.returnOnQueryModelSyncMetadata(nil) {
             metadataQueryReceived.fulfill()
         }
@@ -399,7 +400,7 @@ class InitialSyncOperationTests: XCTestCase {
         apiPlugin.responders[.queryRequestListener] = responder
 
         let storageAdapter = try SQLiteStorageEngineAdapter(connection: Connection(.inMemory))
-
+        try storageAdapter.setUp(modelSchemas: StorageEngine.systemModelSchemas + [MockSynced.schema])
         let reconciliationQueue = MockReconciliationQueue()
         let expectErrorHandlerCalled = expectation(description: "Expect error handler called")
         let configuration = DataStoreConfiguration.custom(errorHandler: { error in
@@ -465,7 +466,10 @@ class InitialSyncOperationTests: XCTestCase {
         let storageAdapter = try SQLiteStorageEngineAdapter(connection: Connection(.inMemory))
         try storageAdapter.setUp(modelSchemas: StorageEngine.systemModelSchemas + [MockSynced.schema])
 
-        let syncMetadata = ModelSyncMetadata(id: MockSynced.modelName, lastSync: startDateMilliseconds)
+        let syncMetadata = ModelSyncMetadata(id: MockSynced.modelName,
+                                             lastSync: startDateMilliseconds,
+                                             initialSyncTime: nil,
+                                             modelSyncedTime: nil)
         let syncMetadataSaved = expectation(description: "Sync metadata saved")
         storageAdapter.save(syncMetadata) { result in
             switch result {
@@ -535,7 +539,10 @@ class InitialSyncOperationTests: XCTestCase {
         let storageAdapter = try SQLiteStorageEngineAdapter(connection: Connection(.inMemory))
         try storageAdapter.setUp(modelSchemas: StorageEngine.systemModelSchemas + [MockSynced.schema])
 
-        let syncMetadata = ModelSyncMetadata(id: MockSynced.modelName, lastSync: startDateMilliSeconds)
+        let syncMetadata = ModelSyncMetadata(id: MockSynced.modelName,
+                                             lastSync: startDateMilliSeconds,
+                                             initialSyncTime: nil,
+                                             modelSyncedTime: nil)
         let syncMetadataSaved = expectation(description: "Sync metadata saved")
         storageAdapter.save(syncMetadata) { result in
             switch result {

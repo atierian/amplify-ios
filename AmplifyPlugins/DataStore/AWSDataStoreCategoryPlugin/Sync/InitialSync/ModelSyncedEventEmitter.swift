@@ -18,7 +18,7 @@ import Foundation
 final class ModelSyncedEventEmitter {
     private let queue = DispatchQueue(label: "com.amazonaws.ModelSyncedEventEmitterQueue",
                                       target: DispatchQueue.global())
-
+    private weak var storageAdapter: StorageEngineAdapter?
     private var syncOrchestratorSink: AnyCancellable?
     private var reconciliationQueueSink: AnyCancellable?
 
@@ -36,11 +36,13 @@ final class ModelSyncedEventEmitter {
 
     init(modelSchema: ModelSchema,
          initialSyncOrchestrator: InitialSyncOrchestrator?,
-         reconciliationQueue: IncomingEventReconciliationQueue?) {
+         reconciliationQueue: IncomingEventReconciliationQueue?,
+         storageAdapter: StorageEngineAdapter?) {
         self.modelSchema = modelSchema
         self.recordsReceived = 0
         self.reconciledReceived = 0
         self.initialSyncOperationFinished = false
+        self.storageAdapter = storageAdapter
 
         self.modelSyncedEventBuilder = ModelSyncedEvent.Builder()
 
@@ -126,7 +128,36 @@ final class ModelSyncedEventEmitter {
         }
 
         if initialSyncOperationFinished && reconciledReceived == recordsReceived {
-            dispatchModelSyncedEvent()
+            saveModelSyncedTime {
+                self.dispatchModelSyncedEvent()
+            }
+
+        }
+    }
+
+    private func saveModelSyncedTime(onComplete: @escaping () -> Void) {
+        guard let storageAdapter = storageAdapter else {
+            return
+        }
+
+        do {
+            let modelSyncMetadata = try storageAdapter.queryModelSyncMetadata(for: modelSchema)
+            let modelSyncedTime = Int(Date().timeIntervalSince1970)
+            let syncMetadata = ModelSyncMetadata(id: modelSchema.name,
+                                                 lastSync: modelSyncMetadata?.lastSync,
+                                                 initialSyncTime: modelSyncMetadata?.initialSyncTime,
+                                                 modelSyncedTime: modelSyncedTime)
+            storageAdapter.save(syncMetadata, condition: nil) { result in
+                switch result {
+                case .failure(let dataStoreError):
+                    self.log.error(error: dataStoreError)
+                    onComplete()
+                case .success:
+                    onComplete()
+                }
+            }
+        } catch {
+            log.error(error: error)
         }
     }
 

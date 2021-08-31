@@ -95,4 +95,30 @@ class SyncEngineIntegrationTestBase: DataStoreTestBase {
         wait(for: [syncStarted], timeout: 15.0)
     }
 
+    func startAmplifyAndWaitForReady() throws {
+        let readyEvent = expectation(description: "DataStore ready")
+
+        var token: UnsubscribeToken!
+        token = Amplify.Hub.listen(to: .dataStore,
+                                   eventName: HubPayload.EventName.DataStore.ready) { _ in
+            readyEvent.fulfill()
+            Amplify.Hub.removeListener(token)
+        }
+
+        guard try HubListenerTestUtilities.waitForListener(with: token, timeout: 5.0) else {
+            XCTFail("Hub Listener not registered")
+            return
+        }
+
+        try startAmplify {
+            Amplify.DataStore.start { result in
+                if case .failure(let error) = result {
+                    XCTFail("\(error)")
+                }
+            }
+        }
+
+        wait(for: [readyEvent], timeout: 15.0)
+    }
+
 }

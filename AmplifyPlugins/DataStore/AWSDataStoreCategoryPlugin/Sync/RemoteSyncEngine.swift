@@ -303,7 +303,8 @@ class RemoteSyncEngine: RemoteSyncEngineBehavior {
         self.initialSyncOrchestrator = initialSyncOrchestrator
 
         syncEventEmitter = SyncEventEmitter(initialSyncOrchestrator: initialSyncOrchestrator,
-                                            reconciliationQueue: reconciliationQueue)
+                                            reconciliationQueue: reconciliationQueue,
+                                            storageAdapter: storageAdapter)
 
         readyEventEmitter = ReadyEventEmitter(
             remoteSyncEnginePublisher: publisher,
