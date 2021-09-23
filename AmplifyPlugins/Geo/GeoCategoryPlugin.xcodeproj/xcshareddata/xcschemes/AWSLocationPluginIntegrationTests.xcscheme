@@ -17,7 +17,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "21233DFE2475CAD400039337"
-               BuildableName = "AWSLocationPluginIntegrationTests.xctest"
+               BuildableName = "AWSLocationGeoPluginIntegrationTests.xctest"
                BlueprintName = "AWSLocationGeoPluginIntegrationTests"
                ReferencedContainer = "container:GeoCategoryPlugin.xcodeproj">
             </BuildableReference>

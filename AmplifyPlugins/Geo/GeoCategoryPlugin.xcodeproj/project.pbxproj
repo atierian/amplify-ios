@@ -7,19 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14DEE36154D8401637F5ED5F /* Pods_HostApp_AWSLocationPluginTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40670F1BAEF015CE986C5C57 /* Pods_HostApp_AWSLocationPluginTests.framework */; };
-		1DB5F2E4BB006D9C6BC733FA /* Pods_HostApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F333A7546A8EB2C033682D /* Pods_HostApp.framework */; };
+		15929E525CFA9D694FCA2F87 /* Pods_HostApp_AWSLocationGeoPluginIntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0D73B593F84FA242798845 /* Pods_HostApp_AWSLocationGeoPluginIntegrationTests.framework */; };
 		21233DFA2475C8BB00039337 /* AWSPinpointAnalyticsPluginIntegrationTests-amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 21233DF92475C8BA00039337 /* AWSPinpointAnalyticsPluginIntegrationTests-amplifyconfiguration.json */; };
 		21233E042475CAD500039337 /* AWSLocationGeoPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B478F5FB2374DBF400C4F92B /* AWSLocationGeoPlugin.framework */; };
 		21233E0A2475CAED00039337 /* AWSPinpointAnalyticsPluginIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B478F77B2375046300C4F92B /* AWSPinpointAnalyticsPluginIntegrationTests.swift */; };
 		2149E695238B301500873955 /* RepeatingTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2149E694238B301500873955 /* RepeatingTimerTests.swift */; };
+		45AAEBD87BFFC435BA11B4CF /* Pods_HostApp_AWSLocationGeoPluginTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8056ED717FACD718CC6BFA9 /* Pods_HostApp_AWSLocationGeoPluginTests.framework */; };
 		5CB2BEA626FD377000C030C6 /* AWSLocationGeoPlugin+ClientBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB2BEA126FD377000C030C6 /* AWSLocationGeoPlugin+ClientBehavior.swift */; };
 		5CB2BEA726FD377000C030C6 /* AWSLocationGeoPlugin+Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB2BEA226FD377000C030C6 /* AWSLocationGeoPlugin+Configure.swift */; };
 		5CB2BEA826FD377000C030C6 /* AWSLocationGeoPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB2BEA326FD377000C030C6 /* AWSLocationGeoPlugin.swift */; };
 		5CB2BEA926FD377000C030C6 /* AWSLocationGeoPlugin+DefaultLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB2BEA426FD377000C030C6 /* AWSLocationGeoPlugin+DefaultLogger.swift */; };
 		5CB2BEAA26FD377000C030C6 /* AWSLocationGeoPlugin+Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB2BEA526FD377000C030C6 /* AWSLocationGeoPlugin+Reset.swift */; };
 		5CB2BEAC26FD378F00C030C6 /* AWSLocationGeoPluginConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB2BEAB26FD378F00C030C6 /* AWSLocationGeoPluginConfiguration.swift */; };
-		888759FF17661904937F3660 /* Pods_HostApp_AWSLocationPluginIntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08212EF9A8FF97113124D770 /* Pods_HostApp_AWSLocationPluginIntegrationTests.framework */; };
 		B478F64E2374DCE700C4F92B /* AWSLocationGeoPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B478F5FB2374DBF400C4F92B /* AWSLocationGeoPlugin.framework */; };
 		B478F6DE2374E0CF00C4F92B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B478F6D12374E0CE00C4F92B /* ViewController.swift */; };
 		B478F6DF2374E0CF00C4F92B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B478F6D22374E0CE00C4F92B /* AppDelegate.swift */; };
@@ -41,7 +40,8 @@
 		B478F771237503B800C4F92B /* AWSPinpointAnalyticsPluginResetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B478F764237503B700C4F92B /* AWSPinpointAnalyticsPluginResetTests.swift */; };
 		B478F773237503B800C4F92B /* AWSPinpointAnalyticsPluginTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B478F767237503B700C4F92B /* AWSPinpointAnalyticsPluginTestBase.swift */; };
 		B478F774237503B800C4F92B /* AWSPinpointAnalyticsPluginClientBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B478F768237503B700C4F92B /* AWSPinpointAnalyticsPluginClientBehaviorTests.swift */; };
-		CEAF599C5B986AD0E3D7932F /* Pods_AWSLocationPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CBA35787126197950EBC095 /* Pods_AWSLocationPlugin.framework */; };
+		BE25141F0D4CC4D406771B95 /* Pods_AWSLocationGeoPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038C7B72396AB5DA637652D3 /* Pods_AWSLocationGeoPlugin.framework */; };
+		C4E2AB6CC7AECA0E6B31E6A9 /* Pods_HostApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1819074401E1D9FF699468CB /* Pods_HostApp.framework */; };
 		FA1C812B25868AEF006160E9 /* AWSPinpointAnalyticsPluginAmplifyVersionableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C812A25868AEF006160E9 /* AWSPinpointAnalyticsPluginAmplifyVersionableTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,25 +70,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		04726DB985B570CD7B56BF06 /* Pods-HostApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp.debug.xcconfig"; path = "Target Support Files/Pods-HostApp/Pods-HostApp.debug.xcconfig"; sourceTree = "<group>"; };
-		08212EF9A8FF97113124D770 /* Pods_HostApp_AWSLocationPluginIntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HostApp_AWSLocationPluginIntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0CBA35787126197950EBC095 /* Pods_AWSLocationPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AWSLocationPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		038C7B72396AB5DA637652D3 /* Pods_AWSLocationGeoPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AWSLocationGeoPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1819074401E1D9FF699468CB /* Pods_HostApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HostApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		21233DF92475C8BA00039337 /* AWSPinpointAnalyticsPluginIntegrationTests-amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "AWSPinpointAnalyticsPluginIntegrationTests-amplifyconfiguration.json"; sourceTree = "<group>"; };
 		21233DFF2475CAD400039337 /* AWSLocationGeoPluginIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AWSLocationGeoPluginIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21233E032475CAD500039337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2149E694238B301500873955 /* RepeatingTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimerTests.swift; sourceTree = "<group>"; };
-		40670F1BAEF015CE986C5C57 /* Pods_HostApp_AWSLocationPluginTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HostApp_AWSLocationPluginTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AB8CF30CE603365ABEDC646 /* Pods-AWSLocationPlugin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AWSLocationPlugin.release.xcconfig"; path = "Target Support Files/Pods-AWSLocationPlugin/Pods-AWSLocationPlugin.release.xcconfig"; sourceTree = "<group>"; };
-		5BC58281BFEF5BD20F885A99 /* Pods-AWSLocationPlugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AWSLocationPlugin.debug.xcconfig"; path = "Target Support Files/Pods-AWSLocationPlugin/Pods-AWSLocationPlugin.debug.xcconfig"; sourceTree = "<group>"; };
+		2E62FABB50DC2FD9B9C50212 /* Pods-HostApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp.release.xcconfig"; path = "Target Support Files/Pods-HostApp/Pods-HostApp.release.xcconfig"; sourceTree = "<group>"; };
+		4FBA1DE775DC1753EE8F3CEE /* Pods-HostApp-AWSLocationGeoPluginIntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationGeoPluginIntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationGeoPluginIntegrationTests/Pods-HostApp-AWSLocationGeoPluginIntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		5CB2BEA126FD377000C030C6 /* AWSLocationGeoPlugin+ClientBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AWSLocationGeoPlugin+ClientBehavior.swift"; sourceTree = "<group>"; };
 		5CB2BEA226FD377000C030C6 /* AWSLocationGeoPlugin+Configure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AWSLocationGeoPlugin+Configure.swift"; sourceTree = "<group>"; };
 		5CB2BEA326FD377000C030C6 /* AWSLocationGeoPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSLocationGeoPlugin.swift; sourceTree = "<group>"; };
 		5CB2BEA426FD377000C030C6 /* AWSLocationGeoPlugin+DefaultLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AWSLocationGeoPlugin+DefaultLogger.swift"; sourceTree = "<group>"; };
 		5CB2BEA526FD377000C030C6 /* AWSLocationGeoPlugin+Reset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AWSLocationGeoPlugin+Reset.swift"; sourceTree = "<group>"; };
 		5CB2BEAB26FD378F00C030C6 /* AWSLocationGeoPluginConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSLocationGeoPluginConfiguration.swift; sourceTree = "<group>"; };
-		7989B80E90FBBDD51821AC65 /* Pods-HostApp-AWSLocationPluginIntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationPluginIntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationPluginIntegrationTests/Pods-HostApp-AWSLocationPluginIntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
-		802697971A874E7B3CBB396E /* Pods-HostApp-AWSLocationPluginIntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationPluginIntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationPluginIntegrationTests/Pods-HostApp-AWSLocationPluginIntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
-		B3F333A7546A8EB2C033682D /* Pods_HostApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HostApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A93172EA27F7BA39FC0B4E8 /* Pods-AWSLocationGeoPlugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AWSLocationGeoPlugin.debug.xcconfig"; path = "Target Support Files/Pods-AWSLocationGeoPlugin/Pods-AWSLocationGeoPlugin.debug.xcconfig"; sourceTree = "<group>"; };
+		77A2315FDA5962B9A8FD9E80 /* Pods-HostApp-AWSLocationGeoPluginTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationGeoPluginTests.debug.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationGeoPluginTests/Pods-HostApp-AWSLocationGeoPluginTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B478F5FB2374DBF400C4F92B /* AWSLocationGeoPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AWSLocationGeoPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B478F6492374DCE700C4F92B /* AWSLocationGeoPluginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AWSLocationGeoPluginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B478F6BC2374E0B500C4F92B /* HostApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HostApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,10 +113,13 @@
 		B478F767237503B700C4F92B /* AWSPinpointAnalyticsPluginTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSPinpointAnalyticsPluginTestBase.swift; sourceTree = "<group>"; };
 		B478F768237503B700C4F92B /* AWSPinpointAnalyticsPluginClientBehaviorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSPinpointAnalyticsPluginClientBehaviorTests.swift; sourceTree = "<group>"; };
 		B478F77B2375046300C4F92B /* AWSPinpointAnalyticsPluginIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSPinpointAnalyticsPluginIntegrationTests.swift; sourceTree = "<group>"; };
-		C97F44D452A6EC4EC0F8ABE5 /* Pods-HostApp-AWSLocationPluginTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationPluginTests.debug.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationPluginTests/Pods-HostApp-AWSLocationPluginTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DCF9207DBDD97693E961EDD1 /* Pods-HostApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp.release.xcconfig"; path = "Target Support Files/Pods-HostApp/Pods-HostApp.release.xcconfig"; sourceTree = "<group>"; };
+		B8056ED717FACD718CC6BFA9 /* Pods_HostApp_AWSLocationGeoPluginTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HostApp_AWSLocationGeoPluginTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BF9570019FB8C76F67135E /* Pods-HostApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp.debug.xcconfig"; path = "Target Support Files/Pods-HostApp/Pods-HostApp.debug.xcconfig"; sourceTree = "<group>"; };
+		DF0D73B593F84FA242798845 /* Pods_HostApp_AWSLocationGeoPluginIntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HostApp_AWSLocationGeoPluginIntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8424A06E904897ABCCF58F5 /* Pods-HostApp-AWSLocationGeoPluginIntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationGeoPluginIntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationGeoPluginIntegrationTests/Pods-HostApp-AWSLocationGeoPluginIntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E88FB815BE35F7DF49D88A24 /* Pods-HostApp-AWSLocationGeoPluginTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationGeoPluginTests.release.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationGeoPluginTests/Pods-HostApp-AWSLocationGeoPluginTests.release.xcconfig"; sourceTree = "<group>"; };
 		FA1C812A25868AEF006160E9 /* AWSPinpointAnalyticsPluginAmplifyVersionableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSPinpointAnalyticsPluginAmplifyVersionableTests.swift; sourceTree = "<group>"; };
-		FB59C6235286BF0A95F808B8 /* Pods-HostApp-AWSLocationPluginTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HostApp-AWSLocationPluginTests.release.xcconfig"; path = "Target Support Files/Pods-HostApp-AWSLocationPluginTests/Pods-HostApp-AWSLocationPluginTests.release.xcconfig"; sourceTree = "<group>"; };
+		FF9DAE76155919CE72C0EC2F /* Pods-AWSLocationGeoPlugin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AWSLocationGeoPlugin.release.xcconfig"; path = "Target Support Files/Pods-AWSLocationGeoPlugin/Pods-AWSLocationGeoPlugin.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,7 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				21233E042475CAD500039337 /* AWSLocationGeoPlugin.framework in Frameworks */,
-				888759FF17661904937F3660 /* Pods_HostApp_AWSLocationPluginIntegrationTests.framework in Frameworks */,
+				15929E525CFA9D694FCA2F87 /* Pods_HostApp_AWSLocationGeoPluginIntegrationTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEAF599C5B986AD0E3D7932F /* Pods_AWSLocationPlugin.framework in Frameworks */,
+				BE25141F0D4CC4D406771B95 /* Pods_AWSLocationGeoPlugin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B478F64E2374DCE700C4F92B /* AWSLocationGeoPlugin.framework in Frameworks */,
-				14DEE36154D8401637F5ED5F /* Pods_HostApp_AWSLocationPluginTests.framework in Frameworks */,
+				45AAEBD87BFFC435BA11B4CF /* Pods_HostApp_AWSLocationGeoPluginTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DB5F2E4BB006D9C6BC733FA /* Pods_HostApp.framework in Frameworks */,
+				C4E2AB6CC7AECA0E6B31E6A9 /* Pods_HostApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,27 +189,16 @@
 		88863618836AAA9F232BBC70 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5BC58281BFEF5BD20F885A99 /* Pods-AWSLocationPlugin.debug.xcconfig */,
-				5AB8CF30CE603365ABEDC646 /* Pods-AWSLocationPlugin.release.xcconfig */,
-				04726DB985B570CD7B56BF06 /* Pods-HostApp.debug.xcconfig */,
-				DCF9207DBDD97693E961EDD1 /* Pods-HostApp.release.xcconfig */,
-				7989B80E90FBBDD51821AC65 /* Pods-HostApp-AWSLocationPluginIntegrationTests.debug.xcconfig */,
-				802697971A874E7B3CBB396E /* Pods-HostApp-AWSLocationPluginIntegrationTests.release.xcconfig */,
-				C97F44D452A6EC4EC0F8ABE5 /* Pods-HostApp-AWSLocationPluginTests.debug.xcconfig */,
-				FB59C6235286BF0A95F808B8 /* Pods-HostApp-AWSLocationPluginTests.release.xcconfig */,
+				6A93172EA27F7BA39FC0B4E8 /* Pods-AWSLocationGeoPlugin.debug.xcconfig */,
+				FF9DAE76155919CE72C0EC2F /* Pods-AWSLocationGeoPlugin.release.xcconfig */,
+				D7BF9570019FB8C76F67135E /* Pods-HostApp.debug.xcconfig */,
+				2E62FABB50DC2FD9B9C50212 /* Pods-HostApp.release.xcconfig */,
+				E8424A06E904897ABCCF58F5 /* Pods-HostApp-AWSLocationGeoPluginIntegrationTests.debug.xcconfig */,
+				4FBA1DE775DC1753EE8F3CEE /* Pods-HostApp-AWSLocationGeoPluginIntegrationTests.release.xcconfig */,
+				77A2315FDA5962B9A8FD9E80 /* Pods-HostApp-AWSLocationGeoPluginTests.debug.xcconfig */,
+				E88FB815BE35F7DF49D88A24 /* Pods-HostApp-AWSLocationGeoPluginTests.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		AE2FD2066E52023450D02B2B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0CBA35787126197950EBC095 /* Pods_AWSLocationPlugin.framework */,
-				B3F333A7546A8EB2C033682D /* Pods_HostApp.framework */,
-				08212EF9A8FF97113124D770 /* Pods_HostApp_AWSLocationPluginIntegrationTests.framework */,
-				40670F1BAEF015CE986C5C57 /* Pods_HostApp_AWSLocationPluginTests.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B478F5F12374DBF400C4F92B = {
@@ -221,7 +210,7 @@
 				B478F6BD2374E0B500C4F92B /* HostApp */,
 				88863618836AAA9F232BBC70 /* Pods */,
 				B478F5FC2374DBF400C4F92B /* Products */,
-				AE2FD2066E52023450D02B2B /* Frameworks */,
+				E447535B2C3D42FDFB530935 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -392,6 +381,17 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		E447535B2C3D42FDFB530935 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				038C7B72396AB5DA637652D3 /* Pods_AWSLocationGeoPlugin.framework */,
+				1819074401E1D9FF699468CB /* Pods_HostApp.framework */,
+				DF0D73B593F84FA242798845 /* Pods_HostApp_AWSLocationGeoPluginIntegrationTests.framework */,
+				B8056ED717FACD718CC6BFA9 /* Pods_HostApp_AWSLocationGeoPluginTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -409,13 +409,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 21233E072475CAD500039337 /* Build configuration list for PBXNativeTarget "AWSLocationGeoPluginIntegrationTests" */;
 			buildPhases = (
-				744B96BB967D78F74798921B /* [CP] Check Pods Manifest.lock */,
+				E79E84017957D29561917C2F /* [CP] Check Pods Manifest.lock */,
 				21233DFB2475CAD400039337 /* Sources */,
 				21233E0F2475CB9C00039337 /* SwiftFormat */,
 				21233E102475CBA300039337 /* SwiftLint */,
 				21233DFC2475CAD400039337 /* Frameworks */,
 				21233DFD2475CAD400039337 /* Resources */,
-				0962DB2647BCEEB9EA054B74 /* [CP] Embed Pods Frameworks */,
+				BE2083803A17BABBDC49FF29 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -432,7 +432,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B478F6032374DBF400C4F92B /* Build configuration list for PBXNativeTarget "AWSLocationGeoPlugin" */;
 			buildPhases = (
-				D53E322656369CB6A72C4F8D /* [CP] Check Pods Manifest.lock */,
+				BDD6A7F0FAF5D2453BBF39E4 /* [CP] Check Pods Manifest.lock */,
 				B478F5F62374DBF400C4F92B /* Headers */,
 				B478F5F72374DBF400C4F92B /* Sources */,
 				B478F6602374DDAE00C4F92B /* Swift Format */,
@@ -453,13 +453,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B478F6532374DCE700C4F92B /* Build configuration list for PBXNativeTarget "AWSLocationGeoPluginTests" */;
 			buildPhases = (
-				10613A302C34DF77D0E526A5 /* [CP] Check Pods Manifest.lock */,
+				BD43516E935160802C78282D /* [CP] Check Pods Manifest.lock */,
 				B478F6452374DCE700C4F92B /* Sources */,
 				B478F6642374DE2B00C4F92B /* Swift Format */,
 				B478F6622374DE0100C4F92B /* Swift Lint */,
 				B478F6462374DCE700C4F92B /* Frameworks */,
 				B478F6472374DCE700C4F92B /* Resources */,
-				FD728FA7F52A0BE26C521351 /* [CP] Embed Pods Frameworks */,
+				305773CA4A03C6BE8C3B6704 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -475,11 +475,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B478F6CF2374E0B600C4F92B /* Build configuration list for PBXNativeTarget "HostApp" */;
 			buildPhases = (
-				772F6E935DEAEE242DAA9E1B /* [CP] Check Pods Manifest.lock */,
+				B666E214B5A094229FB9711E /* [CP] Check Pods Manifest.lock */,
 				B478F6B82374E0B500C4F92B /* Sources */,
 				B478F6B92374E0B500C4F92B /* Frameworks */,
 				B478F6BA2374E0B500C4F92B /* Resources */,
-				4C068CC703130B3A9604FA8C /* [CP] Embed Pods Frameworks */,
+				65FC888D8F788F3913700407 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -572,45 +572,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0962DB2647BCEEB9EA054B74 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationPluginIntegrationTests/Pods-HostApp-AWSLocationPluginIntegrationTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationPluginIntegrationTests/Pods-HostApp-AWSLocationPluginIntegrationTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationPluginIntegrationTests/Pods-HostApp-AWSLocationPluginIntegrationTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		10613A302C34DF77D0E526A5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HostApp-AWSLocationPluginTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		21233E0F2475CB9C00039337 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -647,7 +608,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" --config \"${SRCROOT}/../../.swiftlint.yml\" --path \"${SRCROOT}/${PRODUCT_NAME}\"\n";
 		};
-		4C068CC703130B3A9604FA8C /* [CP] Embed Pods Frameworks */ = {
+		305773CA4A03C6BE8C3B6704 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationGeoPluginTests/Pods-HostApp-AWSLocationGeoPluginTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationGeoPluginTests/Pods-HostApp-AWSLocationGeoPluginTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationGeoPluginTests/Pods-HostApp-AWSLocationGeoPluginTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		65FC888D8F788F3913700407 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -662,50 +640,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HostApp/Pods-HostApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		744B96BB967D78F74798921B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HostApp-AWSLocationPluginIntegrationTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		772F6E935DEAEE242DAA9E1B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HostApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B478F6602374DDAE00C4F92B /* Swift Format */ = {
@@ -780,7 +714,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" --config \"${SRCROOT}/../../.swiftformat\" --swiftversion $SWIFT_VERSION \"${SRCROOT}/${PRODUCT_NAME}\"\n";
 		};
-		D53E322656369CB6A72C4F8D /* [CP] Check Pods Manifest.lock */ = {
+		B666E214B5A094229FB9711E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -795,28 +729,94 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AWSLocationPlugin-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-HostApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FD728FA7F52A0BE26C521351 /* [CP] Embed Pods Frameworks */ = {
+		BD43516E935160802C78282D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationPluginTests/Pods-HostApp-AWSLocationPluginTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationPluginTests/Pods-HostApp-AWSLocationPluginTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HostApp-AWSLocationGeoPluginTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationPluginTests/Pods-HostApp-AWSLocationPluginTests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BDD6A7F0FAF5D2453BBF39E4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AWSLocationGeoPlugin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE2083803A17BABBDC49FF29 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationGeoPluginIntegrationTests/Pods-HostApp-AWSLocationGeoPluginIntegrationTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationGeoPluginIntegrationTests/Pods-HostApp-AWSLocationGeoPluginIntegrationTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HostApp-AWSLocationGeoPluginIntegrationTests/Pods-HostApp-AWSLocationGeoPluginIntegrationTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E79E84017957D29561917C2F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HostApp-AWSLocationGeoPluginIntegrationTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -918,7 +918,7 @@
 /* Begin XCBuildConfiguration section */
 		21233E082475CAD500039337 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7989B80E90FBBDD51821AC65 /* Pods-HostApp-AWSLocationPluginIntegrationTests.debug.xcconfig */;
+			baseConfigurationReference = E8424A06E904897ABCCF58F5 /* Pods-HostApp-AWSLocationGeoPluginIntegrationTests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W3DRXD72QU;
@@ -939,7 +939,7 @@
 		};
 		21233E092475CAD500039337 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 802697971A874E7B3CBB396E /* Pods-HostApp-AWSLocationPluginIntegrationTests.release.xcconfig */;
+			baseConfigurationReference = 4FBA1DE775DC1753EE8F3CEE /* Pods-HostApp-AWSLocationGeoPluginIntegrationTests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W3DRXD72QU;
@@ -1080,7 +1080,7 @@
 		};
 		B478F6042374DBF400C4F92B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5BC58281BFEF5BD20F885A99 /* Pods-AWSLocationPlugin.debug.xcconfig */;
+			baseConfigurationReference = 6A93172EA27F7BA39FC0B4E8 /* Pods-AWSLocationGeoPlugin.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -1105,7 +1105,7 @@
 		};
 		B478F6052374DBF400C4F92B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5AB8CF30CE603365ABEDC646 /* Pods-AWSLocationPlugin.release.xcconfig */;
+			baseConfigurationReference = FF9DAE76155919CE72C0EC2F /* Pods-AWSLocationGeoPlugin.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -1130,7 +1130,7 @@
 		};
 		B478F6512374DCE700C4F92B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C97F44D452A6EC4EC0F8ABE5 /* Pods-HostApp-AWSLocationPluginTests.debug.xcconfig */;
+			baseConfigurationReference = 77A2315FDA5962B9A8FD9E80 /* Pods-HostApp-AWSLocationGeoPluginTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1149,7 +1149,7 @@
 		};
 		B478F6522374DCE700C4F92B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB59C6235286BF0A95F808B8 /* Pods-HostApp-AWSLocationPluginTests.release.xcconfig */;
+			baseConfigurationReference = E88FB815BE35F7DF49D88A24 /* Pods-HostApp-AWSLocationGeoPluginTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1168,7 +1168,7 @@
 		};
 		B478F6CD2374E0B600C4F92B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 04726DB985B570CD7B56BF06 /* Pods-HostApp.debug.xcconfig */;
+			baseConfigurationReference = D7BF9570019FB8C76F67135E /* Pods-HostApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1186,7 +1186,7 @@
 		};
 		B478F6CE2374E0B600C4F92B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DCF9207DBDD97693E961EDD1 /* Pods-HostApp.release.xcconfig */;
+			baseConfigurationReference = 2E62FABB50DC2FD9B9C50212 /* Pods-HostApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

@@ -56,7 +56,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'AWSLocationGeoPlugin' do |ss|
-    ss.source_files = 'AmplifyPlugins/Geo/AWSLocationPlugin/**/*.swift'
+    ss.source_files = 'AmplifyPlugins/Geo/AWSLocationGeoPlugin/**/*.swift'
     ss.dependency 'AWSLocation', $OPTIMISTIC_AWS_SDK_VERSION
   end
 
