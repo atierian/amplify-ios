@@ -88,7 +88,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Amplify: 11b9c65b428f4897bbacc64983af94ba4ff187d7
-  AmplifyPlugins: 290f52ebdc10a84af0b0408d52b6153b0806e31f
+  AmplifyPlugins: fd4f64522f118740b7073c47f9b091bc3460c4d4
   AmplifyTestCommon: e8e710f1f6b637abd7f0811c3de99b939f740f1b
   AWSAuthCore: c1ea75ec283e5ac3eb042de21f7ab127ad50de11
   AWSCognitoIdentityProvider: f52be11a4b2f2e9971ef0559da24e288d5c28869

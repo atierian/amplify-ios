@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B478F5FA2374DBF400C4F92B"
                BuildableName = "AWSLocationPlugin.framework"
-               BlueprintName = "AWSLocationPlugin"
+               BlueprintName = "AWSLocationGeoPlugin"
                ReferencedContainer = "container:GeoCategoryPlugin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,7 +34,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B478F5FA2374DBF400C4F92B"
             BuildableName = "AWSLocationPlugin.framework"
-            BlueprintName = "AWSLocationPlugin"
+            BlueprintName = "AWSLocationGeoPlugin"
             ReferencedContainer = "container:GeoCategoryPlugin.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
@@ -45,7 +45,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B478F6482374DCE700C4F92B"
                BuildableName = "AWSLocationPluginTests.xctest"
-               BlueprintName = "AWSLocationPluginTests"
+               BlueprintName = "AWSLocationGeoPluginTests"
                ReferencedContainer = "container:GeoCategoryPlugin.xcodeproj">
             </BuildableReference>
             <SkippedTests>
@@ -78,7 +78,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B478F5FA2374DBF400C4F92B"
             BuildableName = "AWSLocationPlugin.framework"
-            BlueprintName = "AWSLocationPlugin"
+            BlueprintName = "AWSLocationGeoPlugin"
             ReferencedContainer = "container:GeoCategoryPlugin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
