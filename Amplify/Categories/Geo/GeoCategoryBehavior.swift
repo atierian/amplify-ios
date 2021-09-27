@@ -49,5 +49,5 @@ public protocol GeoCategoryBehavior {
 
     /// Retrieves the default Map resource (first map in amplifyconfiguration.json).
     /// - Returns: Metadata for the default map resource.
-    func getDefaultMap() -> Geo.MapStyle
+    func getDefaultMap() -> Geo.MapStyle?
 }

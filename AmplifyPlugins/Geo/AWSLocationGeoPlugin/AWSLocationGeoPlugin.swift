@@ -12,7 +12,6 @@ import Foundation
 
 /// The AWSLocationPlugin implements the Geo APIs for Amazon Location
 public final class AWSLocationGeoPlugin: GeoCategoryPlugin {
-
     /// An instance of the AWS Location service
     var locationService: AWSLocationBehavior!
 
@@ -21,7 +20,7 @@ public final class AWSLocationGeoPlugin: GeoCategoryPlugin {
 
     /// A holder for the plugin configuration. This will be populated during the
     /// configuration phase, and is clearable by `reset()`.
-    var pluginConfig: AWSLocationGeoPluginConfiguration!
+    public var pluginConfig: AWSLocationGeoPluginConfiguration!
 
     /// The unique key of the plugin within the location category
     public let key: PluginKey = "awsLocationGeoPlugin"

@@ -27,17 +27,12 @@ extension AWSLocationGeoPlugin {
                        countries: [Geo.Country]?,
                        maxResults: Int?,
                        placeIndexName: String?,
-                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) throws {
+                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) {
         
-        guard let defaultSearchIndex = pluginConfig.defaultSearchIndex else {
-            throw PluginError.pluginConfigurationError(
-                GeoPluginErrorConstant.missingSearchConfiguration.errorDescription,
-                GeoPluginErrorConstant.missingSearchConfiguration.recoverySuggestion
-            )
-        }
+        assert(pluginConfig.defaultSearchIndex != nil, GeoPluginErrorConstant.missingSearchConfiguration.errorDescription)
         
         let request = AWSLocationSearchPlaceIndexForTextRequest()!
-        request.indexName = placeIndexName ?? defaultSearchIndex
+        request.indexName = placeIndexName ?? pluginConfig.defaultSearchIndex
         request.text = text
 
         if let area = area {
@@ -67,7 +62,7 @@ extension AWSLocationGeoPlugin {
             completionHandler(AWSLocationGeoPlugin.parsePlaceResponse(response: response, error: error))
         }
     }
-
+    
     /// Reverse geocodes a given pair of coordinates and returns a list of Places
     /// closest to the specified position.
     /// - Parameters:
@@ -79,17 +74,12 @@ extension AWSLocationGeoPlugin {
     public func search(for coordinates: Geo.Coordinates,
                        maxResults: Int?,
                        placeIndexName: String?,
-                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) throws {
+                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) {
         
-        guard let defaultSearchIndex = pluginConfig.defaultSearchIndex else {
-            throw PluginError.pluginConfigurationError(
-                GeoPluginErrorConstant.missingSearchConfiguration.errorDescription,
-                GeoPluginErrorConstant.missingSearchConfiguration.recoverySuggestion
-            )
-        }
+        assert(pluginConfig.defaultSearchIndex != nil, GeoPluginErrorConstant.missingSearchConfiguration.errorDescription)
         
         let request = AWSLocationSearchPlaceIndexForPositionRequest()!
-        request.indexName = placeIndexName ?? defaultSearchIndex
+        request.indexName = placeIndexName ?? pluginConfig.defaultSearchIndex
         request.position = [coordinates.longitude as NSNumber,
                             coordinates.latitude as NSNumber]
 
@@ -146,26 +136,19 @@ extension AWSLocationGeoPlugin {
 
     /// Retrieves metadata for available map resources.
     /// - Returns: Metadata for all available map resources.
-    public func getAvailableMaps() throws -> [Geo.MapStyle] {
+    public func getAvailableMaps()  -> [Geo.MapStyle] {
         let mapStyles = Array(pluginConfig.maps.values)
-        guard !mapStyles.isEmpty else {
-            throw PluginError.pluginConfigurationError(
-                GeoPluginErrorConstant.missingMapConfiguration.errorDescription,
-                GeoPluginErrorConstant.missingMapConfiguration.recoverySuggestion
-            )
-        }
-
+        assert(!mapStyles.isEmpty, GeoPluginErrorConstant.missingMapConfiguration.errorDescription)
+        
         return mapStyles
     }
 
     /// Retrieves the default map resource.
     /// - Returns: Metadata for the default map resource.
-    public func getDefaultMap() throws -> Geo.MapStyle {
+    public func getDefaultMap() -> Geo.MapStyle? {
         guard let mapName = pluginConfig.defaultMap, let mapStyle = pluginConfig.maps[mapName] else {
-            throw PluginError.pluginConfigurationError(
-                GeoPluginErrorConstant.missingMapConfiguration.errorDescription,
-                GeoPluginErrorConstant.missingMapConfiguration.recoverySuggestion
-            )
+            assertionFailure(GeoPluginErrorConstant.missingMapConfiguration.errorDescription)
+            return nil
         }
         
         return mapStyle

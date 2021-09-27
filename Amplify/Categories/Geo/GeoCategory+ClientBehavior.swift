@@ -59,7 +59,7 @@ extension GeoCategory: GeoCategoryBehavior {
 
     /// Retrieves the default Map resource.
     /// - Returns: Metadata for the default map resource.
-    public func getDefaultMap() -> Geo.MapStyle {
+    public func getDefaultMap() -> Geo.MapStyle? {
         plugin.getDefaultMap()
     }
 }
