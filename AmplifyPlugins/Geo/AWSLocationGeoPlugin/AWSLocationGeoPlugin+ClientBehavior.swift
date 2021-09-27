@@ -160,7 +160,7 @@ extension AWSLocationGeoPlugin {
 
     /// Retrieves the default map resource.
     /// - Returns: Metadata for the default map resource.
-    public func getDefaultMap() throws -> Geo.MapStyle? {
+    public func getDefaultMap() throws -> Geo.MapStyle {
         guard let mapName = pluginConfig.defaultMap, let mapStyle = pluginConfig.maps[mapName] else {
             throw PluginError.pluginConfigurationError(
                 GeoPluginErrorConstant.missingMapConfiguration.errorDescription,
