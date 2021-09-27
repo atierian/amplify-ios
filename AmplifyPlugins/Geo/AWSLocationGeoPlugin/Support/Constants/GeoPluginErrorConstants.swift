@@ -41,6 +41,11 @@ struct GeoPluginErrorConstant {
         "Configuration at `maps` is not a dictionary literal",
         "Make sure the value for the `maps` is a dictionary literal with `items` and `default`"
     )
+    
+    static let missingMapConfiguration: GeoPluginErrorString = (
+        "Maps configuration is missing from amplifyconfiguration.json.",
+        "Make amplifyconfiguration.json includes `maps` section."
+    )
 
     static let missingDefaultMap: GeoPluginErrorString = (
         "Default map is missing.",
@@ -48,8 +53,8 @@ struct GeoPluginErrorConstant {
     )
 
     static let invalidDefaultMap: GeoPluginErrorString = (
-        "Default map is not a string.",
-        "Ensure default map is a string."
+        "Default map is missing from of map items.",
+        "Ensure default map in included in map items."
     )
 
     static let emptyDefaultMap: GeoPluginErrorString = (
@@ -58,6 +63,11 @@ struct GeoPluginErrorConstant {
     )
 
 // MARK: - Search
+    static let missingSearchConfiguration: GeoPluginErrorString = (
+        "Search configuration is missing from amplifyconfiguration.json.",
+        "Make amplifyconfiguration.json includes `searchIndices` section."
+    )
+    
     static let searchConfigurationExpected: GeoPluginErrorString = (
         "Configuration at `searchIndices` is not a dictionary literal.",
         "Make sure the value for the `searchIndices` is a dictionary literal with `items` and `default`"
@@ -69,8 +79,8 @@ struct GeoPluginErrorConstant {
     )
 
     static let invalidDefaultSearchIndex: GeoPluginErrorString = (
-        "Default search index is not a string.",
-        "Ensure default search index is a string."
+        "Default search index is missing from of search indices items.",
+        "Ensure default search index in included in search indices items."
     )
 
     static let emptyDefaultSearchIndex: GeoPluginErrorString = (

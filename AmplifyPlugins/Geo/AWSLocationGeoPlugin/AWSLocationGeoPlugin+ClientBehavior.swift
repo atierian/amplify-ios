@@ -27,9 +27,17 @@ extension AWSLocationGeoPlugin {
                        countries: [Geo.Country]?,
                        maxResults: Int?,
                        placeIndexName: String?,
-                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) {
+                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) throws {
+        
+        guard let defaultSearchIndex = pluginConfig.defaultSearchIndex else {
+            throw PluginError.pluginConfigurationError(
+                GeoPluginErrorConstant.missingSearchConfiguration.errorDescription,
+                GeoPluginErrorConstant.missingSearchConfiguration.recoverySuggestion
+            )
+        }
+        
         let request = AWSLocationSearchPlaceIndexForTextRequest()!
-        request.indexName = placeIndexName ?? pluginConfig.defaultSearchIndex
+        request.indexName = placeIndexName ?? defaultSearchIndex
         request.text = text
 
         if let area = area {
@@ -55,10 +63,8 @@ extension AWSLocationGeoPlugin {
             request.maxResults = maxResults as NSNumber
         }
 
-        locationService.searchPlaceIndex(forText: request) { [weak self] response, error in
-            if let result = self?.parsePlaceResponse(response: response, error: error) {
-                completionHandler(result)
-            }
+        locationService.searchPlaceIndex(forText: request) { response, error in
+            completionHandler(AWSLocationGeoPlugin.parsePlaceResponse(response: response, error: error))
         }
     }
 
@@ -73,9 +79,17 @@ extension AWSLocationGeoPlugin {
     public func search(for coordinates: Geo.Coordinates,
                        maxResults: Int?,
                        placeIndexName: String?,
-                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) {
+                       completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) throws {
+        
+        guard let defaultSearchIndex = pluginConfig.defaultSearchIndex else {
+            throw PluginError.pluginConfigurationError(
+                GeoPluginErrorConstant.missingSearchConfiguration.errorDescription,
+                GeoPluginErrorConstant.missingSearchConfiguration.recoverySuggestion
+            )
+        }
+        
         let request = AWSLocationSearchPlaceIndexForPositionRequest()!
-        request.indexName = placeIndexName ?? pluginConfig.defaultSearchIndex
+        request.indexName = placeIndexName ?? defaultSearchIndex
         request.position = [coordinates.longitude as NSNumber,
                             coordinates.latitude as NSNumber]
 
@@ -83,14 +97,12 @@ extension AWSLocationGeoPlugin {
             request.maxResults = maxResults as NSNumber
         }
 
-        locationService.searchPlaceIndex(forPosition: request) { [weak self] response, error in
-            if let result = self?.parsePlaceResponse(response: response, error: error) {
-                completionHandler(result)
-            }
+        locationService.searchPlaceIndex(forPosition: request) { response, error in
+            completionHandler(AWSLocationGeoPlugin.parsePlaceResponse(response: response, error: error))
         }
     }
 
-    private func parsePlaceResponse(response: AWSModel?, error: Error?) -> Result<[Geo.Place], Error> {
+    static private func parsePlaceResponse(response: AWSModel?, error: Error?) -> Result<[Geo.Place], Error> {
         if let error = error {
             return .failure(error)
         }
@@ -132,24 +144,30 @@ extension AWSLocationGeoPlugin {
 
     // MARK: - Maps
 
-    /// Retrieves metadata for available Map resources.
-    /// - Parameter completionHandler: The completion handler receives a Response
-    /// object.  The success case provides an array of available Map resources.
-    public func getAvailableMaps() -> [Geo.MapStyle] {
-        // TODO: Implement this function!
-        let mapStyles = [Geo.MapStyle(mapName: "blah", style: "blah", styleURL: URL(string: "blah")!)]
+    /// Retrieves metadata for available map resources.
+    /// - Returns: Metadata for all available map resources.
+    public func getAvailableMaps() throws -> [Geo.MapStyle] {
+        let mapStyles = Array(pluginConfig.maps.values)
+        guard !mapStyles.isEmpty else {
+            throw PluginError.pluginConfigurationError(
+                GeoPluginErrorConstant.missingMapConfiguration.errorDescription,
+                GeoPluginErrorConstant.missingMapConfiguration.recoverySuggestion
+            )
+        }
 
         return mapStyles
     }
 
-    /// Retrieves the default Map resource (first map in amplifyconfiguration.json).
-    /// - Parameter completionHandler: The completion handler receives a Response
-    /// object.  The success case provides an array of available Map resources.
-    public func getDefaultMap() -> Geo.MapStyle {
-        // TODO: Implement this function!
-        let mapStyle = Geo.MapStyle(mapName: "blah", style: "blah", styleURL: URL(string: "blah")!)
-
+    /// Retrieves the default map resource.
+    /// - Returns: Metadata for the default map resource.
+    public func getDefaultMap() throws -> Geo.MapStyle? {
+        guard let mapName = pluginConfig.defaultMap, let mapStyle = pluginConfig.maps[mapName] else {
+            throw PluginError.pluginConfigurationError(
+                GeoPluginErrorConstant.missingMapConfiguration.errorDescription,
+                GeoPluginErrorConstant.missingMapConfiguration.recoverySuggestion
+            )
+        }
+        
         return mapStyle
     }
-
 }

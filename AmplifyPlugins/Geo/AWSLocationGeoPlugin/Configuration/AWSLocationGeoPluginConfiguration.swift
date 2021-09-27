@@ -13,33 +13,50 @@ public struct AWSLocationGeoPluginConfiguration {
 
     let region: AWSRegionType
     let defaultMap: String?
-    let maps: [String: String]
+    let maps: [String: Geo.MapStyle]
     let defaultSearchIndex: String?
     let searchIndices: [String]
 
     init(_ configJSON: JSONValue) throws {
         let configObject = try AWSLocationGeoPluginConfiguration.getConfigObject(section: "awsLocationGeoPlugin",
                                                                               configJSON: configJSON)
-        let region = try AWSLocationGeoPluginConfiguration.getRegion(configObject)
+        let regionInfo = try AWSLocationGeoPluginConfiguration.getRegion(configObject)
 
+        let region = regionInfo.type
+        let regionName = regionInfo.name
+        
+        var maps = [String: Geo.MapStyle]()
         var defaultMap: String?
-        var maps = [String: String]()
         if let mapsConfigJSON = configObject["maps"] {
             let mapsConfigObject = try AWSLocationGeoPluginConfiguration.getConfigObject(section: "maps",
                                                                                       configJSON: mapsConfigJSON)
+            maps = try AWSLocationGeoPluginConfiguration.getMaps(mapConfig: mapsConfigObject, regionName: regionName)
             defaultMap = try AWSLocationGeoPluginConfiguration.getDefault(item: "map",
                                                                        configObject: mapsConfigObject)
-            maps = try AWSLocationGeoPluginConfiguration.getMaps(mapsConfigObject)
+            guard let map = defaultMap, maps[map] != nil else {
+                throw PluginError.pluginConfigurationError(
+                    GeoPluginErrorConstant.invalidDefaultMap.errorDescription,
+                    GeoPluginErrorConstant.invalidDefaultMap.recoverySuggestion
+                )
+            }
         }
 
-        var defaultSearchIndex: String?
         var searchIndices = [String]()
+        var defaultSearchIndex: String?
         if let searchConfigJSON = configObject["searchIndices"] {
             let searchConfigObject = try AWSLocationGeoPluginConfiguration.getConfigObject(section: "searchIndices",
                                                                                         configJSON: searchConfigJSON)
+            searchIndices = try AWSLocationGeoPluginConfiguration.getItemsStrings(section: "searchIndices",
+                                                                                  configObject: searchConfigObject)
             defaultSearchIndex = try AWSLocationGeoPluginConfiguration.getDefault(item: "search index",
                                                                                configObject: searchConfigObject)
-            searchIndices = try AWSLocationGeoPluginConfiguration.getSearchIndices(searchConfigObject)
+            
+            guard let index = defaultSearchIndex, searchIndices.contains(index) else {
+                throw PluginError.pluginConfigurationError(
+                    GeoPluginErrorConstant.invalidDefaultSearchIndex.errorDescription,
+                    GeoPluginErrorConstant.invalidDefaultSearchIndex.recoverySuggestion
+                )
+            }
         }
 
         self.init(region: region,
@@ -51,7 +68,7 @@ public struct AWSLocationGeoPluginConfiguration {
 
     init(region: AWSRegionType,
          defaultMap: String?,
-         maps: [String: String],
+         maps: [String: Geo.MapStyle],
          defaultSearchIndex: String?,
          searchIndices: [String]) {
         self.region = region
@@ -63,7 +80,7 @@ public struct AWSLocationGeoPluginConfiguration {
 
     // MARK: - Private helper methods
 
-    private static func getRegion(_ configObject: [String: JSONValue]) throws -> AWSRegionType {
+    private static func getRegion(_ configObject: [String: JSONValue]) throws -> (name: String, type: AWSRegionType) {
         guard let regionJSON = configObject["region"] else {
             throw PluginError.pluginConfigurationError(
                 GeoPluginErrorConstant.missingRegion.errorDescription,
@@ -93,7 +110,7 @@ public struct AWSLocationGeoPluginConfiguration {
             )
         }
 
-        return regionType
+        return (region, regionType)
     }
 
     private static func getDefault(item: String, configObject: [String: JSONValue]) throws -> String {
@@ -130,16 +147,75 @@ public struct AWSLocationGeoPluginConfiguration {
         }
         return configObject
     }
-
-    // MARK: - Maps
-    private static func getMaps(_ mapConfig: [String: JSONValue]) throws -> [String: String] {
-        // TODO: Implement this function
-        return ["mapname": "style"]
+    
+    private static func getItemsJSON(section: String, configObject: [String: JSONValue]) throws -> JSONValue {
+        guard let itemsJSON = configObject["items"] else {
+            throw PluginError.pluginConfigurationError(
+                "Configuration for `\(section)` is missing `items`.",
+                "Add `items` to the \(section) configuration."
+            )
+        }
+        return itemsJSON
+    }
+    
+    private static func getItemsObject(section: String, configObject: [String: JSONValue]) throws -> [String: JSONValue] {
+        let itemsJSON = try getItemsJSON(section: section, configObject: configObject)
+        guard case let .object(itemsObject) = itemsJSON else {
+            throw PluginError.pluginConfigurationError(
+                "Configuration at `\(section)`, `items` is not a dictionary literal.",
+                "Make sure the value for `\(section)`, `items` is a dictionary literal."
+            )
+        }
+        return itemsObject
+    }
+    
+    private static func getItemsStrings(section: String, configObject: [String: JSONValue]) throws -> [String] {
+        let itemsJSON = try getItemsJSON(section: section, configObject: configObject)
+        guard case let .array(itemsArray) = itemsJSON else {
+            throw PluginError.pluginConfigurationError(
+                "Configuration at `\(section)`, `items` is not an array literal.",
+                "Make sure the value for `\(section)`, `items` is an array literal."
+            )
+        }
+        let itemStrings: [String] = try itemsArray.map { item in
+            guard case let .string(itemString) = item else {
+                throw PluginError.pluginConfigurationError(
+                    "Configuration at `\(section)`, `items` is not a String array.",
+                    "Make sure the value for `\(section)`, `items` is a String array."
+                )
+            }
+            return itemString
+        }
+        return itemStrings
     }
 
-    // MARK: - Search
-    private static func getSearchIndices(_ searchConfig: [String: JSONValue]) throws -> [String] {
-        // TODO: Implement this function
-        return ["searchIndex"]
+    // MARK: - Maps
+    private static func getMaps(mapConfig: [String: JSONValue], regionName: String) throws -> [String: Geo.MapStyle] {
+        let section = "maps"
+        let mapItemsObject = try getItemsObject(section: section, configObject: mapConfig)
+        
+        let mapTuples:[(String, Geo.MapStyle)] = try mapItemsObject.map { mapName, itemJSON in
+            guard case let .string(style) = itemJSON else {
+                throw PluginError.pluginConfigurationError(
+                    "Configuration value at `\(section)`, `items`, `mapName` is not a string.",
+                    "Ensure value value at `\(section)`, `items`, `mapName` is a string."
+                )
+            }
+            
+            let url = URL(string: "https://maps.geo.\(regionName).amazonaws.com/maps/v0/maps/\(mapName)/style-descriptor")
+            guard let styleURL = url else {
+                throw PluginError.pluginConfigurationError(
+                    "Failed to create style URL for map \(mapName). This should not happen.",
+                    "Check settings for map \(mapName)."
+                )
+            }
+
+            let mapStyle = Geo.MapStyle.init(mapName: mapName, style: style, styleURL: styleURL)
+            
+            return (mapName, mapStyle)
+        }
+        let mapStyles = Dictionary(uniqueKeysWithValues: mapTuples)
+        
+        return mapStyles
     }
 }
