@@ -20,7 +20,7 @@ public final class AWSLocationGeoPlugin: GeoCategoryPlugin {
 
     /// A holder for the plugin configuration. This will be populated during the
     /// configuration phase, and is clearable by `reset()`.
-    public var pluginConfig: AWSLocationGeoPluginConfiguration!
+    var pluginConfig: AWSLocationGeoPluginConfiguration!
 
     /// The unique key of the plugin within the location category
     public let key: PluginKey = "awsLocationGeoPlugin"
