@@ -28,9 +28,9 @@ extension AWSLocationGeoPlugin {
                        maxResults: Int?,
                        placeIndexName: String?,
                        completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) {
-        
+
         assert(pluginConfig.defaultSearchIndex != nil, GeoPluginErrorConstant.missingSearchConfiguration.errorDescription)
-        
+
         let request = AWSLocationSearchPlaceIndexForTextRequest()!
         request.indexName = placeIndexName ?? pluginConfig.defaultSearchIndex
         request.text = text
@@ -62,7 +62,7 @@ extension AWSLocationGeoPlugin {
             completionHandler(AWSLocationGeoPlugin.parsePlaceResponse(response: response, error: error))
         }
     }
-    
+
     /// Reverse geocodes a given pair of coordinates and returns a list of Places
     /// closest to the specified position.
     /// - Parameters:
@@ -75,9 +75,9 @@ extension AWSLocationGeoPlugin {
                        maxResults: Int?,
                        placeIndexName: String?,
                        completionHandler: @escaping Geo.ResultsHandler<[Geo.Place]>) {
-        
+
         assert(pluginConfig.defaultSearchIndex != nil, GeoPluginErrorConstant.missingSearchConfiguration.errorDescription)
-        
+
         let request = AWSLocationSearchPlaceIndexForPositionRequest()!
         request.indexName = placeIndexName ?? pluginConfig.defaultSearchIndex
         request.position = [coordinates.longitude as NSNumber,
@@ -139,7 +139,7 @@ extension AWSLocationGeoPlugin {
     public func getAvailableMaps()  -> [Geo.MapStyle] {
         let mapStyles = Array(pluginConfig.maps.values)
         assert(!mapStyles.isEmpty, GeoPluginErrorConstant.missingMapConfiguration.errorDescription)
-        
+
         return mapStyles
     }
 
@@ -150,7 +150,7 @@ extension AWSLocationGeoPlugin {
             assertionFailure(GeoPluginErrorConstant.missingMapConfiguration.errorDescription)
             return nil
         }
-        
+
         return mapStyle
     }
 }

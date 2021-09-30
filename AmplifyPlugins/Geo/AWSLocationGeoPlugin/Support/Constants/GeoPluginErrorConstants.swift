@@ -41,7 +41,7 @@ struct GeoPluginErrorConstant {
         "Configuration at `maps` is not a dictionary literal",
         "Make sure the value for the `maps` is a dictionary literal with `items` and `default`"
     )
-    
+
     static let missingMapConfiguration: GeoPluginErrorString = (
         "Maps configuration is missing from amplifyconfiguration.json.",
         "Make amplifyconfiguration.json includes `maps` section."
@@ -67,7 +67,7 @@ struct GeoPluginErrorConstant {
         "Search configuration is missing from amplifyconfiguration.json.",
         "Make amplifyconfiguration.json includes `searchIndices` section."
     )
-    
+
     static let searchConfigurationExpected: GeoPluginErrorString = (
         "Configuration at `searchIndices` is not a dictionary literal.",
         "Make sure the value for the `searchIndices` is a dictionary literal with `items` and `default`"

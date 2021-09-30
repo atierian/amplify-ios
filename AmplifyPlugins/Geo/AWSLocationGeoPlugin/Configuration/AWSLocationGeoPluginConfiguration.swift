@@ -25,7 +25,7 @@ public struct AWSLocationGeoPluginConfiguration {
 
         let region = regionInfo.type
         let regionName = regionInfo.name
-        
+
         var maps = [String: Geo.MapStyle]()
         var defaultMap: String?
         if let mapsConfigJSON = configObject["maps"] {
@@ -51,7 +51,7 @@ public struct AWSLocationGeoPluginConfiguration {
                                                                                   configObject: searchConfigObject)
             defaultSearchIndex = try AWSLocationGeoPluginConfiguration.getDefault(item: "search index",
                                                                                configObject: searchConfigObject)
-            
+
             guard let index = defaultSearchIndex, searchIndices.contains(index) else {
                 throw PluginError.pluginConfigurationError(
                     GeoPluginErrorConstant.invalidDefaultSearchIndex.errorDescription,
@@ -151,7 +151,7 @@ public struct AWSLocationGeoPluginConfiguration {
         }
         return configObject
     }
-    
+
     private static func getItemsJSON(section: String, configObject: [String: JSONValue]) throws -> JSONValue {
         guard let itemsJSON = configObject["items"] else {
             throw PluginError.pluginConfigurationError(
@@ -161,7 +161,7 @@ public struct AWSLocationGeoPluginConfiguration {
         }
         return itemsJSON
     }
-    
+
     private static func getItemsObject(section: String, configObject: [String: JSONValue]) throws -> [String: JSONValue] {
         let itemsJSON = try getItemsJSON(section: section, configObject: configObject)
         guard case let .object(itemsObject) = itemsJSON else {
@@ -172,7 +172,7 @@ public struct AWSLocationGeoPluginConfiguration {
         }
         return itemsObject
     }
-    
+
     private static func getItemsStrings(section: String, configObject: [String: JSONValue]) throws -> [String] {
         let itemsJSON = try getItemsJSON(section: section, configObject: configObject)
         guard case let .array(itemsArray) = itemsJSON else {
@@ -197,29 +197,29 @@ public struct AWSLocationGeoPluginConfiguration {
     private static func getMaps(mapConfig: [String: JSONValue], regionName: String) throws -> [String: Geo.MapStyle] {
         let section = "maps"
         let mapItemsObject = try getItemsObject(section: section, configObject: mapConfig)
-        
-        let mapTuples:[(String, Geo.MapStyle)] = try mapItemsObject.map { mapName, itemJSON in
+
+        let mapTuples: [(String, Geo.MapStyle)] = try mapItemsObject.map { mapName, itemJSON in
             guard case let .object(itemObject) = itemJSON else {
                 throw PluginError.pluginConfigurationError(
                     "Configuration at `\(section)`, `items`, \(mapName) is not a dictionary literal.",
                     "Make sure the value for `\(section)`, `items`, \(mapName) is a dictionary literal."
                 )
             }
-            
+
             guard case let styleJSON = itemObject["style"] else {
                 throw PluginError.pluginConfigurationError(
                     "Configuration at `\(section)`, `items`, \(mapName) does not include `style` literal.",
                     "Make sure the value for `\(section)`, `items`, \(mapName) includes `style`."
                 )
             }
-            
+
             guard case let .string(style) = styleJSON else {
                 throw PluginError.pluginConfigurationError(
                     "Configuration value at `\(section)`, `items`, `mapName` is not a string.",
                     "Ensure value value at `\(section)`, `items`, `mapName` is a string."
                 )
             }
-            
+
             let url = URL(string: "https://maps.geo.\(regionName).amazonaws.com/maps/v0/maps/\(mapName)/style-descriptor")
             guard let styleURL = url else {
                 throw PluginError.pluginConfigurationError(
@@ -229,11 +229,11 @@ public struct AWSLocationGeoPluginConfiguration {
             }
 
             let mapStyle = Geo.MapStyle.init(mapName: mapName, style: style, styleURL: styleURL)
-            
+
             return (mapName, mapStyle)
         }
         let mapStyles = Dictionary(uniqueKeysWithValues: mapTuples)
-        
+
         return mapStyles
     }
 }
