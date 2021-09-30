@@ -16,6 +16,7 @@ public struct AWSLocationGeoPluginConfiguration {
     let maps: [String: Geo.MapStyle]
     let defaultSearchIndex: String?
     let searchIndices: [String]
+    public let regionName: String
 
     init(_ configJSON: JSONValue) throws {
         let configObject = try AWSLocationGeoPluginConfiguration.getConfigObject(section: "awsLocationGeoPlugin",
@@ -60,6 +61,7 @@ public struct AWSLocationGeoPluginConfiguration {
         }
 
         self.init(region: region,
+                  regionName: regionName,
                   defaultMap: defaultMap,
                   maps: maps,
                   defaultSearchIndex: defaultSearchIndex,
@@ -67,11 +69,13 @@ public struct AWSLocationGeoPluginConfiguration {
     }
 
     init(region: AWSRegionType,
+         regionName: String,
          defaultMap: String?,
          maps: [String: Geo.MapStyle],
          defaultSearchIndex: String?,
          searchIndices: [String]) {
         self.region = region
+        self.regionName = regionName
         self.defaultMap = defaultMap
         self.maps = maps
         self.defaultSearchIndex = defaultSearchIndex
@@ -195,7 +199,21 @@ public struct AWSLocationGeoPluginConfiguration {
         let mapItemsObject = try getItemsObject(section: section, configObject: mapConfig)
         
         let mapTuples:[(String, Geo.MapStyle)] = try mapItemsObject.map { mapName, itemJSON in
-            guard case let .string(style) = itemJSON else {
+            guard case let .object(itemObject) = itemJSON else {
+                throw PluginError.pluginConfigurationError(
+                    "Configuration at `\(section)`, `items`, \(mapName) is not a dictionary literal.",
+                    "Make sure the value for `\(section)`, `items`, \(mapName) is a dictionary literal."
+                )
+            }
+            
+            guard case let styleJSON = itemObject["style"] else {
+                throw PluginError.pluginConfigurationError(
+                    "Configuration at `\(section)`, `items`, \(mapName) does not include `style` literal.",
+                    "Make sure the value for `\(section)`, `items`, \(mapName) includes `style`."
+                )
+            }
+            
+            guard case let .string(style) = styleJSON else {
                 throw PluginError.pluginConfigurationError(
                     "Configuration value at `\(section)`, `items`, `mapName` is not a string.",
                     "Ensure value value at `\(section)`, `items`, `mapName` is a string."
