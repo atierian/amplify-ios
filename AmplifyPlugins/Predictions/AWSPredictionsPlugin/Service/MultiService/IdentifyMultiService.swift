@@ -27,80 +27,79 @@ class IdentifyMultiService: MultiServiceBehavior {
         self.request = request
     }
 
-    func fetchOnlineResult(callback: @escaping IdentifyEventHandler) {
+    func fetchOnlineResult() async throws -> IdentifyResult {
         guard let onlineService = predictionsService else {
             let message = IdentifyMultiServiceErrorMessage.onlineIdentifyServiceNotAvailable.errorDescription
             let recoveryMessage = IdentifyMultiServiceErrorMessage.onlineIdentifyServiceNotAvailable.recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
 
         switch request.identifyType {
         case .detectCelebrity:
-            onlineService.detectCelebrities(image: request.image, onEvent: callback)
+            return try await onlineService.detectCelebrities(image: request.image)
         case .detectText(let formatType):
-            onlineService.detectText(image: request.image, format: formatType, onEvent: callback)
+            return try await onlineService.detectText(image: request.image, format: formatType)
         case .detectLabels(let labelType):
-            onlineService.detectLabels(image: request.image, type: labelType, onEvent: callback)
+            return try await onlineService.detectLabels(image: request.image, type: labelType)
         case .detectEntities:
-            onlineService.detectEntities(image: request.image, onEvent: callback)
+            return try await onlineService.detectEntities(image: request.image)
         }
     }
 
-    func fetchOfflineResult(callback: @escaping IdentifyEventHandler) {
+    func fetchOfflineResult() async throws -> IdentifyResult {
         guard let offlineService = coreMLService else {
             let message = IdentifyMultiServiceErrorMessage.offlineIdentifyServiceNotAvailable.errorDescription
             let recoveryMessage = IdentifyMultiServiceErrorMessage.offlineIdentifyServiceNotAvailable.recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
-        offlineService.identify(request.image, type: request.identifyType, onEvent: callback)
+        return try await offlineService.identify(request.image, type: request.identifyType)
     }
 
     // MARK: -
-    func mergeResults(offlineResult: IdentifyResult?,
-                      onlineResult: IdentifyResult?,
-                      callback: @escaping  IdentifyEventHandler) {
+    func mergeResults(
+        offlineResult: IdentifyResult?,
+        onlineResult: IdentifyResult?
+    ) async throws -> IdentifyResult {
 
         if offlineResult == nil && onlineResult == nil {
             let message = IdentifyMultiServiceErrorMessage.noResultIdentifyService.errorDescription
             let recoveryMessage = IdentifyMultiServiceErrorMessage.noResultIdentifyService.recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
 
         guard let finalOfflineResult = offlineResult else {
             // We are sure that the value will be non-nil at this point.
-            callback(.completed(onlineResult!))
-            return
+            return onlineResult! // TODO: Does ^ make sense???
         }
 
         guard let finalOnlineResult = onlineResult else {
-            callback(.completed(finalOfflineResult))
-            return
+            return finalOfflineResult
         }
 
         if let onlineLabelResult = finalOnlineResult as? IdentifyLabelsResult,
             let offlineLabelResult = finalOfflineResult as? IdentifyLabelsResult {
-            let mergedResult = mergeLabelResult(onlineLabelResult: onlineLabelResult,
-                                                offlineLabelResult: offlineLabelResult)
-            callback(.completed(mergedResult))
-            return
+            let mergedResult = mergeLabelResult(
+                onlineLabelResult: onlineLabelResult,
+                offlineLabelResult: offlineLabelResult
+            )
+
+            return mergedResult
         }
         if let onlineTextResult = finalOnlineResult as? IdentifyTextResult,
             let offlineTextResult = finalOfflineResult as? IdentifyTextResult {
-            let mergedResult = mergeTextResult(onlineTextResult: onlineTextResult,
-                                               offlineTextResult: offlineTextResult)
-            callback(.completed(mergedResult))
-            return
+            let mergedResult = mergeTextResult(
+                onlineTextResult: onlineTextResult,
+                offlineTextResult: offlineTextResult
+            )
+            return mergedResult
         }
 
         // At this point we decided not to merge the result and return the non-nil online
         // result back.
-        callback(.completed(finalOnlineResult))
+        return finalOnlineResult
     }
 
     func mergeLabelResult(onlineLabelResult: IdentifyLabelsResult,

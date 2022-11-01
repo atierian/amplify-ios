@@ -43,13 +43,14 @@ public class AWSPollyOperation: AmplifyOperation<
             return
         }
 
-        let voiceId = reconcileVoiceId(voicePassedIn: request.options.voiceType,
-                                       config: predictionsService.predictionsConfig)
+        // TODO: Remove Operation
+//        let voiceId = reconcileVoiceId(voicePassedIn: request.options.voiceType,
+//                                       config: predictionsService.predictionsConfig)
 
-        predictionsService.synthesizeText(text: request.textToSpeech,
-                                          voiceId: voiceId) { [weak self] event in
-            self?.onServiceEvent(event: event)
-        }
+//        predictionsService.synthesizeText(text: request.textToSpeech,
+//                                          voiceId: voiceId) { [weak self] event in
+//            self?.onServiceEvent(event: event)
+//        }
 
     }
 

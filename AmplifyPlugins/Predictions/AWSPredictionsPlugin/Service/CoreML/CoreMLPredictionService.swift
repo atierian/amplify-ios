@@ -18,42 +18,33 @@ class CoreMLPredictionService: CoreMLPredictionBehavior {
         try coreMLPlugin.configure(using: configuration)
     }
 
-    func comprehend(text: String, onEvent: @escaping InterpretTextEventHandler) {
-        _ = coreMLPlugin.interpret(text: text,
-                                    options: PredictionsInterpretRequest.Options()) { event in
-                                        switch event {
-                                        case .success(let result):
-                                            onEvent(.completed(result))
-                                        case .failure(let error):
-                                            onEvent(.failed(error))
-                                        }
-        }
+    func comprehend(
+        text: String
+    ) async throws -> InterpretResult {
+        return try await coreMLPlugin.interpret(
+            text: text,
+            options: PredictionsInterpretRequest.Options()
+        )
     }
 
-    func identify(_ imageURL: URL,
-                  type: IdentifyAction,
-                  onEvent: @escaping IdentifyEventHandler) {
-        _ = coreMLPlugin.identify(type: type,
-                                  image: imageURL,
-                                  options: PredictionsIdentifyRequest.Options()) { event in
-                                    switch event {
-                                    case .success(let result):
-                                        onEvent(.completed(result))
-                                    case .failure(let error):
-                                        onEvent(.failed(error))
-                                    }
-        }
+    func identify(
+        _ imageURL: URL,
+        type: IdentifyAction
+    ) async throws -> IdentifyResult {
+        try await coreMLPlugin.identify(
+            type: type,
+            image: imageURL,
+            options: PredictionsIdentifyRequest.Options()
+        )
     }
 
-    func transcribe(_ speechToText: URL, onEvent: @escaping TranscribeEventHandler) {
-        _ = coreMLPlugin.convert(speechToText: speechToText,
-                                 options: PredictionsSpeechToTextRequest.Options()) { event in
-            switch event {
-            case .success(let result):
-                onEvent(.completed(result))
-            case .failure(let error):
-                onEvent(.failed(error))
-            }
-        }
-    }
+    // TODO: Transribe
+//    func transcribe(
+//        _ speechToText: URL
+//    ) async throws -> SpeechToTextResult {
+//        try await coreMLPlugin.convert(
+//            speechToText: speechToText,
+//            options: PredictionsSpeechToTextRequest.Options()
+//        )
+//    }
 }

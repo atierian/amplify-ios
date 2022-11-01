@@ -23,21 +23,22 @@ class AWSPredictionsService {
     var awsTranslate: AWSTranslateBehavior!
     var awsRekognition: AWSRekognitionBehavior!
     var awsPolly: AWSPollyBehavior!
-    // TODO: Re-add when complete
-//    var awsTranscribeStreaming: AWSTranscribeStreamingBehavior!
     var awsComprehend: AWSComprehendBehavior!
     var awsTextract: AWSTextractBehavior!
     var predictionsConfig: PredictionsPluginConfiguration!
     let rekognitionWordLimit = 50
-    let nativeWebSocketProvider: NativeWebSocketProvider!
-    let transcribeClientDelegate: NativeWSTranscribeStreamingClientDelegate!
 
-    convenience init(configuration: PredictionsPluginConfiguration,
-//                     credentialsProvider: AuthAWSCredentialsProvider,
-                     identifier: String) throws {
+    // TODO: Re-add when complete
+//    var awsTranscribeStreaming: AWSTranscribeStreamingBehavior!
+//    let nativeWebSocketProvider: NativeWebSocketProvider!
+//    let transcribeClientDelegate: NativeWSTranscribeStreamingClientDelegate!
 
-        let authService = AWSAuthService()
-        let credentialsProvider = authService.getCredentialsProvider()
+    convenience init(
+        configuration: PredictionsPluginConfiguration,
+        credentialsProvider: CredentialsProvider,
+        identifier: String
+    ) throws {
+
 
         // MARK: Convert
         let awsTranslateAdapter = AWSPredictionsService.makeAWSTranslate(
@@ -59,7 +60,7 @@ class AWSPredictionsService {
 
         // MARK: Interpret
         let awsComprehendAdapter = AWSPredictionsService.makeComprehend(
-            clientConfiguration: ComprehendClient.ComprehendClientConfiguration(
+            clientConfiguration: try ComprehendClient.ComprehendClientConfiguration(
                 region: configuration.interpret.region,
                 credentialsProvider: credentialsProvider
             ),
@@ -69,7 +70,7 @@ class AWSPredictionsService {
 
         // MARK: Identify
         let awsRekognitionAdapter = AWSPredictionsService.makeRekognition(
-            clientConfiguration: RekognitionClient.RekognitionClientConfiguration(
+            clientConfiguration: try RekognitionClient.RekognitionClientConfiguration(
                 region: configuration.identify.region,
                 credentialsProvider: credentialsProvider
             ),
@@ -77,7 +78,7 @@ class AWSPredictionsService {
         )
 
         let awsTextractAdapter = AWSPredictionsService.makeTextract(
-            clientConfiguration: TextractClient.TextractClientConfiguration(
+            clientConfiguration: try TextractClient.TextractClientConfiguration(
                 region: configuration.identify.region,
                 credentialsProvider: credentialsProvider
             ),
@@ -159,22 +160,25 @@ class AWSPredictionsService {
         identifier = nil
     }
 
-    func getEscapeHatch(key: PredictionsAWSService) -> AWSService {
-        switch key {
-        case .rekognition:
-            return awsRekognition.getRekognition()
-        case .translate:
-            return awsTranslate.getTranslate()
-        case .polly:
-            return awsPolly.getPolly()
-        case .transcribe:
-            return awsTranscribeStreaming.getTranscribeStreaming()
-        case .comprehend:
-            return awsComprehend.getComprehend()
-        case .textract:
-            return awsTextract.getTextract()
-        }
-    }
+    // TODO: Re-implement escape hatch since AWSService no longer exists
+//    func getEscapeHatch(key: PredictionsAWSService) -> AWSService {
+//        switch key {
+//        case .rekognition:
+//            return awsRekognition.getRekognition()
+//        case .translate:
+//            return awsTranslate.getTranslate()
+//        case .polly:
+//            return awsPolly.getPolly()
+//            // TODO: Transcribe
+////        case .transcribe:
+////            return awsTranscribeStreaming.getTranscribeStreaming()
+//        case .comprehend:
+//            return awsComprehend.getComprehend()
+//        case .textract:
+//            return awsTextract.getTextract()
+//        }
+//    }
+
     private static func makeAWSTranslate(
         clientConfiguration: AWSClientConfiguration,
         identifier: String

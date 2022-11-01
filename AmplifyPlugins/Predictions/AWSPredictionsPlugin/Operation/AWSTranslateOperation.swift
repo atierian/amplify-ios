@@ -42,12 +42,17 @@ public class AWSTranslateOperation: AmplifyOperation<
             return
         }
 
-        predictionsService.translateText(text: request.textToTranslate,
-                                         language: request.language,
-                                         targetLanguage: request.targetLanguage) { [weak self] event in
-                                            self?.onServiceEvent(event: event)
+        // TODO: Remove Operations
+//        let text = try await predictionsService.translateText(
+//            text: request.textToTranslate,
+//            language: request.language,
+//            targetLanguage: request.targetLanguage
+//        )
+//        onServiceEvent(event: event)
 
-        }
+//        { [weak self] event in
+//            self?.onServiceEvent(event: event)
+//        }
     }
 
     private func onServiceEvent(event: PredictionsEvent<TranslateTextResult, PredictionsError>) {

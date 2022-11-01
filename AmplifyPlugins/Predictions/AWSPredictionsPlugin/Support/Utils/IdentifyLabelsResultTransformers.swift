@@ -10,7 +10,9 @@ import AWSRekognition
 import Amplify
 
 class IdentifyLabelsResultTransformers: IdentifyResultTransformers {
-    static func processLabels(_ rekognitionLabels: [AWSRekognitionLabel]) -> [Label] {
+    static func processLabels(
+        _ rekognitionLabels: [RekognitionClientTypes.Label]
+    ) -> [Label] {
         var labels = [Label]()
         for rekognitionLabel in rekognitionLabels {
 
@@ -20,19 +22,29 @@ class IdentifyLabelsResultTransformers: IdentifyResultTransformers {
 
             let parents = processParents(rekognitionLabel.parents)
 
-            let metadata = LabelMetadata(confidence: Double(
-                truncating: rekognitionLabel.confidence ?? 0.0), parents: parents)
+            let metadata = LabelMetadata(
+                confidence: Double(
+                    rekognitionLabel.confidence ?? 0.0
+                ),
+                parents: parents
+            )
 
             let boundingBoxes = processInstances(rekognitionLabel.instances)
 
-            let label = Label(name: name, metadata: metadata, boundingBoxes: boundingBoxes)
+            let label = Label(
+                name: name,
+                metadata: metadata,
+                boundingBoxes: boundingBoxes
+            )
             labels.append(label)
-
         }
+        
         return labels
     }
 
-    static func processModerationLabels(_ rekognitionLabels: [AWSRekognitionModerationLabel]) -> [Label] {
+    static func processModerationLabels(
+        _ rekognitionLabels: [RekognitionClientTypes.ModerationLabel]
+    ) -> [Label] {
         var labels = [Label]()
         for rekognitionLabel in rekognitionLabels {
 
@@ -44,8 +56,7 @@ class IdentifyLabelsResultTransformers: IdentifyResultTransformers {
                 let parent = Parent(name: parentName)
                 parents.append(parent)
             }
-            let metadata = LabelMetadata(confidence: Double(
-                truncating: rekognitionLabel.confidence ?? 0.0), parents: parents)
+            let metadata = LabelMetadata(confidence: Double(rekognitionLabel.confidence ?? 0), parents: parents)
 
             let label = Label(name: name, metadata: metadata, boundingBoxes: nil)
 
@@ -54,7 +65,9 @@ class IdentifyLabelsResultTransformers: IdentifyResultTransformers {
         return labels
     }
 
-    static func processParents(_ rekognitionParents: [AWSRekognitionParent]?) -> [Parent] {
+    static func processParents(
+        _ rekognitionParents: [RekognitionClientTypes.Parent]?
+    ) -> [Parent] {
         var parents = [Parent]()
         guard let rekognitionParents = rekognitionParents else {
             return parents
@@ -68,7 +81,9 @@ class IdentifyLabelsResultTransformers: IdentifyResultTransformers {
         return parents
     }
 
-    static func processInstances(_ rekognitionInstances: [AWSRekognitionInstance]?) -> [CGRect] {
+    static func processInstances(
+        _ rekognitionInstances: [RekognitionClientTypes.Instance]?
+    ) -> [CGRect] {
         var boundingBoxes = [CGRect]()
         guard let rekognitionInstances = rekognitionInstances else {
             return boundingBoxes

@@ -11,8 +11,10 @@ import AWSTextract
 
 extension IdentifyTextResultTransformers {
 
-    static func processKeyValues(keyValueBlocks: [AWSTextractBlock],
-                                 blockMap: [String: AWSTextractBlock]) -> [BoundedKeyValue] {
+    static func processKeyValues(
+        keyValueBlocks: [TextractClientTypes.Block],
+        blockMap: [String: TextractClientTypes.Block]
+    ) -> [BoundedKeyValue] {
         var keyValues =  [BoundedKeyValue]()
         for keyValueBlock in keyValueBlocks {
             if let keyValue = processKeyValue(keyValueBlock, blockMap: blockMap) {
@@ -22,10 +24,12 @@ extension IdentifyTextResultTransformers {
         return keyValues
     }
 
-    static func processKeyValue(_ keyBlock: AWSTextractBlock,
-                                blockMap: [String: AWSTextractBlock]) -> BoundedKeyValue? {
+    static func processKeyValue(
+        _ keyBlock: TextractClientTypes.Block,
+        blockMap: [String: TextractClientTypes.Block]
+    ) -> BoundedKeyValue? {
         guard keyBlock.blockType == .keyValueSet,
-            keyBlock.entityTypes?.contains("KEY") ?? false,
+              keyBlock.entityTypes?.contains(.key) ?? false,
             let relationships = keyBlock.relationships else {
             return nil
         }
@@ -39,7 +43,7 @@ extension IdentifyTextResultTransformers {
                 continue
             }
 
-            switch keyBlockRelationship.types {
+            switch keyBlockRelationship.type {
             case .child:
                 keyText = processChildOfKeyValueSet(ids: ids, blockMap: blockMap)
             case .value:
@@ -59,15 +63,19 @@ extension IdentifyTextResultTransformers {
             return nil
         }
 
-        return BoundedKeyValue(key: keyText,
-                               value: valueText,
-                               isSelected: valueSelected,
-                               boundingBox: boundingBox,
-                               polygon: polygon)
+        return BoundedKeyValue(
+            key: keyText,
+            value: valueText,
+            isSelected: valueSelected,
+            boundingBox: boundingBox,
+            polygon: polygon
+        )
     }
 
-    static func processChildOfKeyValueSet(ids: [String],
-                                          blockMap: [String: AWSTextractBlock]) -> String {
+    static func processChildOfKeyValueSet(
+        ids: [String],
+        blockMap: [String: TextractClientTypes.Block]
+    ) -> String {
         var keyText = ""
         for keyId in ids {
             guard let keyBlock = blockMap[keyId],
@@ -81,8 +89,10 @@ extension IdentifyTextResultTransformers {
     }
 
     // swiftlint:disable cyclomatic_complexity
-    static func processValueOfKeyValueSet(ids: [String],
-                                          blockMap: [String: AWSTextractBlock]) -> (String, Bool) {
+    static func processValueOfKeyValueSet(
+        ids: [String],
+        blockMap: [String: TextractClientTypes.Block]
+    ) -> (String, Bool) {
         var valueText = ""
         var isSelected = false
         var selectionItemFound = false

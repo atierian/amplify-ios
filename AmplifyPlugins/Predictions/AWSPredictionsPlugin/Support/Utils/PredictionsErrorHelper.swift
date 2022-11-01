@@ -55,52 +55,53 @@ class PredictionsErrorHelper {
     // swiftlint:disable cyclomatic_complexity
     static func mapPredictionsServiceError(_ error: Error) -> PredictionsError {
         let defaultError = PredictionsErrorHelper.getDefaultError(error)
-
-        switch error.domain {
-        case AWSServiceErrorDomain:
-            let errorTypeOptional = AWSServiceErrorType.init(rawValue: error.code)
-            guard let errorType = errorTypeOptional else {
-                return defaultError
-            }
-            return AWSServiceErrorMessage.map(errorType) ?? defaultError
-        case AWSRekognitionErrorDomain:
-            guard let errorType = AWSRekognitionErrorType.init(rawValue: error.code) else {
-                return defaultError
-            }
-            return AWSRekognitionErrorMessage.map(errorType) ?? defaultError
-        case AWSPollyErrorDomain:
-            guard let errorType = AWSPollyErrorType.init(rawValue: error.code) else {
-                return defaultError
-            }
-            return AWSPollyErrorMessage.map(errorType) ?? defaultError
-        case AWSTextractErrorDomain:
-            guard let errorType = AWSTextractErrorType.init(rawValue: error.code) else {
-                return defaultError
-            }
-            return AWSTextractErrorMessage.map(errorType) ?? defaultError
-        case AWSComprehendErrorDomain:
-            guard let errorType = AWSComprehendErrorType.init(rawValue: error.code) else {
-                return defaultError
-            }
-            return AWSComprehendErrorMessage.map(errorType) ?? defaultError
-        case AWSTranslateErrorDomain:
-            guard let errorType = AWSTranslateErrorType.init(rawValue: error.code) else {
-                return defaultError
-            }
-            return AWSTranslateErrorMessage.map(errorType) ?? defaultError
-        case AWSTranscribeStreamingErrorDomain:
-            guard let errorType = AWSTranscribeStreamingErrorType.init(rawValue: error.code) else {
-                return defaultError
-            }
-            return AWSTranscribeStreamingErrorMessage.map(errorType) ?? defaultError
-        case NSURLErrorDomain:
-            guard let urlError = error as? URLError else {
-                return defaultError
-            }
-            return mapUrlError(urlError)
-        default:
-            return defaultError
-        }
+        return defaultError // TODO: Error Handling
+//
+//        switch error.domain {
+//        case AWSServiceErrorDomain:
+//            let errorTypeOptional = AWSServiceErrorType.init(rawValue: error.code)
+//            guard let errorType = errorTypeOptional else {
+//                return defaultError
+//            }
+//            return AWSServiceErrorMessage.map(errorType) ?? defaultError
+//        case AWSRekognitionErrorDomain:
+//            guard let errorType = AWSRekognitionErrorType.init(rawValue: error.code) else {
+//                return defaultError
+//            }
+//            return AWSRekognitionErrorMessage.map(errorType) ?? defaultError
+//        case AWSPollyErrorDomain:
+//            guard let errorType = AWSPollyErrorType.init(rawValue: error.code) else {
+//                return defaultError
+//            }
+//            return AWSPollyErrorMessage.map(errorType) ?? defaultError
+//        case AWSTextractErrorDomain:
+//            guard let errorType = AWSTextractErrorType.init(rawValue: error.code) else {
+//                return defaultError
+//            }
+//            return AWSTextractErrorMessage.map(errorType) ?? defaultError
+//        case AWSComprehendErrorDomain:
+//            guard let errorType = AWSComprehendErrorType.init(rawValue: error.code) else {
+//                return defaultError
+//            }
+//            return AWSComprehendErrorMessage.map(errorType) ?? defaultError
+//        case AWSTranslateErrorDomain:
+//            guard let errorType = AWSTranslateErrorType.init(rawValue: error.code) else {
+//                return defaultError
+//            }
+//            return AWSTranslateErrorMessage.map(errorType) ?? defaultError
+//        case AWSTranscribeStreamingErrorDomain:
+//            guard let errorType = AWSTranscribeStreamingErrorType.init(rawValue: error.code) else {
+//                return defaultError
+//            }
+//            return AWSTranscribeStreamingErrorMessage.map(errorType) ?? defaultError
+//        case NSURLErrorDomain:
+//            guard let urlError = error as? URLError else {
+//                return defaultError
+//            }
+//            return mapUrlError(urlError)
+//        default:
+//            return defaultError
+//        }
     }
 
     static func mapUrlError(_ urlError: URLError) -> PredictionsError {

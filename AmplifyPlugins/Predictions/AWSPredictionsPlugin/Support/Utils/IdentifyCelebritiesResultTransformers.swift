@@ -10,12 +10,15 @@ import AWSRekognition
 import Amplify
 
 class IdentifyCelebritiesResultTransformers: IdentifyResultTransformers {
-    static func processCelebs(_ rekognitionCelebs: [AWSRekognitionCelebrity]) -> [Celebrity] {
+
+    static func processCelebs(
+        _ rekognitionCelebs: [RekognitionClientTypes.Celebrity]
+    ) -> [Celebrity] {
         var celebs = [Celebrity]()
         for rekognitionCeleb in rekognitionCelebs {
 
             guard let name = rekognitionCeleb.name,
-                let identifier = rekognitionCeleb.identifier,
+                let identifier = rekognitionCeleb.id,
                 let face = rekognitionCeleb.face,
                 let stringUrls = rekognitionCeleb.urls else {
                 continue
@@ -32,9 +35,10 @@ class IdentifyCelebritiesResultTransformers: IdentifyResultTransformers {
             }
 
             let pose = Pose(
-                pitch: Double(truncating: pitch),
-                roll: Double(truncating: roll),
-                yaw: Double(truncating: yaw))
+                pitch: Double(pitch),
+                roll: Double(roll),
+                yaw: Double(yaw)
+            )
 
             let metadata = CelebrityMetadata(name: name, identifier: identifier, urls: urls, pose: pose)
 
@@ -43,9 +47,7 @@ class IdentifyCelebritiesResultTransformers: IdentifyResultTransformers {
             }
 
             let landmarks = processLandmarks(face.landmarks)
-
             let celeb = Celebrity(metadata: metadata, boundingBox: boundingBox, landmarks: landmarks)
-
             celebs.append(celeb)
         }
 

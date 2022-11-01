@@ -21,6 +21,6 @@ protocol AWSTextractServiceBehavior {
 
     func detectDocumentText(
         image: Data
-    ) async throws -> (IdentifyResult, AnalyzeDocumentOutputResponse)
+    ) async throws -> DetectDocumentTextOutputResponse // (IdentifyResult, AnalyzeDocumentOutputResponse)
 
 }

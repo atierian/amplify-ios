@@ -21,16 +21,24 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
             guard let detectedText = rekognitionTextBlock.detectedText else {
                 continue
             }
-            guard let boundingBox = processBoundingBox(rekognitionTextBlock.geometry?.boundingBox) else { continue }
-            guard let polygon = processPolygon(rekognitionTextBlock.geometry?.polygon) else {
-                continue
-            }
-            let word = IdentifiedWord(text: detectedText,
-                            boundingBox: boundingBox,
-                            polygon: polygon)
-            let line = IdentifiedLine(text: detectedText,
-                                      boundingBox: boundingBox,
-                                      polygon: polygon)
+            guard let boundingBox = processBoundingBox(rekognitionTextBlock.geometry?.boundingBox)
+            else { continue }
+
+            guard let polygon = processPolygon(rekognitionTextBlock.geometry?.polygon)
+            else { continue }
+            
+            let word = IdentifiedWord(
+                text: detectedText,
+                boundingBox: boundingBox,
+                polygon: polygon
+            )
+
+            let line = IdentifiedLine(
+                text: detectedText,
+                boundingBox: boundingBox,
+                polygon: polygon
+            )
+
             switch rekognitionTextBlock.type {
             case .line:
                 lines.append(detectedText)
@@ -123,7 +131,7 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
             text: text,
             boundingBox: boundingBox,
             polygon: polygon,
-            page: Int(truncating: block.page ?? 0)
+            page: block.page ?? 0
         )
     }
 
@@ -138,7 +146,7 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
             text: text,
             boundingBox: boundingBox,
             polygon: polygon,
-            page: Int(truncating: block.page ?? 0)
+            page: block.page ?? 0
          )
     }
 

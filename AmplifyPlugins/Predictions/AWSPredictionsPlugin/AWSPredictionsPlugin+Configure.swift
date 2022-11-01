@@ -23,30 +23,44 @@ extension AWSPredictionsPlugin {
     public func configure(using configuration: Any?) throws {
 
         guard let jsonValueConfiguration = configuration as? JSONValue else {
-            throw PluginError.pluginConfigurationError(PluginErrorMessage.decodeConfigurationError.errorDescription,
-                                                       PluginErrorMessage.decodeConfigurationError.recoverySuggestion)
+            throw PluginError.pluginConfigurationError(
+                PluginErrorMessage.decodeConfigurationError.errorDescription,
+                PluginErrorMessage.decodeConfigurationError.recoverySuggestion
+            )
         }
 
         let configurationData =  try JSONEncoder().encode(jsonValueConfiguration)
-        let predictionsConfiguration = try JSONDecoder().decode(PredictionsPluginConfiguration.self,
-                                                                from: configurationData)
+
+        let predictionsConfiguration = try JSONDecoder().decode(
+            PredictionsPluginConfiguration.self,
+            from: configurationData
+        )
+
         let authService = AWSAuthService()
         let credentialsProvider = authService.getCredentialsProvider()
         let coremlService = try CoreMLPredictionService(configuration: configuration)
-        let predictionsService = try AWSPredictionsService(configuration: predictionsConfiguration,
-                                                           credentialsProvider: credentialsProvider,
-                                                           identifier: key)
-        configure(predictionsService: predictionsService,
-                  coreMLSerivce: coremlService,
-                  authService: authService,
-                  config: predictionsConfiguration)
+
+        let predictionsService = try AWSPredictionsService(
+            configuration: predictionsConfiguration,
+            credentialsProvider: credentialsProvider,
+            identifier: key
+        )
+
+        configure(
+            predictionsService: predictionsService,
+            coreMLSerivce: coremlService,
+            authService: authService,
+            config: predictionsConfiguration
+        )
     }
 
-    func configure(predictionsService: AWSPredictionsService,
-                   coreMLSerivce: CoreMLPredictionBehavior,
-                   authService: AWSAuthServiceBehavior,
-                   config: PredictionsPluginConfiguration,
-                   queue: OperationQueue = OperationQueue()) {
+    func configure(
+        predictionsService: AWSPredictionsService,
+        coreMLSerivce: CoreMLPredictionBehavior,
+        authService: AWSAuthServiceBehavior,
+        config: PredictionsPluginConfiguration,
+        queue: OperationQueue = OperationQueue()
+    ) {
         self.predictionsService = predictionsService
         coreMLService = coreMLSerivce
         self.authService = authService

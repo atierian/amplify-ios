@@ -33,9 +33,10 @@ final public class AWSPredictionsPlugin: PredictionsCategoryPlugin {
         return awsPredictionsPluginKey
     }
 
-    public func getEscapeHatch(key: PredictionsAWSService) -> AWSService {
-        return predictionsService.getEscapeHatch(key: key)
-    }
+    // TODO: Re-implement escape hatch since AWSService no longer exists
+//    public func getEscapeHatch(key: PredictionsAWSService) -> AWSService {
+//        return predictionsService.getEscapeHatch(key: key)
+//    }
 
     public init() {}
 

@@ -10,23 +10,28 @@ import Foundation
 
 protocol CoreMLPredictionBehavior: AnyObject {
 
-    typealias InterpretTextEventHandler = (InterpretEvent) -> Void
-    typealias InterpretEvent = PredictionsEvent<InterpretResult, PredictionsError>
+//    typealias InterpretTextEventHandler = (InterpretEvent) -> Void
+//    typealias InterpretEvent = PredictionsEvent<InterpretResult, PredictionsError>
+//
+//    typealias IdentifyEventHandler = (IdentifyEvent) -> Void
+//    typealias IdentifyEvent = PredictionsEvent<IdentifyResult, PredictionsError>
+//
+//    typealias TranscribeEventHandler = (TranscribeEvent) -> Void
+//    typealias TranscribeEvent = PredictionsEvent<SpeechToTextResult, PredictionsError>
 
-    typealias IdentifyEventHandler = (IdentifyEvent) -> Void
-    typealias IdentifyEvent = PredictionsEvent<IdentifyResult, PredictionsError>
+    func comprehend(
+        text: String
+    ) async throws -> InterpretResult
 
-    typealias TranscribeEventHandler = (TranscribeEvent) -> Void
-    typealias TranscribeEvent = PredictionsEvent<SpeechToTextResult, PredictionsError>
+    func identify(
+        _ imageURL: URL,
+        type: IdentifyAction
+    ) async throws -> IdentifyResult
 
-    func comprehend(text: String,
-                    onEvent: @escaping InterpretTextEventHandler)
 
-    func identify(_ imageURL: URL,
-                  type: IdentifyAction,
-                  onEvent: @escaping IdentifyEventHandler)
-
-    func transcribe(_ speechToText: URL,
-                    onEvent: @escaping TranscribeEventHandler)
+    // TODO: Transcribe
+//    func transcribe(
+//        _ speechToText: URL
+//    ) async throws -> SpeechToTextResult
 
 }
