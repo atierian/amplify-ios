@@ -8,10 +8,9 @@
 import Amplify
 import Foundation
 import AWSPluginsCore
-import AWSCore
+//import AWSCore
 
 final public class AWSPredictionsPlugin: PredictionsCategoryPlugin {
-
     let awsPredictionsPluginKey = "awsPredictionsPlugin"
 
     /// A queue that regulates the execution of operations.
@@ -38,8 +37,9 @@ final public class AWSPredictionsPlugin: PredictionsCategoryPlugin {
         return predictionsService.getEscapeHatch(key: key)
     }
 
-    public init() {
-    }
+    public init() {}
+
+    public func reset() async {}
 }
 
 extension AWSPredictionsPlugin: AmplifyVersionable { }

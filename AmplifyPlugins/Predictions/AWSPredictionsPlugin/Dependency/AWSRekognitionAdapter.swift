@@ -10,41 +10,49 @@ import AWSRekognition
 
 class AWSRekognitionAdapter: AWSRekognitionBehavior {
 
-    let awsRekognition: AWSRekognition
+    let awsRekognition: RekognitionClient
 
-    init(_ awsRekognition: AWSRekognition) {
+    init(_ awsRekognition: RekognitionClient) {
         self.awsRekognition = awsRekognition
     }
 
-    func detectLabels(request: AWSRekognitionDetectLabelsRequest) -> AWSTask<AWSRekognitionDetectLabelsResponse> {
-        awsRekognition.detectLabels(request)
+    func detectLabels(
+        request: DetectLabelsInput
+    ) async throws -> DetectLabelsOutputResponse {
+        try await awsRekognition.detectLabels(input: request)
     }
 
     func detectModerationLabels(
-        request: AWSRekognitionDetectModerationLabelsRequest) -> AWSTask<AWSRekognitionDetectModerationLabelsResponse> {
-        awsRekognition.detectModerationLabels(request)
+        request: DetectModerationLabelsInput
+    ) async throws -> DetectModerationLabelsOutputResponse {
+        try await awsRekognition.detectModerationLabels(input: request)
     }
 
     func detectCelebs(
-        request: AWSRekognitionRecognizeCelebritiesRequest) ->
-        AWSTask<AWSRekognitionRecognizeCelebritiesResponse> {
-        awsRekognition.recognizeCelebrities(request)
+        request: RecognizeCelebritiesInput
+    ) async throws -> RecognizeCelebritiesOutputResponse {
+        try await awsRekognition.recognizeCelebrities(input: request)
     }
 
-    func detectText(request: AWSRekognitionDetectTextRequest) -> AWSTask<AWSRekognitionDetectTextResponse> {
-        awsRekognition.detectText(request)
+    func detectText(
+        request: DetectTextInput
+    ) async throws -> DetectTextOutputResponse {
+        try await awsRekognition.detectText(input: request)
     }
 
-    func detectFaces(request: AWSRekognitionDetectFacesRequest) -> AWSTask<AWSRekognitionDetectFacesResponse> {
-        awsRekognition.detectFaces(request)
+    func detectFaces(
+        request: DetectFacesInput
+    ) async throws -> DetectFacesOutputResponse {
+        try await awsRekognition.detectFaces(input: request)
     }
 
     func detectFacesFromCollection(
-        request: AWSRekognitionSearchFacesByImageRequest) -> AWSTask<AWSRekognitionSearchFacesByImageResponse> {
-        awsRekognition.searchFaces(byImage: request)
+        request: SearchFacesByImageInput
+    ) async throws -> SearchFacesByImageOutputResponse {
+        try await awsRekognition.searchFacesByImage(input: request)
     }
 
-    func getRekognition() -> AWSRekognition {
+    func getRekognition() -> RekognitionClient {
         return awsRekognition
     }
 

@@ -10,17 +10,19 @@ import AWSPolly
 
 class AWSPollyAdapter: AWSPollyBehavior {
 
-    let awsPolly: AWSPolly
+    let awsPolly: PollyClient
 
-    init(_ awsPolly: AWSPolly) {
+    init(_ awsPolly: PollyClient) {
         self.awsPolly = awsPolly
     }
 
-    func synthesizeSpeech(request: AWSPollySynthesizeSpeechInput) -> AWSTask<AWSPollySynthesizeSpeechOutput> {
-        awsPolly.synthesizeSpeech(request)
+    func synthesizeSpeech(
+        request: SynthesizeSpeechInput
+    ) async throws -> SynthesizeSpeechOutputResponse {
+        try await awsPolly.synthesizeSpeech(input: request)
     }
 
-    func getPolly() -> AWSPolly {
+    func getPolly() -> PollyClient {
         return awsPolly
     }
 

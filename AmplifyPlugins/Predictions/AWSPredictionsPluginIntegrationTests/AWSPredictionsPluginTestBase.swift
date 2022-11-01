@@ -7,7 +7,7 @@
 
 import XCTest
 import AWSPredictionsPlugin
-import AWSCore
+//import AWSCore
 
 @testable import Amplify
 @testable import AmplifyTestCommon

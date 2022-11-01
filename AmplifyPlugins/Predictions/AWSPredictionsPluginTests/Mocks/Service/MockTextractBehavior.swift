@@ -6,7 +6,7 @@
 //
 
 import Amplify
-import AWSCore
+//import AWSCore
 import AWSTextract
 @testable import AWSPredictionsPlugin
 

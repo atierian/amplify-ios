@@ -12,7 +12,7 @@ import AWSTextract
 import AWSPolly
 import AWSTranslate
 import AWSComprehend
-import AWSTranscribeStreaming
+//import AWSTranscribeStreaming
 
 class PredictionsErrorHelper {
 
@@ -53,7 +53,7 @@ class PredictionsErrorHelper {
     }
 
     // swiftlint:disable cyclomatic_complexity
-    static func mapPredictionsServiceError(_ error: NSError) -> PredictionsError {
+    static func mapPredictionsServiceError(_ error: Error) -> PredictionsError {
         let defaultError = PredictionsErrorHelper.getDefaultError(error)
 
         switch error.domain {
@@ -120,7 +120,7 @@ class PredictionsErrorHelper {
         }
     }
 
-    static func getDefaultError(_ error: NSError) -> PredictionsError {
+    static func getDefaultError(_ error: Error) -> PredictionsError {
         let errorMessage = """
         Domain: [\(error.domain)
         Code: [\(error.code)

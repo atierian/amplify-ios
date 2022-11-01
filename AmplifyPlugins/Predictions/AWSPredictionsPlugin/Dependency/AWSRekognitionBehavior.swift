@@ -9,23 +9,29 @@ import Foundation
 import AWSRekognition
 
 protocol AWSRekognitionBehavior {
-
-    func detectLabels(request: AWSRekognitionDetectLabelsRequest) -> AWSTask<AWSRekognitionDetectLabelsResponse>
-
-    func detectCelebs(request: AWSRekognitionRecognizeCelebritiesRequest) ->
-        AWSTask<AWSRekognitionRecognizeCelebritiesResponse>
-
-    func detectText(request: AWSRekognitionDetectTextRequest) -> AWSTask<AWSRekognitionDetectTextResponse>
-
-    func detectFaces(request: AWSRekognitionDetectFacesRequest) -> AWSTask<AWSRekognitionDetectFacesResponse>
+    func detectLabels(
+        request: DetectLabelsInput
+    ) async throws -> DetectLabelsOutputResponse
 
     func detectModerationLabels(
-        request: AWSRekognitionDetectModerationLabelsRequest
-    ) -> AWSTask<AWSRekognitionDetectModerationLabelsResponse>
+        request: DetectModerationLabelsInput
+    ) async throws -> DetectModerationLabelsOutputResponse
+
+    func detectCelebs(
+        request: RecognizeCelebritiesInput
+    ) async throws -> RecognizeCelebritiesOutputResponse
+
+    func detectText(
+        request: DetectTextInput
+    ) async throws -> DetectTextOutputResponse
+
+    func detectFaces(
+        request: DetectFacesInput
+    ) async throws -> DetectFacesOutputResponse
 
     func detectFacesFromCollection(
-        request: AWSRekognitionSearchFacesByImageRequest) -> AWSTask<AWSRekognitionSearchFacesByImageResponse>
+        request: SearchFacesByImageInput
+    ) async throws -> SearchFacesByImageOutputResponse
 
-    func getRekognition() -> AWSRekognition
-
+    func getRekognition() -> RekognitionClient
 }

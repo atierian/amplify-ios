@@ -8,7 +8,7 @@
 import XCTest
 import Amplify
 import AWSPredictionsPlugin
-import AWSCore
+//import AWSCore
 
 class ConvertBasicIntegrationTests: AWSPredictionsPluginTestBase {
 

@@ -10,23 +10,26 @@ import AWSTextract
 
 class AWSTextractAdapter: AWSTextractBehavior {
 
-    let awsTextract: AWSTextract
+    let awsTextract: TextractClient
 
-    init(_ awsTextract: AWSTextract) {
+    init(_ awsTextract: TextractClient) {
         self.awsTextract = awsTextract
     }
 
-    func analyzeDocument(request: AWSTextractAnalyzeDocumentRequest) -> AWSTask<AWSTextractAnalyzeDocumentResponse> {
-        awsTextract.analyzeDocument(request)
+    func analyzeDocument(
+        request: AnalyzeDocumentInput
+    ) async throws -> AnalyzeDocumentOutputResponse {
+        try await awsTextract.analyzeDocument(input: request)
     }
 
     func detectDocumentText(
-        request: AWSTextractDetectDocumentTextRequest) -> AWSTask<AWSTextractDetectDocumentTextResponse> {
-        awsTextract.detectDocumentText(request)
+        request: DetectDocumentTextInput
+    ) async throws -> DetectDocumentTextOutputResponse {
+        try await awsTextract.detectDocumentText(input: request)
     }
 
-    func getTextract() -> AWSTextract {
-        return awsTextract
+    func getTextract() -> TextractClient {
+        awsTextract
     }
 
 }

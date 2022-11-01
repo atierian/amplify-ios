@@ -8,7 +8,7 @@
 import Amplify
 import AWSComprehend
 
-extension AWSComprehendEntityType {
+extension ComprehendClientTypes.EntityType {
 
     // swiftlint:disable:next cyclomatic_complexity
     func toAmplifyEntityType() -> EntityType {
@@ -31,9 +31,7 @@ extension AWSComprehendEntityType {
             return .title
         case .other:
             return .other
-        case .unknown:
-            return .unknown
-        @unknown default:
+        case .sdkUnknown:
             return .unknown
         }
     }

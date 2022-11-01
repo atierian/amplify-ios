@@ -10,21 +10,25 @@ import AWSComprehend
 
 protocol AWSComprehendBehavior {
 
-    func detectSentiment(request: AWSComprehendDetectSentimentRequest) ->
-        AWSTask<AWSComprehendDetectSentimentResponse>
+    func detectSentiment(
+        request: DetectSentimentInput
+    ) async throws -> DetectSentimentOutputResponse
 
-    func detectEntities(request: AWSComprehendDetectEntitiesRequest) ->
-        AWSTask<AWSComprehendDetectEntitiesResponse>
+    func detectEntities(
+        request: DetectEntitiesInput
+    ) async throws -> DetectEntitiesOutputResponse
 
-    func detectLanguage(request: AWSComprehendDetectDominantLanguageRequest) ->
-        AWSTask<AWSComprehendDetectDominantLanguageResponse>
+    func detectLanguage(
+        request: DetectDominantLanguageInput
+    ) async throws -> DetectDominantLanguageOutputResponse
 
-    func detectSyntax(request: AWSComprehendDetectSyntaxRequest) ->
-        AWSTask<AWSComprehendDetectSyntaxResponse>
+    func detectSyntax(
+        request: DetectSyntaxInput
+    ) async throws -> DetectSyntaxOutputResponse
 
-    func detectKeyPhrases(request: AWSComprehendDetectKeyPhrasesRequest) ->
-        AWSTask<AWSComprehendDetectKeyPhrasesResponse>
+    func detectKeyPhrases(
+        request: DetectKeyPhrasesInput
+    ) async throws -> DetectKeyPhrasesOutputResponse
 
-    func getComprehend() -> AWSComprehend
-
+    func getComprehend() -> ComprehendClient
 }

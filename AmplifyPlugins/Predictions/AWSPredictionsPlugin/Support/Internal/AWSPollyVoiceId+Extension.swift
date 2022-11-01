@@ -9,9 +9,9 @@ import AWSPolly
 import Amplify
 
 // swiftlint:disable cyclomatic_complexity
-extension AWSPollyVoiceId {
+extension  PollyClientTypes.VoiceId {
     // swiftlint:disable function_body_length
-    static func from(voiceType: VoiceType) -> AWSPollyVoiceId {
+    static func from(voiceType: VoiceType) -> PollyClientTypes.VoiceId {
         guard case let .voice(name) = voiceType else {
             return .ivy
         }

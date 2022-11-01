@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import AWSTranscribeStreaming
+//import AWSTranscribeStreaming
 import Amplify
 @testable import AWSPredictionsPlugin
 

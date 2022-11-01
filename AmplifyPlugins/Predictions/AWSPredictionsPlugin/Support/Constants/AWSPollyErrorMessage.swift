@@ -37,8 +37,14 @@ struct AWSPollyErrorMessage {
                                                  textLengthExceeded.recoverySuggestion)
         case .unknown:
             return PredictionsError.unknown("An unknown error occurred.", "")
-        default:
-            return nil
         }
     }
+}
+
+// TODO: Remove
+enum AWSPollyErrorType {
+    case languageNotSupported
+    case serviceFailure
+    case textLengthExceeded
+    case unknown
 }

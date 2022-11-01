@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import AWSTranscribeStreaming
+//import AWSTranscribeStreaming
 
 class NativeWebSocketProvider: NSObject, AWSTranscribeStreamingWebSocketProvider, URLSessionWebSocketDelegate {
 

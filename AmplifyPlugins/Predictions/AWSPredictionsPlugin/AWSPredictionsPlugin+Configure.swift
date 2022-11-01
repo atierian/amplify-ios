@@ -8,7 +8,7 @@
 import Amplify
 import Foundation
 import AWSPluginsCore
-import AWSCore
+//import AWSCore
 
 extension AWSPredictionsPlugin {
 

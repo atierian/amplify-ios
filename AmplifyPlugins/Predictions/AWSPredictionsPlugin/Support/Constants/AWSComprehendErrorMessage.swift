@@ -78,8 +78,20 @@ struct AWSComprehendErrorMessage {
         case .unsupportedLanguage:
             return PredictionsError.service(unsupportedLanguage.errorDescription,
                                             unsupportedLanguage.recoverySuggestion)
-        default:
-            return nil
         }
     }
 }
+
+enum AWSComprehendErrorType {
+    case internalServer
+    case invalidRequest
+    case resourceInUse
+    case resourceLimitExceeded
+    case tooManyRequests
+    case resourceNotFound
+    case resourceUnavailable
+    case textSizeLimitExceeded
+    case unknown
+    case unsupportedLanguage
+}
+

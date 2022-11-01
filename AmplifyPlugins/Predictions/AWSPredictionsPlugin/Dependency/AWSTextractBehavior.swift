@@ -9,12 +9,13 @@ import Foundation
 import AWSTextract
 
 protocol AWSTextractBehavior {
-
-    func analyzeDocument(request: AWSTextractAnalyzeDocumentRequest) -> AWSTask<AWSTextractAnalyzeDocumentResponse>
+    func analyzeDocument(
+        request: AnalyzeDocumentInput
+    ) async throws -> AnalyzeDocumentOutputResponse
 
     func detectDocumentText(
-        request: AWSTextractDetectDocumentTextRequest) -> AWSTask<AWSTextractDetectDocumentTextResponse>
+        request: DetectDocumentTextInput
+    ) async throws -> DetectDocumentTextOutputResponse
 
-    func getTextract() -> AWSTextract
-
+    func getTextract() -> TextractClient
 }

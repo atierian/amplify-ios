@@ -10,17 +10,19 @@ import AWSTranslate
 
 class AWSTranslateAdapter: AWSTranslateBehavior {
 
-    let awsTranslate: AWSTranslate
+    let awsTranslate: TranslateClient
 
-    init(_ awsTranslate: AWSTranslate) {
+    init(_ awsTranslate: TranslateClient) {
         self.awsTranslate = awsTranslate
     }
 
-    func translateText(request: AWSTranslateTranslateTextRequest) -> AWSTask<AWSTranslateTranslateTextResponse> {
-        return awsTranslate.translateText(request)
+    func translateText(
+        request: TranslateTextInput
+    ) async throws -> TranslateTextOutputResponse {
+        try await awsTranslate.translateText(input: request)
     }
 
-    func getTranslate() -> AWSTranslate {
+    func getTranslate() -> TranslateClient {
         return awsTranslate
     }
 

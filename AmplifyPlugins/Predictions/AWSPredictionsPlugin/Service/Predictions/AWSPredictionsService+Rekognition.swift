@@ -8,26 +8,34 @@
 import Amplify
 import AWSRekognition
 import AWSTextract
+import Foundation
 
-typealias DetectModerationLabelsCompletedHandler = AWSTask<AWSRekognitionDetectModerationLabelsResponse>
+//typealias DetectModerationLabelsCompletedHandler = AWSTask<AWSRekognitionDetectModerationLabelsResponse>
 
-typealias DetectLabelsCompletedHandler = AWSTask<AWSRekognitionDetectLabelsResponse>
+//typealias DetectLabelsCompletedHandler = AWSTask<AWSRekognitionDetectLabelsResponse>
 
 // swiftlint:disable file_length
 extension AWSPredictionsService: AWSRekognitionServiceBehavior {
 
-    func detectLabels(image: URL,
-                      type: LabelType,
-                      onEvent: @escaping AWSPredictionsService.RekognitionServiceEventHandler) {
-        guard let imageData = try? Data(contentsOf: image) else {
-
-            onEvent(.failed(.network(AWSRekognitionErrorMessage.imageNotFound.errorDescription,
-                                     AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion)))
-                   return
+    func detectLabels(
+        image: URL,
+        type: LabelType
+    ) async throws -> IdentifyResult  {
+        let imageData: Data
+        do {
+            imageData = try Data(contentsOf: image)
+        } catch {
+            throw PredictionsError.network(
+                AWSRekognitionErrorMessage.imageNotFound.errorDescription,
+                AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion
+            )
         }
+
 
         switch type {
         case .labels:
+            let labelsResult = try await detectRekognitionLabels(image: imageData)
+
             detectRekognitionLabels(image: imageData, onEvent: onEvent).continueWith { (task) -> Any? in
                 guard task.error == nil else {
                     let error = task.error! as NSError
@@ -86,149 +94,149 @@ extension AWSPredictionsService: AWSRekognitionServiceBehavior {
         }
     }
 
-    func detectCelebrities(image: URL, onEvent: @escaping AWSPredictionsService.RekognitionServiceEventHandler) {
-        let request: AWSRekognitionRecognizeCelebritiesRequest = AWSRekognitionRecognizeCelebritiesRequest()
-        let rekognitionImage: AWSRekognitionImage = AWSRekognitionImage()
-
-        guard let imageData = try? Data(contentsOf: image) else {
-            onEvent(.failed(.network(AWSRekognitionErrorMessage.imageNotFound.errorDescription,
-                                     AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion)))
-            return
+    func detectCelebrities(
+        image: URL
+    ) async throws -> IdentifyResult {
+        let imageData: Data
+        do {
+            imageData = try Data(contentsOf: image)
+        } catch {
+            throw PredictionsError.network(
+                AWSRekognitionErrorMessage.imageNotFound.errorDescription,
+                AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion
+            )
         }
 
-        rekognitionImage.bytes = imageData
-        request.image = rekognitionImage
+        let rekognitionImage = RekognitionClientTypes.Image(bytes: imageData)
+        let request = RecognizeCelebritiesInput(image: rekognitionImage)
+        let celebritiesResult: RecognizeCelebritiesOutputResponse
 
-        awsRekognition.detectCelebs(request: request).continueWith { (task) -> Any? in
-            guard task.error == nil else {
-                let error = task.error! as NSError
-                let predictionsErrorString = PredictionsErrorHelper.mapPredictionsServiceError(error)
-                onEvent(.failed(.network(predictionsErrorString.errorDescription,
-                                         predictionsErrorString.recoverySuggestion)))
-                return nil
-            }
-
-            guard let result = task.result else {
-                onEvent(.failed(.unknown(AWSRekognitionErrorMessage.noResultFound.errorDescription,
-                                         AWSRekognitionErrorMessage.noResultFound.recoverySuggestion)))
-                return nil
-            }
-
-            guard let celebs = result.celebrityFaces else {
-                onEvent(.failed(.network(AWSRekognitionErrorMessage.noResultFound.errorDescription,
-                                         AWSRekognitionErrorMessage.noResultFound.recoverySuggestion)))
-                return nil
-            }
-
-            let newCelebs = IdentifyCelebritiesResultTransformers.processCelebs(celebs)
-            onEvent(.completed(IdentifyCelebritiesResult(celebrities: newCelebs)))
-            return nil
+        do {
+            celebritiesResult = try await awsRekognition.detectCelebs(request: request)
+        } catch {
+            let predictionsErrorString = PredictionsErrorHelper.mapPredictionsServiceError(error)
+            throw PredictionsError.network(
+                predictionsErrorString.errorDescription,
+                predictionsErrorString.recoverySuggestion
+            )
         }
+
+        guard let celebrities = celebritiesResult.celebrityFaces else {
+            throw PredictionsError.network(
+                AWSRekognitionErrorMessage.noResultFound.errorDescription,
+                AWSRekognitionErrorMessage.noResultFound.recoverySuggestion
+            )
+        }
+
+
+        let newCelebs = IdentifyCelebritiesResultTransformers.processCelebs(celebrities)
+        return IdentifyCelebritiesResult(celebrities: newCelebs)
     }
 
-    func detectEntities(image: URL, onEvent: @escaping AWSPredictionsService.RekognitionServiceEventHandler) {
+    func detectEntities(image: URL) async throws -> IdentifyResult {
         if let collectionId = predictionsConfig.identify.identifyEntities?.collectionId {
             // call detect face from collection if collection id passed in
-            return detectFacesFromCollection(image: image, collectionId: collectionId, onEvent: onEvent)
+            return try await detectFacesFromCollection(image: image, collectionId: collectionId)
 
         }
-        return detectFaces(image: image, onEvent: onEvent)
+        return try await  detectFaces(image: image)
     }
 
-    func detectText(image: URL,
-                    format: TextFormatType,
-                    onEvent: @escaping AWSPredictionsService.RekognitionServiceEventHandler) {
+    func detectText(
+        image: URL,
+        format: TextFormatType
+    ) async throws -> IdentifyResult {
         switch format {
         case .form, .all, .table:
-            return analyzeDocument(image: image, features: format.textractServiceFormatType, onEvent: onEvent)
+            return try await analyzeDocument(image: image, features: format.textractServiceFormatType)
         case .plain:
-            return detectTextRekognition(image: image, onEvent: onEvent)
+            return try await detectTextRekognition(image: image)
         }
     }
 
-    private func detectFaces(image: URL, onEvent: @escaping AWSPredictionsService.RekognitionServiceEventHandler) {
-        let request: AWSRekognitionDetectFacesRequest = AWSRekognitionDetectFacesRequest()
-        let rekognitionImage: AWSRekognitionImage = AWSRekognitionImage()
-
-        guard let imageData = try? Data(contentsOf: image) else {
-            onEvent(.failed(.network(AWSRekognitionErrorMessage.imageNotFound.errorDescription,
-                                     AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion)))
-            return
+    private func detectFaces(
+        image: URL
+    ) async throws -> IdentifyResult {
+        let imageData: Data
+        do {
+            imageData = try Data(contentsOf: image)
+        } catch {
+            throw PredictionsError.network(
+                AWSRekognitionErrorMessage.imageNotFound.errorDescription,
+                AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion
+            )
         }
 
-        rekognitionImage.bytes = imageData
-        request.image = rekognitionImage
+        let rekognitionImage = RekognitionClientTypes.Image(bytes: imageData)
+        let request = DetectFacesInput(image: rekognitionImage)
 
-        awsRekognition.detectFaces(request: request).continueWith { (task) -> Any? in
-            guard task.error == nil else {
-                let error = task.error! as NSError
-                let predictionsErrorString = PredictionsErrorHelper.mapPredictionsServiceError(error)
-                onEvent(.failed(.network(predictionsErrorString.errorDescription,
-                                         predictionsErrorString.recoverySuggestion)))
-                return nil
-            }
-
-            guard let result = task.result else {
-                onEvent(.failed(.unknown(AWSRekognitionErrorMessage.noResultFound.errorDescription,
-                                         AWSRekognitionErrorMessage.noResultFound.recoverySuggestion)))
-                return nil
-            }
-
-            guard let faces = result.faceDetails else {
-                onEvent(.failed(.network(AWSRekognitionErrorMessage.noResultFound.errorDescription,
-                                         AWSRekognitionErrorMessage.noResultFound.recoverySuggestion)))
-                return nil
-            }
-
-            let newFaces = IdentifyEntitiesResultTransformers.processFaces(faces)
-            onEvent(.completed(IdentifyEntitiesResult(entities: newFaces)))
-            return nil
+        let facesResult: DetectFacesOutputResponse
+        do {
+            facesResult = try await awsRekognition.detectFaces(request: request)
+        } catch {
+            let predictionsErrorString = PredictionsErrorHelper.mapPredictionsServiceError(error)
+            throw PredictionsError.network(
+                predictionsErrorString.errorDescription,
+                predictionsErrorString.recoverySuggestion
+            )
         }
+
+        guard let faces = facesResult.faceDetails else {
+            throw PredictionsError.network(
+                AWSRekognitionErrorMessage.noResultFound.errorDescription,
+                AWSRekognitionErrorMessage.noResultFound.recoverySuggestion
+            )
+        }
+
+        let newFaces = IdentifyEntitiesResultTransformers.processFaces(faces)
+        return IdentifyEntitiesResult(entities: newFaces)
     }
 
-    private func detectFacesFromCollection(image: URL,
-                                           collectionId: String,
-                                           onEvent: @escaping AWSPredictionsService.RekognitionServiceEventHandler) {
-        let request: AWSRekognitionSearchFacesByImageRequest = AWSRekognitionSearchFacesByImageRequest()
-        let rekognitionImage: AWSRekognitionImage = AWSRekognitionImage()
-
-        guard let imageData = try? Data(contentsOf: image) else {
-            onEvent(.failed(.network(AWSRekognitionErrorMessage.imageNotFound.errorDescription,
-                                     AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion)))
-            return
+    private func detectFacesFromCollection(
+        image: URL,
+        collectionId: String
+    ) async throws -> IdentifyResult {
+        let imageData: Data
+        do {
+            imageData = try Data(contentsOf: image)
+        } catch {
+            throw PredictionsError.network(
+                AWSRekognitionErrorMessage.imageNotFound.errorDescription,
+                AWSRekognitionErrorMessage.imageNotFound.recoverySuggestion
+            )
         }
 
-        rekognitionImage.bytes = imageData
-        request.image = rekognitionImage
-        request.collectionId = collectionId
-        let maxEntities = Int(predictionsConfig.identify.identifyEntities?.maxEntities ?? "50") ?? 50
-        request.maxFaces = NSNumber(value: maxEntities)
+        let rekognitionImage = RekognitionClientTypes.Image(bytes: imageData)
+        let maxFaces = predictionsConfig.identify.identifyEntities?.maxEntities
+            .map(Int.init) ?? 50 // TODO: Does it make sense to force this default
 
-        awsRekognition.detectFacesFromCollection(request: request).continueWith { (task) -> Any? in
-            guard task.error == nil else {
-                let error = task.error! as NSError
-                let predictionsErrorString = PredictionsErrorHelper.mapPredictionsServiceError(error)
-                onEvent(.failed(.network(predictionsErrorString.errorDescription,
-                                         predictionsErrorString.recoverySuggestion)))
-                return nil
-            }
+        let request = SearchFacesByImageInput(
+            collectionId: collectionId,
+            image: rekognitionImage,
+            maxFaces: maxFaces
+        )
 
-            guard let result = task.result else {
-                onEvent(.failed(.unknown(AWSRekognitionErrorMessage.noResultFound.errorDescription,
-                                         AWSRekognitionErrorMessage.noResultFound.recoverySuggestion)))
-                return nil
-            }
+        let facesFromCollectionResult: SearchFacesByImageOutputResponse
 
-            guard let faces = result.faceMatches else {
-                onEvent(.failed(.network(AWSRekognitionErrorMessage.noResultFound.errorDescription,
-                                         AWSRekognitionErrorMessage.noResultFound.recoverySuggestion)))
-                return nil
-            }
-
-            let faceMatches = IdentifyEntitiesResultTransformers.processCollectionFaces(faces)
-            onEvent(.completed(IdentifyEntityMatchesResult(entities: faceMatches)))
-            return nil
+        do {
+            facesFromCollectionResult = try await awsRekognition.detectFacesFromCollection(request: request)
+        } catch {
+            let predictionsErrorString = PredictionsErrorHelper.mapPredictionsServiceError(error)
+            throw PredictionsError.network(
+                predictionsErrorString.errorDescription,
+                predictionsErrorString.recoverySuggestion
+            )
         }
+
+        guard let faces = facesFromCollectionResult.faceMatches else {
+            throw PredictionsError.network(
+                AWSRekognitionErrorMessage.noResultFound.errorDescription,
+                AWSRekognitionErrorMessage.noResultFound.recoverySuggestion
+            )
+        }
+
+        let faceMatches = IdentifyEntitiesResultTransformers.processCollectionFaces(faces)
+        return IdentifyEntityMatchesResult(entities: faceMatches)
     }
 
     private func detectTextRekognition(

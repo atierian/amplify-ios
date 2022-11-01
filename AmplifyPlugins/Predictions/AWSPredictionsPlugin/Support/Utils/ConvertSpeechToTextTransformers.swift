@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-import AWSTranscribeStreaming
+//import AWSTranscribeStreaming
 import Amplify
 
 class ConvertSpeechToTextTransformers {

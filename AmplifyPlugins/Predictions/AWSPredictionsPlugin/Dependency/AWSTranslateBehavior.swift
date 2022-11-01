@@ -9,8 +9,9 @@ import Foundation
 import AWSTranslate
 
 protocol AWSTranslateBehavior {
+    func translateText(
+        request: TranslateTextInput
+    ) async throws -> TranslateTextOutputResponse
 
-    func translateText(request: AWSTranslateTranslateTextRequest) -> AWSTask<AWSTranslateTranslateTextResponse>
-
-    func getTranslate() -> AWSTranslate
+    func getTranslate() -> TranslateClient
 }

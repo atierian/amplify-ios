@@ -6,7 +6,7 @@
 //
 
 import Amplify
-import AWSTranscribeStreaming
+//import AWSTranscribeStreaming
 
 extension AWSPredictionsService: AWSTranscribeStreamingServiceBehavior {
 

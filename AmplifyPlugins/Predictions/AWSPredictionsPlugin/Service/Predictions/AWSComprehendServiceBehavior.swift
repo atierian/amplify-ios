@@ -12,6 +12,5 @@ protocol AWSComprehendServiceBehavior {
     typealias ComprehendServiceEventHandler = (ComprehendServiceEvent) -> Void
     typealias ComprehendServiceEvent = PredictionsEvent<InterpretResult, PredictionsError>
 
-    func comprehend(text: String,
-                    onEvent: @escaping ComprehendServiceEventHandler)
+    func comprehend(text: String) async throws -> InterpretResult
 }

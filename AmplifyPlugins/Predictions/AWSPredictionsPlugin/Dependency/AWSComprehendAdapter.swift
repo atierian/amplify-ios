@@ -10,38 +10,43 @@ import AWSComprehend
 
 class AWSComprehendAdapter: AWSComprehendBehavior {
 
-    let awsComprehend: AWSComprehend
+    let awsComprehend: ComprehendClient
 
-    init(_ awsComprehend: AWSComprehend) {
+    init(_ awsComprehend: ComprehendClient) {
         self.awsComprehend = awsComprehend
     }
 
-    func detectSentiment(request: AWSComprehendDetectSentimentRequest) ->
-        AWSTask<AWSComprehendDetectSentimentResponse> {
-            return awsComprehend.detectSentiment(request)
+    func detectSentiment(
+        request: DetectSentimentInput
+    ) async throws -> DetectSentimentOutputResponse {
+        try await awsComprehend.detectSentiment(input: request)
     }
 
-    func detectEntities(request: AWSComprehendDetectEntitiesRequest) ->
-        AWSTask<AWSComprehendDetectEntitiesResponse> {
-            return awsComprehend.detectEntities(request)
+    func detectEntities(
+        request: DetectEntitiesInput
+    ) async throws -> DetectEntitiesOutputResponse {
+        try await awsComprehend.detectEntities(input: request)
     }
 
-    func detectLanguage(request: AWSComprehendDetectDominantLanguageRequest) ->
-        AWSTask<AWSComprehendDetectDominantLanguageResponse> {
-            return awsComprehend.detectDominantLanguage(request)
+    func detectLanguage(
+        request: DetectDominantLanguageInput
+    ) async throws -> DetectDominantLanguageOutputResponse {
+        try await awsComprehend.detectDominantLanguage(input: request)
     }
 
-    func detectSyntax(request: AWSComprehendDetectSyntaxRequest) ->
-        AWSTask<AWSComprehendDetectSyntaxResponse> {
-            return awsComprehend.detectSyntax(request)
+    func detectSyntax(
+        request: DetectSyntaxInput
+    ) async throws -> DetectSyntaxOutputResponse {
+        try await awsComprehend.detectSyntax(input: request)
     }
 
-    func detectKeyPhrases(request: AWSComprehendDetectKeyPhrasesRequest) ->
-        AWSTask<AWSComprehendDetectKeyPhrasesResponse> {
-            return awsComprehend.detectKeyPhrases(request)
+    func detectKeyPhrases(
+        request: DetectKeyPhrasesInput
+    ) async throws -> DetectKeyPhrasesOutputResponse {
+        try await awsComprehend.detectKeyPhrases(input: request)
     }
 
-    func getComprehend() -> AWSComprehend {
+    func getComprehend() -> ComprehendClient {
         return awsComprehend
     }
 }

@@ -12,7 +12,8 @@ import AWSTextract
 import AWSComprehend
 import AWSPolly
 import AWSPluginsCore
-import AWSTranscribeStreaming
+import Foundation
+//import AWSTranscribeStreaming
 
 class AWSPredictionsService {
 
@@ -20,7 +21,8 @@ class AWSPredictionsService {
     var awsTranslate: AWSTranslateBehavior!
     var awsRekognition: AWSRekognitionBehavior!
     var awsPolly: AWSPollyBehavior!
-    var awsTranscribeStreaming: AWSTranscribeStreamingBehavior!
+    // TODO: Re-add when complete
+//    var awsTranscribeStreaming: AWSTranscribeStreamingBehavior!
     var awsComprehend: AWSComprehendBehavior!
     var awsTextract: AWSTextractBehavior!
     var predictionsConfig: PredictionsPluginConfiguration!
@@ -29,15 +31,22 @@ class AWSPredictionsService {
     let transcribeClientDelegate: NativeWSTranscribeStreamingClientDelegate!
 
     convenience init(configuration: PredictionsPluginConfiguration,
-                     credentialsProvider: AWSCredentialsProvider,
+                     credentialsProvider: AuthAWSCredentialsProvider,
                      identifier: String) throws {
 
-        let interpretServiceConfiguration = AmplifyAWSServiceConfiguration(region: configuration.interpret.region,
-                                                                           credentialsProvider: credentialsProvider)
-        let identifyServiceConfiguration = AmplifyAWSServiceConfiguration(region: configuration.identify.region,
-                                                                          credentialsProvider: credentialsProvider)
-        let convertServiceConfiguration =  AmplifyAWSServiceConfiguration(region: configuration.convert.region,
-                                                                          credentialsProvider: credentialsProvider)
+        let interpretServiceConfiguration = AmplifyAWSServiceConfiguration(
+            region: configuration.interpret.region,
+            credentialsProvider: credentialsProvider
+        )
+        let identifyServiceConfiguration = AmplifyAWSServiceConfiguration(
+            region: configuration.identify.region,
+            credentialsProvider: credentialsProvider
+        )
+        let convertServiceConfiguration =  AmplifyAWSServiceConfiguration(
+            region: configuration.convert.region,
+            credentialsProvider: credentialsProvider
+        )
+
 
         let awsTranslateAdapter = AWSPredictionsService.makeAWSTranslate(
             serviceConfiguration: convertServiceConfiguration,
@@ -74,16 +83,18 @@ class AWSPredictionsService {
             identifier: identifier
         )
 
-        self.init(identifier: identifier,
-                  awsTranslate: awsTranslateAdapter,
-                  awsRekognition: awsRekognitionAdapter,
-                  awsTextract: awsTextractAdapter,
-                  awsComprehend: awsComprehendAdapter,
-                  awsPolly: awsPollyAdapter,
-                  awsTranscribeStreaming: awsTranscribeStreamingAdapter,
-                  nativeWebSocketProvider: nativeWebSocketProvider,
-                  transcribeClientDelegate: transcribeClientDelegate,
-                  configuration: configuration)
+        self.init(
+            identifier: identifier,
+            awsTranslate: awsTranslateAdapter,
+            awsRekognition: awsRekognitionAdapter,
+            awsTextract: awsTextractAdapter,
+            awsComprehend: awsComprehendAdapter,
+            awsPolly: awsPollyAdapter,
+            awsTranscribeStreaming: awsTranscribeStreamingAdapter,
+            nativeWebSocketProvider: nativeWebSocketProvider,
+            transcribeClientDelegate: transcribeClientDelegate,
+            configuration: configuration
+        )
 
     }
 
@@ -112,24 +123,23 @@ class AWSPredictionsService {
     }
 
     func reset() {
-
-        AWSTranslate.remove(forKey: identifier)
+        // TODO: Is there a necessary equivalent in the Swift SDK?
+        /*
+         AWSTranslate.remove(forKey: identifier)
+         AWSRekognition.remove(forKey: identifier)
+         AWSTextract.remove(forKey: identifier)
+         AWSComprehend.remove(forKey: identifier)
+         AWSPolly.remove(forKey: identifier)
+         AWSTranscribeStreaming.remove(forKey: identifier)
+         */
         awsTranslate = nil
-
-        AWSRekognition.remove(forKey: identifier)
         awsRekognition = nil
-
-        AWSTextract.remove(forKey: identifier)
         awsTextract = nil
-
-        AWSComprehend.remove(forKey: identifier)
         awsComprehend = nil
-
-        AWSPolly.remove(forKey: identifier)
         awsPolly = nil
 
-        AWSTranscribeStreaming.remove(forKey: identifier)
-        awsTranscribeStreaming = nil
+        // TODO: Add back in with streaming
+//        awsTranscribeStreaming = nil
 
         identifier = nil
     }

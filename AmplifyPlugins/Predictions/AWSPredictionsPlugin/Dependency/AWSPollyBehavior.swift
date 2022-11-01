@@ -9,8 +9,9 @@ import Foundation
 import AWSPolly
 
 protocol AWSPollyBehavior {
-
-    func synthesizeSpeech(request: AWSPollySynthesizeSpeechInput) -> AWSTask<AWSPollySynthesizeSpeechOutput>
-
-    func getPolly() -> AWSPolly
+    func synthesizeSpeech(
+        request: SynthesizeSpeechInput
+    ) async throws -> SynthesizeSpeechOutputResponse
+    
+    func getPolly() -> PollyClient
 }

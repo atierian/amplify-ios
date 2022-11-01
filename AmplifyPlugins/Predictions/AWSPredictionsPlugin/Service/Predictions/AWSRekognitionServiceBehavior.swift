@@ -7,19 +7,28 @@
 
 import Amplify
 import AWSRekognition
+import Foundation
 
 protocol AWSRekognitionServiceBehavior {
 
     typealias RekognitionServiceEventHandler = (RekognitionServiceEvent) -> Void
     typealias RekognitionServiceEvent = PredictionsEvent<IdentifyResult, PredictionsError>
 
-    func detectLabels(image: URL,
-                      type: LabelType,
-                      onEvent: @escaping RekognitionServiceEventHandler)
+    func detectLabels(
+        image: URL,
+        type: LabelType
+    ) async throws -> IdentifyResult
 
-    func detectCelebrities(image: URL, onEvent: @escaping RekognitionServiceEventHandler)
+    func detectCelebrities(
+        image: URL
+    ) async throws -> IdentifyResult
 
-    func detectText(image: URL, format: TextFormatType, onEvent: @escaping RekognitionServiceEventHandler)
+    func detectText(
+        image: URL,
+        format: TextFormatType
+    ) async throws -> IdentifyResult
 
-    func detectEntities(image: URL, onEvent: @escaping RekognitionServiceEventHandler)
+    func detectEntities(
+        image: URL
+    ) async throws -> IdentifyResult
 }

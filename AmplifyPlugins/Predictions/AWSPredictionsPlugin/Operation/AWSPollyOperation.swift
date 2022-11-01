@@ -65,22 +65,22 @@ public class AWSPollyOperation: AmplifyOperation<
         }
     }
 
-    private func reconcileVoiceId(voicePassedIn: VoiceType?,
-                                  config: PredictionsPluginConfiguration) -> AWSPollyVoiceId {
+    private func reconcileVoiceId(
+        voicePassedIn: VoiceType?,
+        config: PredictionsPluginConfiguration
+    ) -> PollyClientTypes.VoiceId {
         // we return a default if what is passed in doesn't resolve properly to our enum
         // and config was empty for some odd reason.
-        let defaultVoiceId = AWSPollyVoiceId.ivy
+        let defaultVoiceId: PollyClientTypes.VoiceId = .ivy
 
-        if let voicePassedIn = voicePassedIn {
-            let pollyVoiceId = AWSPollyVoiceId.from(voiceType: voicePassedIn)
+        if case .voice(let voice) = voicePassedIn,
+           let pollyVoiceId = PollyClientTypes.VoiceId(rawValue: voice) {
             return pollyVoiceId
         }
 
-        if let pollyVoiceIdFromConfigString = config.convert.speechGenerator?.voiceID {
-            let voiceType: VoiceType = .voice(pollyVoiceIdFromConfigString)
-            let pollyVoiceIdFromConfig = AWSPollyVoiceId.from(voiceType: voiceType)
+        if let pollyVoiceIdFromConfigString = config.convert.speechGenerator?.voiceID,
+           let pollyVoiceIdFromConfig = PollyClientTypes.VoiceId(rawValue: pollyVoiceIdFromConfigString) {
             return pollyVoiceIdFromConfig
-
         }
 
         return defaultVoiceId
