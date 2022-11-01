@@ -27,8 +27,7 @@ public extension PredictionsCategoryBehavior {
             textToTranslate: textToTranslate,
             language: language,
             targetLanguage: targetLanguage,
-            options: options,
-            listener: nil
+            options: options
         )
     }
 
