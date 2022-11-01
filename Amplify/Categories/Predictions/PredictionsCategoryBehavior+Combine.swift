@@ -22,8 +22,8 @@ public extension PredictionsCategoryBehavior {
         language: LanguageType? = nil,
         targetLanguage: LanguageType? = nil,
         options: PredictionsTranslateTextRequest.Options? = nil
-    ) -> PredictionsTranslateTextOperation {
-        convert(
+    )  async throws -> TranslateTextResult {
+        try await convert(
             textToTranslate: textToTranslate,
             language: language,
             targetLanguage: targetLanguage,
@@ -37,8 +37,8 @@ public extension PredictionsCategoryBehavior {
     func convert(
         textToSpeech: String,
         options: PredictionsTextToSpeechRequest.Options? = nil
-    ) -> PredictionsTextToSpeechOperation {
-        convert(textToSpeech: textToSpeech, options: options, listener: nil)
+    ) async throws -> TextToSpeechResult {
+        try await convert(textToSpeech: textToSpeech, options: options)
     }
 
     /// - Parameter speechToText: The url of the audio to be transcribed
@@ -46,8 +46,8 @@ public extension PredictionsCategoryBehavior {
     func convert(
         speechToText: URL,
         options: PredictionsSpeechToTextRequest.Options? = nil
-    ) -> PredictionsSpeechToTextOperation {
-        convert(speechToText: speechToText, options: options, listener: nil)
+    ) async throws -> SpeechToTextResult {
+        try await convert(speechToText: speechToText, options: options)
     }
 
     /// Translate the text to the language specified.
@@ -58,8 +58,8 @@ public extension PredictionsCategoryBehavior {
         type: IdentifyAction,
         image: URL,
         options: PredictionsIdentifyRequest.Options? = nil
-    ) -> PredictionsIdentifyOperation {
-        identify(type: type, image: image, options: options, listener: nil)
+    ) async throws -> IdentifyResult {
+        try await identify(type: type, image: image, options: options)
     }
 
     /// Interpret the text and return sentiment analysis, entity detection, language detection,
@@ -70,7 +70,7 @@ public extension PredictionsCategoryBehavior {
     func interpret(
         text: String,
         options: PredictionsInterpretRequest.Options? = nil
-    ) -> PredictionsInterpretOperation {
-        interpret(text: text, options: options, listener: nil)
+    ) async throws -> InterpretResult {
+        try await interpret(text: text, options: options)
     }
 }
