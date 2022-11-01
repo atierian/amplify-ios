@@ -10,7 +10,9 @@ import Amplify
 
 class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
 
-    static func processFaces(_ rekognitionFaces: [AWSRekognitionFaceDetail]) -> [Entity] {
+    static func processFaces(
+        _ rekognitionFaces: [RekognitionClientTypes.FaceDetail]
+    ) -> [Entity] {
         var entities = [Entity]()
         for rekognitionFace in rekognitionFaces {
 
@@ -20,16 +22,15 @@ class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
             let landmarks = processLandmarks(rekognitionFace.landmarks)
             let emotions = processEmotions(rekognitionFace.emotions)
             let ageRange = AgeRange(
-                low: Int(truncating:
-                    rekognitionFace.ageRange?.low ?? 0),
-                high: Int(truncating:
-                    rekognitionFace.ageRange?.high ?? 0))
-
+                low: rekognitionFace.ageRange?.low ?? 0,
+                high: rekognitionFace.ageRange?.high ?? 0
+            )
             let genderAttribute = GenderAttribute(
-                gender: mapGender(genderType:
-                    rekognitionFace.gender?.value ?? .unknown),
-                confidence: Double(truncating:
-                    rekognitionFace.gender?.confidence ?? 0))
+                gender: mapGender(
+                    genderType: rekognitionFace.gender?.value ?? .sdkUnknown("") // TODO: don't use .sdkUnknown here
+                ),
+                confidence: rekognitionFace.gender?.confidence.map(Double.init) ?? 0
+            )
             let attributes = processAttributes(face: rekognitionFace)
 
             guard let pitch = rekognitionFace.pose?.pitch,
@@ -39,27 +40,34 @@ class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
             }
 
             let pose = Pose(
-                pitch: Double(truncating: pitch),
-                roll: Double(truncating: roll),
-                yaw: Double(truncating: yaw))
+                pitch: Double(pitch),
+                roll: Double(roll),
+                yaw: Double(yaw)
+            )
 
-            let metadata = EntityMetadata(confidence: Double(truncating: rekognitionFace.confidence ?? 0), pose: pose)
+            let metadata = EntityMetadata(
+                confidence: Double(rekognitionFace.confidence ?? 0),
+                pose: pose
+            )
 
-            let entity = Entity(boundingBox: boundingBox,
-                                landmarks: landmarks,
-                                ageRange: ageRange,
-                                attributes: attributes,
-                                gender: genderAttribute,
-                                metadata: metadata,
-                                emotions: emotions)
+            let entity = Entity(
+                boundingBox: boundingBox,
+                landmarks: landmarks,
+                ageRange: ageRange,
+                attributes: attributes,
+                gender: genderAttribute,
+                metadata: metadata,
+                emotions: emotions
+            )
 
             entities.append(entity)
-
         }
         return entities
     }
 
-    static func processCollectionFaces(_ rekognitionFaces: [AWSRekognitionFaceMatch]) -> [EntityMatch] {
+    static func processCollectionFaces(
+        _ rekognitionFaces: [RekognitionClientTypes.FaceMatch]
+    ) -> [EntityMatch] {
         var entities = [EntityMatch]()
         for rekognitionFace in rekognitionFaces {
 
@@ -73,7 +81,8 @@ class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
 
             let metadata = EntityMatchMetadata(
                 externalImageId: rekognitionFace.face?.externalImageId,
-                similarity: Double(truncating: similarity))
+                similarity: Double(similarity)
+            )
             let entity = EntityMatch(boundingBox: boundingBox, metadata: metadata)
 
             entities.append(entity)
@@ -82,7 +91,9 @@ class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
         return entities
     }
 
-    static func processEmotions(_ rekognitionEmotions: [AWSRekognitionEmotion]?) -> [Emotion] {
+    static func processEmotions(
+        _ rekognitionEmotions: [RekognitionClientTypes.Emotion]?
+    ) -> [Emotion] {
         var emotions = [Emotion]()
         guard let rekognitionEmotions = rekognitionEmotions
             else {
@@ -90,50 +101,60 @@ class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
         }
         for rekognitionEmotion in rekognitionEmotions {
             let emotion = Emotion(
-                emotion: mapEmotion(emotionType: rekognitionEmotion.types),
-                confidence: Double(truncating: rekognitionEmotion.confidence ?? 0))
+                emotion: mapEmotion(emotionType: rekognitionEmotion.type ?? .unknown),
+                confidence: rekognitionEmotion.confidence.map(Double.init) ?? 0
+            )
             emotions.append(emotion)
         }
-
         return emotions
     }
 
-    static func processAttributes(face: AWSRekognitionFaceDetail) -> [Attribute] {
+    static func processAttributes(face: RekognitionClientTypes.FaceDetail) -> [Attribute] {
         var attributes = [Attribute]()
 
+        // TODO: the existing logic defaults to true... is the correct?
+        // Going to switch to defaulting to false for now. Reavaluate later.
         let beard = Attribute(
             name: "Beard",
-            value: face.beard?.value == 0 ? false : true,
-            confidence: Double(truncating: face.beard?.confidence ?? 0))
+            value: face.beard?.value ?? false,
+            confidence: face.beard?.confidence.map(Double.init) ?? 0
+        )
 
         let sunglasses = Attribute(
             name: "Sunglasses",
-            value: face.sunglasses?.value == 0 ? false : true,
-            confidence: Double(truncating: face.sunglasses?.confidence ?? 0))
+            value: face.sunglasses?.value ?? false,
+            confidence: face.sunglasses?.confidence.map(Double.init) ?? 0
+        )
 
         let smile = Attribute(
             name: "Smile",
-            value: face.smile?.value == 0 ? false : true,
-            confidence: Double(truncating: face.smile?.confidence ?? 0))
+            value: face.smile?.value ?? false,
+            confidence: face.smile?.confidence.map(Double.init) ?? 0
+        )
 
         let eyeglasses = Attribute(
             name: "EyeGlasses",
-            value: face.eyeglasses?.value == 0 ? false : true,
-            confidence: Double(truncating: face.eyeglasses?.confidence ?? 0))
+            value: face.eyeglasses?.value ?? false,
+            confidence: face.eyeglasses?.confidence.map(Double.init) ?? 0
+        )
 
         let mustache = Attribute(
             name: "Mustache",
-            value: face.mustache?.value == 0 ? false : true,
-            confidence: Double(truncating: face.mustache?.confidence ?? 0))
+            value: face.mustache?.value ?? false,
+            confidence: face.mustache?.confidence.map(Double.init) ?? 0
+        )
 
         let mouthOpen = Attribute(
             name: "MouthOpen",
-            value: face.mouthOpen?.value == 0 ? false : true,
-            confidence: Double(truncating: face.mouthOpen?.confidence ?? 0))
+            value: face.mouthOpen?.value ?? false,
+            confidence: face.mouthOpen?.confidence.map(Double.init) ?? 0
+        )
+
         let eyesOpen = Attribute(
             name: "EyesOpen",
-            value: face.eyesOpen?.value == 0 ? false : true,
-            confidence: Double(truncating: face.eyesOpen?.confidence ?? 0))
+            value: face.eyesOpen?.value ?? false,
+            confidence: face.eyesOpen?.confidence.map(Double.init) ?? 0
+        )
 
         attributes.append(beard)
         attributes.append(sunglasses)
@@ -146,27 +167,23 @@ class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
         return attributes
     }
 
-    static func mapGender(genderType: AWSRekognitionGenderType) -> GenderType {
+    static func mapGender(genderType: RekognitionClientTypes.GenderType) -> GenderType {
         switch genderType {
         case .female:
             return .female
         case .male:
             return .male
-        case .unknown:
-            return .unknown
-        @unknown default:
+        case .sdkUnknown:
             return .unknown
         }
     }
 
-    private static func mapEmotion(emotionType: AWSRekognitionEmotionName) -> EmotionType {
+    private static func mapEmotion(emotionType: RekognitionClientTypes.EmotionName) -> EmotionType {
         switch emotionType {
         case .angry:
             return .angry
         case .calm:
             return .calm
-        case .unknown:
-            return .unknown
         case .happy:
             return .happy
         case .sad:
@@ -179,9 +196,8 @@ class IdentifyEntitiesResultTransformers: IdentifyResultTransformers {
             return .surprised
         case .fear:
             return .fear
-        @unknown default:
+        case .unknown, .sdkUnknown:
             return .unknown
         }
-
     }
 }

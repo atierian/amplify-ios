@@ -10,12 +10,12 @@ import Amplify
 
 public struct IdentifyConfiguration {
 
-    public let region: AWSRegionType
+    public let region: String
     public let identifyLabels: IdentifyLabelsConfiguration?
     public let identifyEntities: IdentifyEntitiesConfiguration?
     public let identifyText: IdentifyTextConfiguration?
 
-    init(_ region: AWSRegionType) {
+    init(_ region: String) {
         self.region = region
         self.identifyLabels = nil
         self.identifyEntities = nil
@@ -50,7 +50,7 @@ extension IdentifyConfiguration: Decodable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        var awsRegion: AWSRegionType?
+        var awsRegion: String?
 
         if let configuration = try values.decodeIfPresent(IdentifyLabelsConfiguration.self,
                                                           forKey: .identifyLabels) {
@@ -90,11 +90,11 @@ extension IdentifyConfiguration: Decodable {
         self.region = region
     }
 
-    static func getRegionIfPresent(_ container: KeyedDecodingContainer<SubRegion>) -> AWSRegionType? {
-        guard let textRegionString = try? container.decodeIfPresent(String.self, forKey: .region) as NSString? else {
+    static func getRegionIfPresent(_ container: KeyedDecodingContainer<SubRegion>) -> String? {
+        guard let textRegionString = try? container.decodeIfPresent(String.self, forKey: .region) else {
             return nil
         }
-        return textRegionString.aws_regionTypeValue()
+        return textRegionString
     }
 }
 

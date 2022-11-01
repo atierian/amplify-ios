@@ -6,6 +6,7 @@
 //
 
 import Amplify
+import Foundation
 
 protocol CoreMLPredictionBehavior: AnyObject {
 

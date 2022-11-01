@@ -9,12 +9,12 @@
 import Amplify
 
 public struct ConvertConfiguration {
-    public let region: AWSRegionType
+    public let region: String
     public var translateText: TranslateTextConfiguration?
     public var speechGenerator: SpeechGeneratorConfiguration?
     public var transcription: TranscriptionConfiguration?
 
-    init(_ region: AWSRegionType) {
+    init(_ region: String) {
         self.region = region
         self.translateText = nil
         self.speechGenerator = nil
@@ -48,7 +48,7 @@ extension ConvertConfiguration: Decodable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        var awsRegion: AWSRegionType?
+        var awsRegion: String?
 
         if let configuration = try values.decodeIfPresent(TranslateTextConfiguration.self,
                                                           forKey: .translateText) {
@@ -85,11 +85,11 @@ extension ConvertConfiguration: Decodable {
         self.region = region
     }
 
-    static func getRegionIfPresent(_ container: KeyedDecodingContainer<SubRegion>) -> AWSRegionType? {
-        guard let textRegionString = try? container.decodeIfPresent(String.self, forKey: .region) as NSString? else {
+    static func getRegionIfPresent(_ container: KeyedDecodingContainer<SubRegion>) -> String? {
+        guard let textRegionString = try? container.decodeIfPresent(String.self, forKey: .region) else {
             return nil
         }
-        return textRegionString.aws_regionTypeValue()
+        return textRegionString
     }
 }
 

@@ -12,7 +12,7 @@ import AWSTextract
 
 class IdentifyTextResultTransformers: IdentifyResultTransformers {
 
-    static func processText(_ rekognitionTextBlocks: [AWSRekognitionTextDetection]) -> IdentifyTextResult {
+    static func processText(_ rekognitionTextBlocks: [RekognitionClientTypes.TextDetection]) -> IdentifyTextResult {
         var words = [IdentifiedWord]()
         var lines = [String]()
         var identifiedLines = [IdentifiedLine]()
@@ -31,16 +31,16 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
             let line = IdentifiedLine(text: detectedText,
                                       boundingBox: boundingBox,
                                       polygon: polygon)
-            switch rekognitionTextBlock.types {
+            switch rekognitionTextBlock.type {
             case .line:
                 lines.append(detectedText)
                 identifiedLines.append(line)
             case .word:
                 fullText += detectedText + " "
                 words.append(word)
-            case .unknown:
+            case .sdkUnknown:
                 break
-            @unknown default:
+            default:
                 break
             }
         }
@@ -51,10 +51,10 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
                                   identifiedLines: identifiedLines)
     }
 
-    static func processText(_ textractTextBlocks: [AWSTextractBlock]) -> IdentifyDocumentTextResult {
-        var blockMap = [String: AWSTextractBlock]()
+    static func processText(_ textractTextBlocks: [TextractClientTypes.Block]) -> IdentifyDocumentTextResult {
+        var blockMap = [String: TextractClientTypes.Block]()
         for block in textractTextBlocks {
-            guard let identifier = block.identifier else {
+            guard let identifier = block.id else {
                 continue
             }
             blockMap[identifier] = block
@@ -62,7 +62,7 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
         return processTextBlocks(blockMap)
     }
 
-    static func processTextBlocks(_ blockMap: [String: AWSTextractBlock]) -> IdentifyDocumentTextResult {
+    static func processTextBlocks(_ blockMap: [String: TextractClientTypes.Block]) -> IdentifyDocumentTextResult {
         var fullText = ""
         var words = [IdentifiedWord]()
         var lines = [String]()
@@ -70,9 +70,10 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
         var selections = [Selection]()
         var tables = [Table]()
         var keyValues = [BoundedKeyValue]()
-        var tableBlocks = [AWSTextractBlock]()
-        var keyValueBlocks = [AWSTextractBlock]()
+        var tableBlocks = [TextractClientTypes.Block]()
+        var keyValueBlocks = [TextractClientTypes.Block]()
 
+        // TODO: rework to map / reduce
         for block in blockMap.values {
             switch block.blockType {
             case .line:
@@ -107,36 +108,41 @@ class IdentifyTextResultTransformers: IdentifyResultTransformers {
             identifiedLines: linesDetailed,
             selections: selections,
             tables: tables,
-            keyValues: keyValues)
+            keyValues: keyValues
+        )
     }
 
-    static func processLineBlock(block: AWSTextractBlock) -> IdentifiedLine? {
+    static func processLineBlock(block: TextractClientTypes.Block) -> IdentifiedLine? {
         guard let text = block.text,
             let boundingBox = processBoundingBox(block.geometry?.boundingBox),
             let polygon = processPolygon(block.geometry?.polygon) else {
                 return nil
         }
 
-        return IdentifiedLine(text: text,
-                              boundingBox: boundingBox,
-                              polygon: polygon,
-                              page: Int(truncating: block.page ?? 0))
+        return IdentifiedLine(
+            text: text,
+            boundingBox: boundingBox,
+            polygon: polygon,
+            page: Int(truncating: block.page ?? 0)
+        )
     }
 
-    static func processWordBlock(block: AWSTextractBlock) -> IdentifiedWord? {
+    static func processWordBlock(block: TextractClientTypes.Block) -> IdentifiedWord? {
         guard let text = block.text,
             let boundingBox = processBoundingBox(block.geometry?.boundingBox),
             let polygon = processPolygon(block.geometry?.polygon) else {
                 return nil
         }
 
-         return IdentifiedWord(text: text,
-                               boundingBox: boundingBox,
-                               polygon: polygon,
-                               page: Int(truncating: block.page ?? 0))
+         return IdentifiedWord(
+            text: text,
+            boundingBox: boundingBox,
+            polygon: polygon,
+            page: Int(truncating: block.page ?? 0)
+         )
     }
 
-    static func processSelectionElementBlock(block: AWSTextractBlock) -> Selection? {
+    static func processSelectionElementBlock(block: TextractClientTypes.Block) -> Selection? {
         guard let boundingBox = processBoundingBox(block.geometry?.boundingBox),
             let polygon = processPolygon(block.geometry?.polygon) else {
                 return nil
