@@ -7,84 +7,121 @@
 
 import Foundation
 import Amplify
+import AWSPolly
 
 extension AWSPredictionsPlugin {
 
-    public func convert(textToTranslate: String,
-                        language: LanguageType?,
-                        targetLanguage: LanguageType?,
-                        options: PredictionsTranslateTextRequest.Options?,
-                        listener: PredictionsTranslateTextOperation.ResultListener? = nil)
-        -> PredictionsTranslateTextOperation {
+    public func convert(
+        textToTranslate: String,
+        language: LanguageType?,
+        targetLanguage: LanguageType?,
+        options: PredictionsTranslateTextRequest.Options?
+    ) async throws -> TranslateTextResult {
+        let request = PredictionsTranslateTextRequest(
+            textToTranslate: textToTranslate,
+            targetLanguage: targetLanguage,
+            language: language,
+            options: options ?? PredictionsTranslateTextRequest.Options()
+        )
 
-            let request = PredictionsTranslateTextRequest(textToTranslate: textToTranslate,
-                                                          targetLanguage: targetLanguage,
-                                                          language: language,
-                                                          options: options ?? PredictionsTranslateTextRequest.Options())
-            let convertOperation = AWSTranslateOperation(request,
-                                                         predictionsService: predictionsService,
-                                                         resultListener: listener)
-            queue.addOperation(convertOperation)
-            return convertOperation
-    }
-
-    public func convert(textToSpeech: String,
-                        options: PredictionsTextToSpeechRequest.Options?,
-                        listener: PredictionsTextToSpeechOperation.ResultListener? = nil)
-        -> PredictionsTextToSpeechOperation {
-            let request = PredictionsTextToSpeechRequest(
-                textToSpeech: textToSpeech,
-                options: options ?? PredictionsTextToSpeechRequest.Options())
-
-            let convertOperation = AWSPollyOperation(request,
-                                                     predictionsService: predictionsService,
-                                                     resultListener: listener)
-
-            queue.addOperation(convertOperation)
-            return convertOperation
-
+        return try await predictionsService.translateText(
+            text: request.textToTranslate,
+            language: request.language,
+            targetLanguage: request.targetLanguage
+        )
     }
 
     public func convert(
-        speechToText: URL,
-        options: PredictionsSpeechToTextRequest.Options?,
-        listener: PredictionsSpeechToTextOperation.ResultListener?
-    ) -> PredictionsSpeechToTextOperation {
-        let request = PredictionsSpeechToTextRequest(speechToText: speechToText,
-                                                     options: options ?? PredictionsSpeechToTextRequest.Options())
+        textToSpeech: String,
+        options: PredictionsTextToSpeechRequest.Options?
+    ) async throws -> TextToSpeechResult {
+        let request = PredictionsTextToSpeechRequest(
+            textToSpeech: textToSpeech,
+            options: options ?? PredictionsTextToSpeechRequest.Options()
+        )
 
-        let multiService = TranscribeMultiService(coreMLService: coreMLService, predictionsService: predictionsService)
+        try request.validate()
 
-        // only one transcription request can be sent at a time otherwise you receive an error
-        let requestInProcess = queue.operations.contains(where: { $0 is AWSTranscribeOperation})
+        func reconcileVoiceID(
+            voice: VoiceType?,
+            config: PredictionsPluginConfiguration
+        ) -> PollyClientTypes.VoiceId {
+            if case .voice(let voice) = request.options.voiceType,
+               let pollyVoiceID = PollyClientTypes.VoiceId(rawValue: voice) {
+                return pollyVoiceID
+            }
 
-        let operation = AWSTranscribeOperation(request: request,
-                                               multiService: multiService,
-                                               requestInProcess: requestInProcess,
-                                               resultListener: listener)
-        queue.addOperation(operation)
-        return operation
+            if let configVoice = config.convert.speechGenerator?.voiceID,
+               let pollyVoiceID = PollyClientTypes.VoiceId(rawValue: configVoice) {
+                return pollyVoiceID
+            }
 
+            let defaultVoiceID = PollyClientTypes.VoiceId.ivy
+            return defaultVoiceID
+        }
+
+        let voiceID = reconcileVoiceID(
+            voice: request.options.voiceType,
+            config: predictionsService.predictionsConfig
+        )
+
+        let result = try await predictionsService.synthesizeText(
+            text: request.textToSpeech,
+            voiceId: voiceID
+        )
+
+        return result
     }
 
-    public func identify(type: IdentifyAction,
-                         image: URL,
-                         options: PredictionsIdentifyRequest.Options?,
-                         listener: PredictionsIdentifyOperation.ResultListener? = nil) -> PredictionsIdentifyOperation {
+
+    public func convert(
+        speechToText: URL,
+        options: PredictionsSpeechToTextRequest.Options?
+    ) async throws -> SpeechToTextResult {
+
+        // TODO: Transcribe
+//        let request = PredictionsSpeechToTextRequest(
+//            speechToText: speechToText,
+//            options: options ?? PredictionsSpeechToTextRequest.Options()
+//        )
+//
+//        let multiService = TranscribeMultiService(
+//            coreMLService: coreMLService,
+//            predictionsService: predictionsService
+//        )
+//
+        // TODO: Only one transcription request can be sent at a time otherwise you receive an error
+        throw NSError()
+    }
+
+    public func identify(
+        type: IdentifyAction,
+        image: URL,
+        options: PredictionsIdentifyRequest.Options?
+    ) async throws -> IdentifyResult {
         let options = options
+        let request = PredictionsIdentifyRequest(
+            image: image,
+            identifyType: type,
+            options: options ?? PredictionsIdentifyRequest.Options()
+        )
 
-        let request = PredictionsIdentifyRequest(image: image,
-                                                 identifyType: type,
-                                                 options: options ?? PredictionsIdentifyRequest.Options())
-        let multiService = IdentifyMultiService(coreMLService: coreMLService,
-                                                predictionsService: predictionsService)
-        let operation = IdentifyOperation(request: request,
-                                          multiService: multiService,
-                                          resultListener: listener)
+        let multiService = IdentifyMultiService(
+            coreMLService: coreMLService,
+            predictionsService: predictionsService
+        )
 
-        queue.addOperation(operation)
-        return operation
+        try request.validate()
 
+        multiService.setRequest(request)
+        switch request.options.defaultNetworkPolicy {
+        case .offline:
+            let offlineResult = try await multiService.fetchOnlineResult()
+            return offlineResult
+        case .auto:
+            let multiServiceResult = try await multiService.fetchMultiServiceResult()
+            return multiServiceResult
+        }
     }
 
     /// Interprets the input text and detects sentiment, language, syntax, and key phrases
@@ -92,18 +129,28 @@ extension AWSPredictionsPlugin {
     /// - Parameter text: input text
     /// - Parameter options: Option for the plugin
     /// - Parameter resultListener: Listener to which events are send
-    public func interpret(text: String,
-                          options: PredictionsInterpretRequest.Options?,
-                          listener: PredictionsInterpretOperation.ResultListener?) -> PredictionsInterpretOperation {
+    public func interpret(
+        text: String,
+        options: PredictionsInterpretRequest.Options?
+    ) async throws -> InterpretResult {
+        let request = PredictionsInterpretRequest(
+            textToInterpret: text,
+            options: options ?? PredictionsInterpretRequest.Options()
+        )
 
-        let request = PredictionsInterpretRequest(textToInterpret: text,
-                                                  options: options ?? PredictionsInterpretRequest.Options())
-        let multiService = InterpretTextMultiService(coreMLService: coreMLService,
-                                                     predictionsService: predictionsService)
-        let operation = InterpretTextOperation(request,
-                                               multiService: multiService,
-                                               resultListener: listener)
-        queue.addOperation(operation)
-        return operation
+        let multiService = InterpretTextMultiService(
+            coreMLService: coreMLService,
+            predictionsService: predictionsService
+        )
+
+        multiService.setTextToInterpret(text: request.textToInterpret)
+        switch request.options.defaultNetworkPolicy {
+        case .offline:
+            let offlineResposne = try await multiService.fetchOfflineResult()
+            return offlineResposne
+        case .auto:
+            let multiServiceResposne = try await multiService.fetchMultiServiceResult()
+            return multiServiceResposne
+        }
     }
 }

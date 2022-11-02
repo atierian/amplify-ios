@@ -57,6 +57,7 @@ struct AWSRekognitionErrorMessage {
         "No result was found. An unknown error occurred.",
         "Please try again.")
 
+    // TODO: Fake Error - Placeholder
     // swiftlint:disable cyclomatic_complexity
     static func map(_ errorType: AWSRekognitionErrorType) -> PredictionsError? {
         switch errorType {
@@ -96,8 +97,24 @@ struct AWSRekognitionErrorMessage {
         case .videoTooLarge:
             return PredictionsError.service(limitExceeded.errorDescription,
                                             limitExceeded.recoverySuggestion)
-        default:
-            return nil
+//        default:
+//            return nil
         }
     }
+}
+
+// TODO: Fake Error - Placeholder
+enum AWSRekognitionErrorType {
+    case accessDenied
+    case imageTooLarge
+    case internalServer
+    case invalidImageFormat
+    case invalidParameter
+    case limitExceeded
+    case provisionedThroughputExceeded
+    case resourceInUse
+    case resourceNotFound
+    case throttling
+    case unknown
+    case videoTooLarge
 }

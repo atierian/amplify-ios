@@ -47,6 +47,7 @@ struct AWSTextractErrorMessage {
         "The document type sent over is unsupported",
         "The formats supported are PNG or JPEG format.")
 
+    // TODO: Fake Error
     // swiftlint:disable cyclomatic_complexity
     static func map(_ errorType: AWSTextractErrorType) -> PredictionsError? {
         switch errorType {
@@ -79,8 +80,22 @@ struct AWSTextractErrorMessage {
         case .unsupportedDocument:
             return PredictionsError.service(unsupportedDocument.errorDescription,
                                             unsupportedDocument.recoverySuggestion)
-        default:
-            return nil
+//        default:
+//            return nil
         }
     }
+}
+
+// TODO: Fake Error
+enum AWSTextractErrorType {
+    case accessDenied
+    case badDocument
+    case documentTooLarge
+    case internalServer
+    case invalidParameter
+    case limitExceeded
+    case provisionedThroughputExceeded
+    case throttling
+    case unknown
+    case unsupportedDocument
 }

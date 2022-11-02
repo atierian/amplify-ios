@@ -10,8 +10,7 @@ import Amplify
 
 public extension PredictionsIdentifyRequest {
     /// Performs client side validation and returns a `PredictionsError` for any validation failures.
-    func validate() -> PredictionsError? {
+    func validate() throws {
         // TODO: implement
-        return nil
     }
 }

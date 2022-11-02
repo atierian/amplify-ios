@@ -22,44 +22,43 @@ class InterpretTextMultiService: MultiServiceBehavior {
         self.predictionsService = predictionsService
     }
 
-    func fetchOnlineResult(callback: @escaping InterpretTextEventHandler) {
+    func fetchOnlineResult() async throws -> InterpretResult {
         guard let onlineService = predictionsService else {
             let message = InterpretMultiServiceErrorMessage.onlineInterpretServiceNotAvailable.errorDescription
             let recoveryMessage = InterpretMultiServiceErrorMessage
                 .onlineInterpretServiceNotAvailable
                 .recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
+
         guard let text = textToInterpret else {
             let message = InterpretMultiServiceErrorMessage.textNotFoundToInterpret.errorDescription
             let recoveryMessage = InterpretMultiServiceErrorMessage.textNotFoundToInterpret.recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
-        onlineService.comprehend(text: text, onEvent: callback)
+
+        return try await onlineService.comprehend(text: text)
     }
 
-    func fetchOfflineResult(callback: @escaping InterpretTextEventHandler) {
+    func fetchOfflineResult() async throws -> InterpretResult {
         guard let offlineService = coreMLService else {
             let message = InterpretMultiServiceErrorMessage.offlineInterpretServiceNotAvailable.errorDescription
             let recoveryMessage = InterpretMultiServiceErrorMessage
                 .offlineInterpretServiceNotAvailable
                 .recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
         guard let text = textToInterpret else {
             let message = InterpretMultiServiceErrorMessage.textNotFoundToInterpret.errorDescription
             let recoveryMessage = InterpretMultiServiceErrorMessage.textNotFoundToInterpret.recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
-        offlineService.comprehend(text: text, onEvent: callback)
+
+        return try await offlineService.comprehend(text: text)
     }
 
     func setTextToInterpret(text: String) {
@@ -68,58 +67,70 @@ class InterpretTextMultiService: MultiServiceBehavior {
 
     // MARK: -
 
-    func mergeResults(offlineResult: InterpretResult?,
-                      onlineResult: InterpretResult?,
-                      callback: @escaping  InterpretTextEventHandler) {
+    func mergeResults(
+        offlineResult: InterpretResult?,
+        onlineResult: InterpretResult?
+    ) async throws -> InterpretResult {
         if offlineResult == nil && onlineResult == nil {
             let message = InterpretMultiServiceErrorMessage.interpretTextNoResult.errorDescription
             let recoveryMessage = InterpretMultiServiceErrorMessage.interpretTextNoResult.recoverySuggestion
             let predictionError = PredictionsError.service(message, recoveryMessage, nil)
-            callback(.failed(predictionError))
-            return
+            throw predictionError
         }
 
         guard let finalOfflineResult = offlineResult else {
             // We are sure that the value will be non-nil aat this point.
-            callback(.completed(onlineResult!))
-            return
+            return onlineResult! // TODO: How sure are we about ^ ???
         }
 
         guard let finalOnlineResult = onlineResult else {
-            callback(.completed(finalOfflineResult))
-            return
+            return finalOfflineResult
         }
 
-        let finalDetectedLanguage = mergeLanguage(onlineResult: finalOnlineResult.language,
-                                                  offlineResult: finalOfflineResult.language)
+        let finalDetectedLanguage = mergeLanguage(
+            onlineResult: finalOnlineResult.language,
+            offlineResult: finalOfflineResult.language
+        )
 
-        let finalSentiment = mergeSentiment(onlineResult: finalOnlineResult.sentiment,
-                                            offlineResult: finalOfflineResult.sentiment)
+        let finalSentiment = mergeSentiment(
+            onlineResult: finalOnlineResult.sentiment,
+            offlineResult: finalOfflineResult.sentiment
+        )
 
-        let finalEntities = mergeEntities(onlineResult: finalOnlineResult.entities,
-                                          offlineResult: finalOfflineResult.entities)
+        let finalEntities = mergeEntities(
+            onlineResult: finalOnlineResult.entities,
+            offlineResult: finalOfflineResult.entities
+        )
 
-        let finalKeyPhrases = mergeKeyPhrases(onlineResult: finalOnlineResult.keyPhrases,
-                                              offlineResult: finalOfflineResult.keyPhrases)
+        let finalKeyPhrases = mergeKeyPhrases(
+            onlineResult: finalOnlineResult.keyPhrases,
+            offlineResult: finalOfflineResult.keyPhrases
+        )
 
-        let finalSyntax = mergeSyntax(onlineResult: finalOnlineResult.syntax,
-                                      offlineResult: finalOfflineResult.syntax)
+        let finalSyntax = mergeSyntax(
+            onlineResult: finalOnlineResult.syntax,
+            offlineResult: finalOfflineResult.syntax
+        )
         var builder = InterpretResult.Builder()
         builder.with(language: finalDetectedLanguage)
         builder.with(sentiment: finalSentiment)
         builder.with(entities: finalEntities)
         builder.with(keyPhrases: finalKeyPhrases)
         builder.with(syntax: finalSyntax)
-        callback(.completed(builder.build()))
+        return builder.build()
     }
 
-    func mergeLanguage(onlineResult: LanguageDetectionResult?,
-                       offlineResult: LanguageDetectionResult?) -> LanguageDetectionResult? {
+    func mergeLanguage(
+        onlineResult: LanguageDetectionResult?,
+        offlineResult: LanguageDetectionResult?
+    ) -> LanguageDetectionResult? {
         return onlineResult ?? offlineResult
     }
 
-    func mergeSentiment(onlineResult: Sentiment?,
-                        offlineResult: Sentiment?) -> Sentiment? {
+    func mergeSentiment(
+        onlineResult: Sentiment?,
+        offlineResult: Sentiment?
+    ) -> Sentiment? {
         guard let onlineSentiment = onlineResult,
             onlineSentiment.predominantSentiment != .unknown else {
                 return offlineResult
@@ -127,8 +138,10 @@ class InterpretTextMultiService: MultiServiceBehavior {
         return onlineSentiment
     }
 
-    func mergeKeyPhrases(onlineResult: [KeyPhrase]?,
-                         offlineResult: [KeyPhrase]?) -> [KeyPhrase]? {
+    func mergeKeyPhrases(
+        onlineResult: [KeyPhrase]?,
+        offlineResult: [KeyPhrase]?
+    ) -> [KeyPhrase]? {
         if let onlineKeyPhrases = onlineResult,
             let offlineKeyPhrases = offlineResult {
             let onlineKeyPhraseSet = Set<KeyPhrase>(onlineKeyPhrases)
@@ -141,8 +154,10 @@ class InterpretTextMultiService: MultiServiceBehavior {
         return offlineResult
     }
 
-    func mergeEntities(onlineResult: [EntityDetectionResult]?,
-                       offlineResult: [EntityDetectionResult]?) -> [EntityDetectionResult]? {
+    func mergeEntities(
+        onlineResult: [EntityDetectionResult]?,
+        offlineResult: [EntityDetectionResult]?
+    ) -> [EntityDetectionResult]? {
         if let onlineEntities = onlineResult,
             let offlineEntities = offlineResult {
             let onlineEntitiesSet = Set<EntityDetectionResult>(onlineEntities)
@@ -155,8 +170,10 @@ class InterpretTextMultiService: MultiServiceBehavior {
         return offlineResult
     }
 
-    func mergeSyntax(onlineResult: [SyntaxToken]?,
-                     offlineResult: [SyntaxToken]?) -> [SyntaxToken]? {
+    func mergeSyntax(
+        onlineResult: [SyntaxToken]?,
+        offlineResult: [SyntaxToken]?
+    ) -> [SyntaxToken]? {
         if let onlineSyntax = onlineResult,
             let offlineSyntax = offlineResult {
             let onlineSyntaxSet = Set<SyntaxToken>(onlineSyntax)
@@ -172,8 +189,12 @@ class InterpretTextMultiService: MultiServiceBehavior {
 
 extension SyntaxToken: Hashable {
 
-    public static func == (lhs: SyntaxToken, rhs: SyntaxToken) -> Bool {
-        return lhs.text == rhs.text && lhs.range == rhs.range
+    public static func == (
+        lhs: SyntaxToken,
+        rhs: SyntaxToken
+    ) -> Bool {
+        lhs.text == rhs.text
+        && lhs.range == rhs.range
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -183,8 +204,12 @@ extension SyntaxToken: Hashable {
 
 extension KeyPhrase: Hashable {
 
-    public static func == (lhs: KeyPhrase, rhs: KeyPhrase) -> Bool {
-        return lhs.text == rhs.text && lhs.range == rhs.range
+    public static func == (
+        lhs: KeyPhrase,
+        rhs: KeyPhrase
+    ) -> Bool {
+        lhs.text == rhs.text
+        && lhs.range == rhs.range
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -195,10 +220,13 @@ extension KeyPhrase: Hashable {
 
 extension EntityDetectionResult: Hashable {
 
-    public static func == (lhs: EntityDetectionResult, rhs: EntityDetectionResult) -> Bool {
-        return lhs.targetText == rhs.targetText &&
-            lhs.range == rhs.range &&
-            lhs.type == rhs.type
+    public static func == (
+        lhs: EntityDetectionResult,
+        rhs: EntityDetectionResult
+    ) -> Bool {
+        lhs.targetText == rhs.targetText
+        && lhs.range == rhs.range
+        && lhs.type == rhs.type
     }
 
     public func hash(into hasher: inout Hasher) {

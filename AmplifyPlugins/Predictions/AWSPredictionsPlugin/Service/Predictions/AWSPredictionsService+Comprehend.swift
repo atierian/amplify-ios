@@ -83,7 +83,6 @@ extension AWSPredictionsService: AWSComprehendServiceBehavior {
         languageCode: ComprehendClientTypes.SyntaxLanguageCode
     ) async throws -> [SyntaxToken] {
 
-
         let syntaxRequest = DetectSyntaxInput(languageCode: languageCode, text: text)
         let syntax = try await awsComprehend.detectSyntax(request: syntaxRequest)
         guard let syntaxTokens = syntax.syntaxTokens
@@ -93,7 +92,7 @@ extension AWSPredictionsService: AWSComprehendServiceBehavior {
         }
 
         // TODO: Rewrite as ([A]) -> [B]
-        var syntaxTokenResult = [ComprehendClientTypes.SyntaxToken]()
+        var syntaxTokenResult = [SyntaxToken]() // ComprehendClientTypes.SyntaxToken]()
         for syntax in syntaxTokens {
             guard let comprehendPartOfSpeech = syntax.partOfSpeech,
                   let tag = comprehendPartOfSpeech.tag
@@ -109,20 +108,18 @@ extension AWSPredictionsService: AWSComprehendServiceBehavior {
             let speechType = ComprehendClientTypes.PartOfSpeechTagType(rawValue: tag.rawValue)
             ?? .sdkUnknown(tag.rawValue)
 
-            let partOfSpeech = ComprehendClientTypes.PartOfSpeechTag(
-                score: score,
-                tag: speechType
+            let partOfSpeech = PartOfSpeech(tag: speechType.getSpeechType(), score: score)
+
+            let syntaxToken = SyntaxToken(
+                tokenId: syntax.tokenId ?? 0,
+                text: syntax.text ?? "",
+                range: range,
+                partOfSpeech: partOfSpeech
             )
 
-            let syntaxToken = ComprehendClientTypes.SyntaxToken(
-                beginOffset: syntax.beginOffset,
-                endOffset: syntax.endOffset,
-                partOfSpeech: partOfSpeech,
-                text: syntax.text,
-                tokenId: syntax.tokenId
-            )
             syntaxTokenResult.append(syntaxToken)
         }
+        return syntaxTokenResult
     }
 
     private func fetchKeyPhrases(

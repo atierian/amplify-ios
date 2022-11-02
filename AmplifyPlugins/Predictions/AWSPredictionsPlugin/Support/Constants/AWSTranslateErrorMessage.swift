@@ -61,6 +61,7 @@ struct AWSTranslateErrorMessage {
         https://docs.aws.amazon.com/translate/latest/dg/what-is.html.
         """)
 
+    // TODO: Fake Placeholder Error
     // swiftlint:disable cyclomatic_complexity
     static func map(_ errorType: AWSTranslateErrorType) -> PredictionsError? {
         switch errorType {
@@ -96,8 +97,23 @@ struct AWSTranslateErrorMessage {
         case .unsupportedLanguagePair:
             return PredictionsError.service(unsupportedLanguagePair.errorDescription,
                                             unsupportedLanguagePair.recoverySuggestion)
-        default:
-            return nil
+//        default:
+//            return nil
         }
     }
+}
+
+// TODO: Fake Placeholder Error
+enum AWSTranslateErrorType {
+    case detectedLanguageLowConfidence
+    case internalServer
+    case invalidParameterValue
+    case invalidRequest
+    case limitExceeded
+    case resourceNotFound
+    case serviceUnavailable
+    case textSizeLimitExceeded
+    case tooManyRequests
+    case unknown
+    case unsupportedLanguagePair
 }

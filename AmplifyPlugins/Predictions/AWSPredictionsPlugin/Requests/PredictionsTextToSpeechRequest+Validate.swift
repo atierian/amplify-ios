@@ -10,8 +10,7 @@ import Amplify
 
 public extension PredictionsTextToSpeechRequest {
     /// Performs client side validation and returns a `PredictionsError` for any validation failures.
-    func validate() throws -> PredictionsError? {
-
-        return nil
+    func validate() throws { // -> PredictionsError? {
+        // TODO: Add missing implementation
     }
 }

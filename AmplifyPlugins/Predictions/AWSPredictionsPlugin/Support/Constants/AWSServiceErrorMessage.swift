@@ -61,8 +61,22 @@ struct AWSServiceErrorMessage {
              .throttlingException:
             return PredictionsError.accessDenied(AWSServiceErrorMessage.throttling.errorDescription,
                                                  AWSServiceErrorMessage.throttling.recoverySuggestion)
-        default:
-            return nil
+//        default:
+//            return nil
         }
     }
+}
+
+// TODO: This is a temporary shadow type - replace it with the correct type
+enum AWSServiceErrorType {
+    case unknown
+    case accessDeniedException
+    case accessDenied
+    case accessFailure
+    case authFailure
+    case missingAuthenticationToken
+    case authMissingFailure
+    case unrecognizedClientException
+    case throttling
+    case throttlingException
 }

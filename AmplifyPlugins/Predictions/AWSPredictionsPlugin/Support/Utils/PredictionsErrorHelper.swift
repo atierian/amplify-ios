@@ -122,12 +122,21 @@ class PredictionsErrorHelper {
     }
 
     static func getDefaultError(_ error: Error) -> PredictionsError {
+//        let errorMessage = """
+//        Domain: [\(error.domain)
+//        Code: [\(error.code)
+//        LocalizedDescription: [\(error.localizedDescription)
+//        LocalizedFailureReason: [\(error.localizedFailureReason ?? "")
+//        LocalizedRecoverySuggestion: [\(error.localizedRecoverySuggestion ?? "")
+//        """
+
+        // TODO: This was NSError before (see above). Figure out appropriate code / domain info
         let errorMessage = """
-        Domain: [\(error.domain)
-        Code: [\(error.code)
-        LocalizedDescription: [\(error.localizedDescription)
-        LocalizedFailureReason: [\(error.localizedFailureReason ?? "")
-        LocalizedRecoverySuggestion: [\(error.localizedRecoverySuggestion ?? "")
+        Domain: [\(error)]
+        Code: [\(error)]
+        LocalizedDescription: [\(error.localizedDescription)]
+        LocalizedFailureReason: [\(error)]
+        LocalizedRecoverySuggestion: [\(error)]
         """
 
         return PredictionsError.unknown(errorMessage, "")
