@@ -302,6 +302,14 @@ let predictionsTargets: [Target] = [
             "Resources/Info.plist"
         ]
     ),
+    .testTarget(
+        name: "AWSPredictionsPluginUnitTests",
+        dependencies: [
+            "AWSPredictionsPlugin",
+            "AmplifyTestCommon"
+        ],
+        path: "AmplifyPlugins/Predictions/AWSPredictionsPluginTests"
+    ),
     .target(
         name: "CoreMLPredictionsPlugin",
         dependencies: [
@@ -311,7 +319,15 @@ let predictionsTargets: [Target] = [
         exclude: [
             "Resources/Info.plist"
         ]
-    )
+    ),
+    .testTarget(
+        name: "CoreMLPredictionsPluginUnitTests",
+        dependencies: [
+            "CoreMLPredictionsPlugin",
+            "AmplifyTestCommon"
+        ],
+        path: "AmplifyPlugins/Predictions/CoreMLPredictionsPluginTests"
+    ),
 ]
 
 let targets: [Target] = amplifyTargets

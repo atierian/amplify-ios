@@ -12,98 +12,101 @@ import AWSRekognition
 
 class MockRekognitionBehavior: AWSRekognitionBehavior {
 
-    var celebritiesResponse: AWSRekognitionRecognizeCelebritiesResponse?
-    var facesResponse: AWSRekognitionDetectFacesResponse?
-    var moderationLabelsResponse: AWSRekognitionDetectModerationLabelsResponse?
-    var facesFromCollection: AWSRekognitionSearchFacesByImageResponse?
-    var detectLabels: AWSRekognitionDetectLabelsResponse?
-    var detectText: AWSRekognitionDetectTextResponse?
+    var detectLabels: DetectLabelsOutputResponse?
+    var moderationLabelsResponse: DetectModerationLabelsOutputResponse?
+    var celebritiesResponse: RecognizeCelebritiesOutputResponse?
+    var detectText: DetectTextOutputResponse?
+    var facesResponse: DetectFacesOutputResponse?
+    var facesFromCollection: SearchFacesByImageOutputResponse?
     var error: Error?
 
-    func detectCelebs(request: AWSRekognitionRecognizeCelebritiesRequest)
-        -> AWSTask<AWSRekognitionRecognizeCelebritiesResponse> {
-            if let finalResult = celebritiesResponse {
-                return AWSTask(result: finalResult)
-            }
-            return AWSTask(error: error!)
+    func validate() throws {
+        if let error = error { throw error }
     }
 
-    func detectFaces(request: AWSRekognitionDetectFacesRequest)
-        -> AWSTask<AWSRekognitionDetectFacesResponse> {
-            guard let finalError = error else {
-                return AWSTask(result: facesResponse)
-            }
-
-            return AWSTask(error: finalError)
+    func detectLabels(
+        request: DetectLabelsInput
+    ) async throws -> DetectLabelsOutputResponse {
+        try validate()
+        return detectLabels!
     }
 
-    func detectModerationLabels(request: AWSRekognitionDetectModerationLabelsRequest)
-        -> AWSTask<AWSRekognitionDetectModerationLabelsResponse> {
-            guard let finalError = error else {
-                return AWSTask(result: moderationLabelsResponse)
-            }
-            return AWSTask(error: finalError)
+    func detectModerationLabels(
+        request: DetectModerationLabelsInput
+    ) async throws -> DetectModerationLabelsOutputResponse {
+        try validate()
+        return moderationLabelsResponse!
     }
 
-    func detectFacesFromCollection(request: AWSRekognitionSearchFacesByImageRequest)
-        -> AWSTask<AWSRekognitionSearchFacesByImageResponse> {
-            guard let finalError = error else {
-                return AWSTask(result: facesFromCollection)
-            }
-            return AWSTask(error: finalError)
+    func detectCelebs(
+        request: RecognizeCelebritiesInput
+    ) async throws -> RecognizeCelebritiesOutputResponse {
+        try validate()
+        return celebritiesResponse!
     }
 
-    func detectLabels(request: AWSRekognitionDetectLabelsRequest) -> AWSTask<AWSRekognitionDetectLabelsResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: detectLabels)
-        }
-        return AWSTask(error: finalError)
+    func detectText(
+        request: DetectTextInput
+    ) async throws -> DetectTextOutputResponse {
+        try validate()
+        return detectText!
     }
 
-    func detectText(request: AWSRekognitionDetectTextRequest) -> AWSTask<AWSRekognitionDetectTextResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: detectText)
-        }
-        return AWSTask(error: finalError)
+    func detectFaces(
+        request: DetectFacesInput
+    ) async throws -> DetectFacesOutputResponse {
+        try validate()
+        return facesResponse!
     }
 
-    func getRekognition() -> AWSRekognition {
-        return AWSRekognition()
+    func detectFacesFromCollection(
+        request: SearchFacesByImageInput
+    ) async throws -> SearchFacesByImageOutputResponse {
+        try validate()
+        return facesFromCollection!
     }
 
-    public func setDetectCelebs(result: AWSRekognitionRecognizeCelebritiesResponse) {
+    func getRekognition() -> RekognitionClient {
+        return try! .init(region: "us-east-1")
+    }
+
+    public func setDetectCelebs(result: RecognizeCelebritiesOutputResponse) {
         celebritiesResponse = result
         error = nil
     }
 
-    public func setFacesResponse(result: AWSRekognitionDetectFacesResponse?) {
+    public func setFacesResponse(result: DetectFacesOutputResponse?) {
         facesResponse = result
         error = nil
     }
 
-    public func setModerationLabelsResponse(result: AWSRekognitionDetectModerationLabelsResponse?) {
+    public func setModerationLabelsResponse(result: DetectModerationLabelsOutputResponse?) {
         moderationLabelsResponse = result
         error = nil
     }
 
-    public func setLabelsResponse(result: AWSRekognitionDetectLabelsResponse?) {
+    public func setLabelsResponse(result: DetectLabelsOutputResponse?) {
         detectLabels = result
         error = nil
     }
 
-    public func setAllLabelsResponse(labelsResult: AWSRekognitionDetectLabelsResponse?,
-                                     moderationResult: AWSRekognitionDetectModerationLabelsResponse?) {
+    public func setAllLabelsResponse(
+        labelsResult: DetectLabelsOutputResponse?,
+        moderationResult: DetectModerationLabelsOutputResponse?
+    ) {
         detectLabels = labelsResult
         moderationLabelsResponse = moderationResult
         error = nil
     }
 
-    public func setFacesFromCollection(result: AWSRekognitionSearchFacesByImageResponse?) {
+    public func setFacesFromCollection(
+        result: SearchFacesByImageOutputResponse?
+    ) {
         facesFromCollection = result
         error = nil
     }
 
-    public func setText(result: AWSRekognitionDetectTextResponse?) {
+    public func setText(result: DetectTextOutputResponse?) {
         detectText = result
         error = nil
     }

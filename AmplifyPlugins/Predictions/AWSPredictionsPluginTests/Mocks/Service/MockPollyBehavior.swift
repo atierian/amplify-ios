@@ -10,21 +10,25 @@ import AWSPolly
 
 class MockPollyBehavior: AWSPollyBehavior {
 
-    var result: AWSPollySynthesizeSpeechOutput?
+    var result: SynthesizeSpeechOutputResponse?
     var error: Error?
 
-    func synthesizeSpeech(request: AWSPollySynthesizeSpeechInput) -> AWSTask<AWSPollySynthesizeSpeechOutput> {
-        if let finalResult = result {
-            return AWSTask(result: finalResult)
-        }
-        return AWSTask(error: error!)
+    func validate() throws {
+        if let error = error { throw error }
     }
 
-    func getPolly() -> AWSPolly {
-        return AWSPolly()
+    func synthesizeSpeech(
+        request: SynthesizeSpeechInput
+    ) async throws -> SynthesizeSpeechOutputResponse {
+        try validate()
+        return result!
     }
 
-    public func setResult(result: AWSPollySynthesizeSpeechOutput) {
+    func getPolly() -> PollyClient {
+        return try! .init(region: "us-east-1")
+    }
+
+    public func setResult(result: SynthesizeSpeechOutputResponse) {
         self.result = result
         error = nil
     }

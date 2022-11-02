@@ -12,35 +12,38 @@ import AWSTextract
 
 class MockTextractBehavior: AWSTextractBehavior {
 
-    var analyzeDocument: AWSTextractAnalyzeDocumentResponse?
-    var detectDocumentText: AWSTextractDetectDocumentTextResponse?
+    var analyzeDocument: AnalyzeDocumentOutputResponse?
+    var detectDocumentText: DetectDocumentTextOutputResponse?
     var error: Error?
 
-    func analyzeDocument(request: AWSTextractAnalyzeDocumentRequest) -> AWSTask<AWSTextractAnalyzeDocumentResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: analyzeDocument)
-        }
-        return AWSTask(error: finalError)
+    func validate() throws {
+        if let error = error { throw error }
     }
 
-    func detectDocumentText(request: AWSTextractDetectDocumentTextRequest)
-    -> AWSTask<AWSTextractDetectDocumentTextResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: detectDocumentText)
-        }
-        return AWSTask(error: finalError)
+    func analyzeDocument(
+        request: AnalyzeDocumentInput
+    ) async throws -> AnalyzeDocumentOutputResponse {
+        try validate()
+        return analyzeDocument!
     }
 
-    func getTextract() -> AWSTextract {
-        return AWSTextract()
+    func detectDocumentText(
+        request: DetectDocumentTextInput
+    ) async throws -> DetectDocumentTextOutputResponse {
+        try validate()
+        return detectDocumentText!
     }
 
-    public func setAnalyzeDocument(result: AWSTextractAnalyzeDocumentResponse?) {
+    func getTextract() -> TextractClient {
+        try! .init(region: "us-east-1")
+    }
+
+    public func setAnalyzeDocument(result: AnalyzeDocumentOutputResponse?) {
         analyzeDocument = result
         error = nil
     }
 
-    public func setDetectDocumentText(result: AWSTextractDetectDocumentTextResponse?) {
+    public func setDetectDocumentText(result: DetectDocumentTextOutputResponse?) {
         detectDocumentText = result
         error = nil
     }

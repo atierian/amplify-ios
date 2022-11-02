@@ -69,7 +69,7 @@ class PredictionsPluginConfigurationTests: XCTestCase {
         do {
             let configuration = try JSONDecoder().decode(PredictionsPluginConfiguration.self, from: inputJsonData)
             XCTAssertNotNil(configuration, "Configuration should not be nil")
-            XCTAssertEqual(configuration.defaultRegion, .USWest2, "Default value should be equal to the input")
+            XCTAssertEqual(configuration.defaultRegion, "us-west-2", "Default value should be equal to the input")
             XCTAssertEqual(configuration.identify.identifyLabels?.type, LabelType.labels, "Label type should match")
 
             XCTAssertEqual(configuration.convert.translateText?.sourceLanguage, LanguageType.finnish)
@@ -164,16 +164,16 @@ class PredictionsPluginConfigurationTests: XCTestCase {
             let configuration = try JSONDecoder().decode(PredictionsPluginConfiguration.self, from: inputJsonData)
             XCTAssertNotNil(configuration, "Configuration should not be nil")
             XCTAssertEqual(configuration.defaultRegion,
-                           .USWest2,
+                           "us-west-2",
                            "Default value should be equal to the input")
             XCTAssertEqual(configuration.identify.region,
-                           .USWest2,
+                           "us-west-2",
                            "Region value for identify should be equal to the input")
             XCTAssertEqual(configuration.interpret.region,
-                           .USWest2,
+                           "us-west-2",
                            "Region value for interpret should be equal to the input")
             XCTAssertEqual(configuration.convert.region,
-                           .USWest2,
+                           "us-west-2",
                            "Region value for convert should be equal to the input")
         } catch {
             XCTFail("Decoding the json data should not produce any error \(error)")

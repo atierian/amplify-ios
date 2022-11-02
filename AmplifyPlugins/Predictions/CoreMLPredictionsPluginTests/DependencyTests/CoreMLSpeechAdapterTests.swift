@@ -18,35 +18,27 @@ class CoreMLSpeechAdapterTests: XCTestCase {
         coreMLSpeechAdapter = MockCoreMLSpeechAdapter()
     }
 
-    func testTranscriptionResponseNil() {
+    func testTranscriptionResponseNil() async throws {
         let testBundle = Bundle(for: type(of: self))
         guard let url = testBundle.url(forResource: "audio", withExtension: "wav") else {
             return
         }
         coreMLSpeechAdapter.setResponse(result: nil)
-        let callbackExpectation = expectation(description: "callback reached")
-        coreMLSpeechAdapter.getTranscription(url) { result in
-            XCTAssertNil(result)
-            callbackExpectation.fulfill()
-        }
 
-        waitForExpectations(timeout: 180)
+        let result = try await coreMLSpeechAdapter.getTranscription(url)
+        XCTAssertNil(result)
     }
 
-    func testTranscriptionResponse() {
+    func testTranscriptionResponse() async throws  {
         let testBundle = Bundle(for: type(of: self))
         guard let url = testBundle.url(forResource: "audio", withExtension: "wav") else {
             return
         }
         let mockResult = SpeechToTextResult(transcription: "This is a test")
         coreMLSpeechAdapter.setResponse(result: mockResult)
-         let callbackExpectation = expectation(description: "callback reached")
-        coreMLSpeechAdapter.getTranscription(url) { result in
-            XCTAssertNotNil(result)
-            XCTAssertEqual(result?.transcription, mockResult.transcription)
-            callbackExpectation.fulfill()
-        }
 
-        waitForExpectations(timeout: 180)
+        let result = try await coreMLSpeechAdapter.getTranscription(url)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.transcription, mockResult.transcription)
     }
 }

@@ -10,21 +10,21 @@ import AWSTranslate
 
 class MockTranslateBehavior: AWSTranslateBehavior {
 
-    var result: AWSTranslateTranslateTextResponse?
+    var result: TranslateTextOutputResponse?
     var error: Error?
 
-    func translateText(request: AWSTranslateTranslateTextRequest) -> AWSTask<AWSTranslateTranslateTextResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: result)
-        }
-        return AWSTask(error: finalError)
+    func translateText(
+        request: TranslateTextInput
+    ) async throws -> TranslateTextOutputResponse {
+        if let error = error { throw error }
+        return result!
     }
 
-    func getTranslate() -> AWSTranslate {
-        return AWSTranslate()
+    func getTranslate() -> TranslateClient {
+        try! .init(region: "us-east-1")
     }
 
-    public func setResult(result: AWSTranslateTranslateTextResponse?) {
+    public func setResult(result: TranslateTextOutputResponse?) {
         self.result = result
         error = nil
     }

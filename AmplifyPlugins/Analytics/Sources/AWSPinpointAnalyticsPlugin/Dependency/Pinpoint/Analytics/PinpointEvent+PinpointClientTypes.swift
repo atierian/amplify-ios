@@ -11,23 +11,27 @@ import Foundation
 
 extension PinpointEvent {
     var clientTypeSession: PinpointClientTypes.Session {
-        return PinpointClientTypes.Session(duration: Int(session.duration),
-                                           id: session.sessionId,
-                                           startTimestamp: session.startTime.asISO8601String,
-                                           stopTimestamp: session.stopTime?.asISO8601String)
+        return PinpointClientTypes.Session(
+            duration: Int(session.duration),
+            id: session.sessionId,
+            startTimestamp: session.startTime.asISO8601String,
+            stopTimestamp: session.stopTime?.asISO8601String
+        )
     }
 
     var clientTypeEvent: PinpointClientTypes.Event {
-        return PinpointClientTypes.Event(appPackageName: Bundle.main.appPackageName,
-                                         appTitle: Bundle.main.appName,
-                                         appVersionCode: Bundle.main.appVersion,
-                                         attributes: attributes,
-                                         clientSdkVersion: AmplifyAWSServiceConfiguration.version,
-                                         eventType: eventType,
-                                         metrics: metrics,
-                                         sdkName: AmplifyAWSServiceConfiguration.platformName,
-                                         session: clientTypeSession,
-                                         timestamp: eventDate.asISO8601String)
+        return PinpointClientTypes.Event(
+            appPackageName: Bundle.main.appPackageName,
+            appTitle: Bundle.main.appName,
+            appVersionCode: Bundle.main.appVersion,
+            attributes: attributes,
+            clientSdkVersion: AmplifyAWSServiceConfiguration.amplifyVersion,
+            eventType: eventType,
+            metrics: metrics,
+            sdkName: AmplifyAWSServiceConfiguration.platformName,
+            session: clientTypeSession,
+            timestamp: eventDate.asISO8601String
+        )
     }
 }
 

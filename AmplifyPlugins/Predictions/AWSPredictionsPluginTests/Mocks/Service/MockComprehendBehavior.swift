@@ -9,64 +9,54 @@ import AWSComprehend
 @testable import AWSPredictionsPlugin
 
 class MockComprehendBehavior: AWSComprehendBehavior {
-
-    var sentimentResponse: AWSComprehendDetectSentimentResponse?
-    var entitiesResponse: AWSComprehendDetectEntitiesResponse?
-    var languageResponse: AWSComprehendDetectDominantLanguageResponse?
-    var syntaxResponse: AWSComprehendDetectSyntaxResponse?
-    var keyPhrasesResponse: AWSComprehendDetectKeyPhrasesResponse?
-
+    var sentimentResponse: AWSComprehend.DetectSentimentOutputResponse?
+    var entitiesResponse: AWSComprehend.DetectEntitiesOutputResponse?
+    var languageResponse: AWSComprehend.DetectDominantLanguageOutputResponse?
+    var syntaxResponse: AWSComprehend.DetectSyntaxOutputResponse?
+    var keyPhrasesResponse: AWSComprehend.DetectKeyPhrasesOutputResponse?
     var error: Error?
 
-    func detectSentiment(request: AWSComprehendDetectSentimentRequest)
-        -> AWSTask<AWSComprehendDetectSentimentResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: sentimentResponse)
-        }
-        return AWSTask(error: finalError)
+    func validate() throws {
+        if let error = error { throw error }
     }
 
-    func detectEntities(request: AWSComprehendDetectEntitiesRequest)
-        -> AWSTask<AWSComprehendDetectEntitiesResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: entitiesResponse)
-        }
-        return AWSTask(error: finalError)
+    func detectSentiment(request: AWSComprehend.DetectSentimentInput) async throws -> AWSComprehend.DetectSentimentOutputResponse {
+        try validate()
+        return sentimentResponse!
     }
 
-    func detectLanguage(request: AWSComprehendDetectDominantLanguageRequest)
-        -> AWSTask<AWSComprehendDetectDominantLanguageResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: languageResponse)
-        }
-        return AWSTask(error: finalError)
+    func detectEntities(request: AWSComprehend.DetectEntitiesInput) async throws -> AWSComprehend.DetectEntitiesOutputResponse {
+        try validate()
+        return entitiesResponse!
     }
 
-    func detectSyntax(request: AWSComprehendDetectSyntaxRequest)
-        -> AWSTask<AWSComprehendDetectSyntaxResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: syntaxResponse)
-        }
-        return AWSTask(error: finalError)
+    func detectLanguage(request: AWSComprehend.DetectDominantLanguageInput) async throws -> AWSComprehend.DetectDominantLanguageOutputResponse {
+        try validate()
+        return languageResponse!
     }
 
-    func detectKeyPhrases(request: AWSComprehendDetectKeyPhrasesRequest)
-        -> AWSTask<AWSComprehendDetectKeyPhrasesResponse> {
-        guard let finalError = error else {
-            return AWSTask(result: keyPhrasesResponse)
-        }
-        return AWSTask(error: finalError)
+    func detectSyntax(request: AWSComprehend.DetectSyntaxInput) async throws -> AWSComprehend.DetectSyntaxOutputResponse {
+        try validate()
+        return syntaxResponse!
     }
 
-    func getComprehend() -> AWSComprehend {
-        return AWSComprehend()
+    func detectKeyPhrases(request: AWSComprehend.DetectKeyPhrasesInput) async throws -> AWSComprehend.DetectKeyPhrasesOutputResponse {
+        try validate()
+        return keyPhrasesResponse!
     }
 
-    public func setResult(sentimentResponse: AWSComprehendDetectSentimentResponse? = nil,
-                          entitiesResponse: AWSComprehendDetectEntitiesResponse? = nil,
-                          languageResponse: AWSComprehendDetectDominantLanguageResponse? = nil,
-                          syntaxResponse: AWSComprehendDetectSyntaxResponse? = nil,
-                          keyPhrasesResponse: AWSComprehendDetectKeyPhrasesResponse? = nil) {
+    func getComprehend() -> AWSComprehend.ComprehendClient {
+        return try! .init(region: "us-east-1")
+    }
+
+
+    public func setResult(
+        sentimentResponse: AWSComprehend.DetectSentimentOutputResponse? = nil,
+        entitiesResponse: AWSComprehend.DetectEntitiesOutputResponse? = nil,
+        languageResponse: AWSComprehend.DetectDominantLanguageOutputResponse? = nil,
+        syntaxResponse: AWSComprehend.DetectSyntaxOutputResponse? = nil,
+        keyPhrasesResponse: AWSComprehend.DetectKeyPhrasesOutputResponse? = nil
+    ) {
         self.sentimentResponse = sentimentResponse
         self.entitiesResponse = entitiesResponse
         self.languageResponse = languageResponse

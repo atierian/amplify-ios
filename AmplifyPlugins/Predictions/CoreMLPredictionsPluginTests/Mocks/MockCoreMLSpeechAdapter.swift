@@ -12,8 +12,8 @@ import Amplify
 class MockCoreMLSpeechAdapter: CoreMLSpeechBehavior {
     var response: SpeechToTextResult?
 
-    func getTranscription(_ audioData: URL, callback: @escaping (SpeechToTextResult?) -> Void) {
-        callback(response)
+    func getTranscription(_ audioData: URL) async throws -> SpeechToTextResult? {
+        return response!
     }
 
     func setResponse(result: SpeechToTextResult?) {
