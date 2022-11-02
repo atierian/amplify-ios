@@ -10,15 +10,10 @@ import Amplify
 @testable import CoreMLPredictionsPlugin
 
 class CoreMLPredictionsPluginTestBase: XCTestCase {
-
     var coreMLPredictionsPlugin: CoreMLPredictionsPlugin!
-
     var naturalLanguageBehavior: MockCoreMLNaturalLanguageAdapter!
-
     var visionBehavior: MockCoreMLVisionAdapter!
-
     var speechBehavior: MockCoreMLSpeechAdapter!
-
     var queue: MockOperationQueue!
 
     override func setUp() {
@@ -27,9 +22,11 @@ class CoreMLPredictionsPluginTestBase: XCTestCase {
         visionBehavior = MockCoreMLVisionAdapter()
         speechBehavior = MockCoreMLSpeechAdapter()
         queue = MockOperationQueue()
-        coreMLPredictionsPlugin.configure(naturalLanguageBehavior: naturalLanguageBehavior,
-                                          visionBehavior: visionBehavior,
-                                          speechBehavior: speechBehavior,
-                                          queue: queue)
+        coreMLPredictionsPlugin.configure(
+            naturalLanguageBehavior: naturalLanguageBehavior,
+            visionBehavior: visionBehavior,
+            speechBehavior: speechBehavior,
+            queue: queue
+        )
     }
 }

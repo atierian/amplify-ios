@@ -12,12 +12,10 @@ import Amplify
 class CoreMLPredictionsPluginTests: CoreMLPredictionsPluginTestBase {
 
     func testPluginInterpretText() async throws {
-        let operation = try await coreMLPredictionsPlugin.interpret(
+        let result = try await coreMLPredictionsPlugin.interpret(
             text: "",
             options: nil
         )
-        XCTAssertNotNil(operation, "Should return a valid operation")
-        XCTAssertEqual(queue.size, 1)
+        XCTAssertNotNil(result, "Should return a valid result")
     }
-
 }
