@@ -81,8 +81,8 @@ class PredictionsServiceRekognitionTests: XCTestCase {
 
         let mockResponse = DetectLabelsOutputResponse(labels: .init())
         mockRekognition.setLabelsResponse(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageLabels", withExtension: "jpg") else {
+
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageLabels", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -127,8 +127,7 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         setUpAmplify()
         mockRekognition.setLabelsResponse(result: nil)
 
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageLabels", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageLabels", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -150,11 +149,10 @@ class PredictionsServiceRekognitionTests: XCTestCase {
     ///
     func testIdentifyModerationLabelsService() async throws {
         setUpAmplify()
-        let resultReceived = expectation(description: "Transcription result should be returned")
+
         let mockResponse = DetectModerationLabelsOutputResponse(moderationLabels: .init())
         mockRekognition.setModerationLabelsResponse(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageLabels", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageLabels", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -184,7 +182,6 @@ class PredictionsServiceRekognitionTests: XCTestCase {
     func testIdentifyModerationLabelsServiceWithError() async throws {
         setUpAmplify()
 
-        let errorReceived = expectation(description: "Error should be returned")
         let mockError = NSError()
         mockRekognition.setError(error: mockError)
         let url = URL(fileURLWithPath: "")
@@ -209,9 +206,7 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         setUpAmplify()
         mockRekognition.setModerationLabelsResponse(result: nil)
 
-        let errorReceived = expectation(description: "Error should be returned")
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageLabels", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageLabels", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -234,13 +229,12 @@ class PredictionsServiceRekognitionTests: XCTestCase {
     func testIdentifyAllLabelsService() async throws {
         setUpAmplify()
 
-        let resultReceived = expectation(description: "Transcription result should be returned")
         let mockLabelsResponse = DetectLabelsOutputResponse(labels: .init())
         let mockModerationResponse = DetectModerationLabelsOutputResponse(moderationLabels: .init())
 
         mockRekognition.setAllLabelsResponse(labelsResult: mockLabelsResponse, moderationResult: mockModerationResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageLabels", withExtension: "jpg") else {
+
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageLabels", withExtension: "jpg") else {
             XCTFail("Unable to find image")
             return
         }
@@ -273,8 +267,7 @@ class PredictionsServiceRekognitionTests: XCTestCase {
 
         mockRekognition.setAllLabelsResponse(labelsResult: nil, moderationResult: nil)
 
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageLabels", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageLabels", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -301,8 +294,7 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         let mockLabelsResponse = DetectLabelsOutputResponse(labels: .init())
         mockRekognition.setAllLabelsResponse(labelsResult: mockLabelsResponse, moderationResult: nil)
 
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageLabels", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageLabels", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -348,8 +340,8 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         setUpAmplify()
         let mockResponse = DetectFacesOutputResponse(faceDetails: .init())
         mockRekognition.setFacesResponse(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageEntities", withExtension: "jpg") else {
+
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageEntities", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -378,7 +370,6 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         let mockError = NSError()
         mockRekognition.setError(error: mockError)
         let url = URL(fileURLWithPath: "")
-        let errorReceived = expectation(description: "Error should be returned")
 
         do {
             let result = try await predictionsService.detectEntities(image: url)
@@ -400,8 +391,7 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         setUpAmplify()
         mockRekognition.setFacesResponse(result: nil)
 
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageEntities", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageEntities", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
         do {
@@ -426,8 +416,8 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         let mockResponse = SearchFacesByImageOutputResponse(faceMatches: .init())
 
         mockRekognition.setFacesFromCollection(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageEntities", withExtension: "jpg") else {
+
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageEntities", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -476,8 +466,7 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         setUpAmplify(withCollection: true)
         mockRekognition.setFacesFromCollection(result: nil)
 
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageEntities", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageEntities", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -503,8 +492,8 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         let mockResponse = DetectTextOutputResponse(textDetections: .init())
 
         mockRekognition.setText(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
+
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageText", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 
@@ -554,8 +543,7 @@ class PredictionsServiceRekognitionTests: XCTestCase {
         setUpAmplify()
 
         mockRekognition.setText(result: nil)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageText", withExtension: "jpg") else {
             return XCTFail("Unable to find image")
         }
 

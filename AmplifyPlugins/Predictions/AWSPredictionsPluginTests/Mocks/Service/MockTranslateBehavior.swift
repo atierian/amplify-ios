@@ -6,6 +6,7 @@
 //
 
 import AWSTranslate
+import Foundation
 @testable import AWSPredictionsPlugin
 
 class MockTranslateBehavior: AWSTranslateBehavior {
@@ -17,7 +18,8 @@ class MockTranslateBehavior: AWSTranslateBehavior {
         request: TranslateTextInput
     ) async throws -> TranslateTextOutputResponse {
         if let error = error { throw error }
-        return result!
+        if let result = result { return result }
+        throw NSError(domain: "", code: 42)
     }
 
     func getTranslate() -> TranslateClient {

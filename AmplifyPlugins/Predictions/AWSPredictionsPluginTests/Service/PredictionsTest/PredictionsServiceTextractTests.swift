@@ -27,8 +27,10 @@ class PredictionsServiceTextractTests: XCTestCase {
             let dispatchQueue = DispatchQueue(label: "TranscribeStreamingTests")
 //            let nativeWebSocketProvider = NativeWebSocketProvider(clientDelegate: clientDelegate,
 //                                                                  callbackQueue: dispatchQueue)
-            let mockConfiguration = try JSONDecoder().decode(PredictionsPluginConfiguration.self,
-                                                             from: mockConfigurationJSON)
+            let mockConfiguration = try JSONDecoder().decode(
+                PredictionsPluginConfiguration.self,
+                from: mockConfigurationJSON
+            )
             predictionsService = AWSPredictionsService(identifier: "",
                                                        awsTranslate: MockTranslateBehavior(),
                                                        awsRekognition: MockRekognitionBehavior(),
@@ -58,12 +60,10 @@ class PredictionsServiceTextractTests: XCTestCase {
         )
 
         mockTextract.setAnalyzeDocument(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageText", withExtension: "jpg") else {
             XCTFail("Unable to find image")
             return
         }
-        let resultReceived = expectation(description: "Transcription result should be returned")
 
         let result = try await predictionsService.detectText(image: url, format: .table) as? IdentifyDocumentTextResult
         let text = IdentifyTextResultTransformers.processText(mockResponse.blocks!)
@@ -86,7 +86,6 @@ class PredictionsServiceTextractTests: XCTestCase {
     func testIdentifyTablesServiceWithError() async throws {
         mockTextract.setError(error: NSError())
         let url = URL(fileURLWithPath: "")
-        let errorReceived = expectation(description: "Error should be returned")
         do {
             let result = try await predictionsService.detectText(image: url, format: .table)
             XCTFail("Should not produce result: \(result)")
@@ -105,12 +104,9 @@ class PredictionsServiceTextractTests: XCTestCase {
     ///
     func testIdentifyTablesServiceWithNilResponse() async throws {
         mockTextract.setAnalyzeDocument(result: nil)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
-            XCTFail("Unable to find image")
-            return
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageText", withExtension: "jpg") else {
+            return XCTFail("Unable to find image")
         }
-        let errorReceived = expectation(description: "Error should be returned")
 
         do {
             let result = try await predictionsService.detectText(image: url, format: .table)
@@ -132,10 +128,9 @@ class PredictionsServiceTextractTests: XCTestCase {
         let mockResponse = AnalyzeDocumentOutputResponse(blocks: .init())
 
         mockTextract.setAnalyzeDocument(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
-            XCTFail("Unable to find image")
-            return
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageText", withExtension: "jpg") else {
+            return XCTFail("Unable to find image")
+
         }
 
         let result = try await predictionsService.detectText(image: url, format: .form)
@@ -160,7 +155,6 @@ class PredictionsServiceTextractTests: XCTestCase {
         let mockError = NSError()
         mockTextract.setError(error: mockError)
         let url = URL(fileURLWithPath: "")
-        let errorReceived = expectation(description: "Error should be returned")
         do {
             let result = try await predictionsService.detectText(image: url, format: .form)
             XCTFail("Should not produce result: \(result)")
@@ -179,12 +173,11 @@ class PredictionsServiceTextractTests: XCTestCase {
     ///
     func testIdentifyFormsServiceWithNilResponse() async throws {
         mockTextract.setAnalyzeDocument(result: nil)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
-            XCTFail("Unable to find image")
-            return
+        guard let url = Bundle.module.url(
+            forResource: "TestImages/testImageText", withExtension: "jpg"
+        ) else {
+            return XCTFail("Unable to find image")
         }
-        let errorReceived = expectation(description: "Error should be returned")
 
         do {
             let result = try await predictionsService.detectText(image: url, format: .form)
@@ -205,8 +198,8 @@ class PredictionsServiceTextractTests: XCTestCase {
     func testIdentifyAllTextService() async throws {
         let mockResponse = AnalyzeDocumentOutputResponse(blocks: .init())
         mockTextract.setAnalyzeDocument(result: mockResponse)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
+
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageText", withExtension: "jpg") else {
             XCTFail("Unable to find image")
             return
         }
@@ -251,12 +244,10 @@ class PredictionsServiceTextractTests: XCTestCase {
     ///
     func testIdentifyAllTextServiceWithNilResponse() async throws {
         mockTextract.setAnalyzeDocument(result: nil)
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: "testImageText", withExtension: "jpg") else {
-            XCTFail("Unable to find image")
-            return
+
+        guard let url = Bundle.module.url(forResource: "TestImages/testImageText", withExtension: "jpg") else {
+            return XCTFail("Unable to find image")
         }
-        let errorReceived = expectation(description: "Error should be returned")
 
         do {
             let result = try await predictionsService.detectText(image: url, format: .all)

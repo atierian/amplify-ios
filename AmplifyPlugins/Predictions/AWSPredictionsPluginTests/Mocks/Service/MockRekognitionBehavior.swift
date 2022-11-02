@@ -8,6 +8,7 @@
 import Amplify
 //import AWSCore
 import AWSRekognition
+import Foundation
 @testable import AWSPredictionsPlugin
 
 class MockRekognitionBehavior: AWSRekognitionBehavior {
@@ -28,42 +29,60 @@ class MockRekognitionBehavior: AWSRekognitionBehavior {
         request: DetectLabelsInput
     ) async throws -> DetectLabelsOutputResponse {
         try validate()
-        return detectLabels!
+        if let detectLabels = detectLabels {
+            return detectLabels
+        }
+        throw NSError(domain: "", code: 42, userInfo: nil)
     }
 
     func detectModerationLabels(
         request: DetectModerationLabelsInput
     ) async throws -> DetectModerationLabelsOutputResponse {
         try validate()
-        return moderationLabelsResponse!
+        if let moderationLabelsResponse = moderationLabelsResponse {
+            return moderationLabelsResponse
+        }
+        throw NSError(domain: "", code: 42, userInfo: nil)
     }
 
     func detectCelebs(
         request: RecognizeCelebritiesInput
     ) async throws -> RecognizeCelebritiesOutputResponse {
         try validate()
-        return celebritiesResponse!
+        if let celebritiesResponse = celebritiesResponse {
+            return celebritiesResponse
+        }
+        throw NSError(domain: "", code: 42, userInfo: nil)
     }
 
     func detectText(
         request: DetectTextInput
     ) async throws -> DetectTextOutputResponse {
         try validate()
-        return detectText!
+        if let detectText = detectText {
+            return detectText
+        }
+        throw NSError(domain: "", code: 42, userInfo: nil)
     }
 
     func detectFaces(
         request: DetectFacesInput
     ) async throws -> DetectFacesOutputResponse {
         try validate()
-        return facesResponse!
+        if let facesResponse = facesResponse {
+            return facesResponse
+        }
+        throw NSError(domain: "", code: 42, userInfo: nil)
     }
 
     func detectFacesFromCollection(
         request: SearchFacesByImageInput
     ) async throws -> SearchFacesByImageOutputResponse {
         try validate()
-        return facesFromCollection!
+        if let facesFromCollection = facesFromCollection {
+            return facesFromCollection
+        }
+        throw NSError(domain: "", code: 42, userInfo: nil)
     }
 
     func getRekognition() -> RekognitionClient {

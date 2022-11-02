@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
+import Foundation
 import Amplify
 //import AWSCore
 import AWSTextract
@@ -24,14 +25,16 @@ class MockTextractBehavior: AWSTextractBehavior {
         request: AnalyzeDocumentInput
     ) async throws -> AnalyzeDocumentOutputResponse {
         try validate()
-        return analyzeDocument!
+        if let analyzeDocument = analyzeDocument { return analyzeDocument }
+        throw NSError(domain: "", code: 42)
     }
 
     func detectDocumentText(
         request: DetectDocumentTextInput
     ) async throws -> DetectDocumentTextOutputResponse {
         try validate()
-        return detectDocumentText!
+        if let detectDocumentText = detectDocumentText { return detectDocumentText }
+        throw NSError(domain: "", code: 42)
     }
 
     func getTextract() -> TextractClient {
