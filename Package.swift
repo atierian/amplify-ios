@@ -308,7 +308,7 @@ let predictionsTargets: [Target] = [
             "AWSPredictionsPlugin",
             "AmplifyTestCommon"
         ],
-        path: "AmplifyPlugins/Predictions/AWSPredictionsPluginTests",
+        path: "AmplifyPlugins/Predictions/Tests/AWSPredictionsPluginTests",
         resources: [.copy("Resources")]
     ),
     .target(
@@ -327,7 +327,7 @@ let predictionsTargets: [Target] = [
             "CoreMLPredictionsPlugin",
             "AmplifyTestCommon"
         ],
-        path: "AmplifyPlugins/Predictions/CoreMLPredictionsPluginTests"
+        path: "AmplifyPlugins/Predictions/Tests/CoreMLPredictionsPluginTests"
     ),
 ]
 

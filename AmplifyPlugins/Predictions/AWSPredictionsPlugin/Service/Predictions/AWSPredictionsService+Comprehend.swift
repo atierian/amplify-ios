@@ -88,7 +88,7 @@ extension AWSPredictionsService: AWSComprehendServiceBehavior {
         guard let syntaxTokens = syntax.syntaxTokens
         else {
             // TODO: Replace with applicable error type (e.g. `MissingTokens`)
-            throw NSError()
+            throw NSError(domain: "", code: 42, userInfo: nil)
         }
 
         // TODO: Rewrite as ([A]) -> [B]
@@ -133,7 +133,7 @@ extension AWSPredictionsService: AWSComprehendServiceBehavior {
         guard let keyPhrases = keyPhrasesResponse.keyPhrases
         else {
             // TODO: Replace with applicable error type
-            throw NSError()
+            throw NSError(domain: "", code: 42, userInfo: nil)
         }
 
         var keyPhrasesResult = [KeyPhrase]()
@@ -169,7 +169,7 @@ extension AWSPredictionsService: AWSComprehendServiceBehavior {
               let sentimentScore = sentimentResponse.sentimentScore
         else {
             // TODO: Replace with applicable error type
-            throw NSError()
+            throw NSError(domain: "", code: 42, userInfo: nil)
         }
 
         let score: [SentimentType: Double] = [
@@ -196,7 +196,7 @@ extension AWSPredictionsService: AWSComprehendServiceBehavior {
         guard let entities = entitiesResponse.entities
         else {
             // TODO: Replace with applicable error type
-            throw NSError()
+            throw NSError(domain: "", code: 42, userInfo: nil)
         }
 
         // TODO: Convert to ([A]) -> [B]

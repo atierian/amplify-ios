@@ -91,7 +91,7 @@ extension AWSPredictionsPlugin {
 //        )
 //
         // TODO: Only one transcription request can be sent at a time otherwise you receive an error
-        throw NSError()
+        throw NSError(domain: "", code: 42, userInfo: nil)
     }
 
     public func identify(

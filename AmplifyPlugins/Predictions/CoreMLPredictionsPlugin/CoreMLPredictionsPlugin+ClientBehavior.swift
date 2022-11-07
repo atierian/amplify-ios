@@ -97,7 +97,6 @@ extension CoreMLPredictionsPlugin {
             options: options
         )
 
-
         guard let coreMLVisionAdapter = coreMLVision else {
             throw SomeError()
         }
