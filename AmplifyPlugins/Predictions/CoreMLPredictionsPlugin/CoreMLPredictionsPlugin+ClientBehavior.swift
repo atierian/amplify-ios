@@ -15,8 +15,7 @@ extension CoreMLPredictionsPlugin {
         textToTranslate: String,
         language: LanguageType?,
         targetLanguage: LanguageType?,
-        options: PredictionsTranslateTextRequest.Options?,
-        listener: PredictionsTranslateTextOperation.ResultListener?
+        options: PredictionsTranslateTextRequest.Options?
     ) async throws -> TranslateTextResult {
 
         let options = options ?? PredictionsTranslateTextRequest.Options()
@@ -40,8 +39,7 @@ extension CoreMLPredictionsPlugin {
 
     public func convert(
         textToSpeech: String,
-        options: PredictionsTextToSpeechRequest.Options? = nil,
-        listener: PredictionsTextToSpeechOperation.ResultListener?
+        options: PredictionsTextToSpeechRequest.Options? = nil
     ) async throws -> TextToSpeechResult {
         let options = options ?? PredictionsTextToSpeechRequest.Options()
         let request = PredictionsTextToSpeechRequest(
@@ -61,8 +59,7 @@ extension CoreMLPredictionsPlugin {
 
     public func convert(
         speechToText: URL,
-        options: PredictionsSpeechToTextRequest.Options?,
-        listener: PredictionsSpeechToTextOperation.ResultListener?
+        options: PredictionsSpeechToTextRequest.Options?
     ) async throws -> SpeechToTextResult {
         let options = options ?? PredictionsSpeechToTextRequest.Options()
         let request = PredictionsSpeechToTextRequest(speechToText: speechToText, options: options)
@@ -87,8 +84,7 @@ extension CoreMLPredictionsPlugin {
     public func identify(
         type: IdentifyAction,
         image: URL,
-        options: PredictionsIdentifyRequest.Options?,
-        listener: PredictionsIdentifyOperation.ResultListener?
+        options: PredictionsIdentifyRequest.Options?
     ) async throws -> IdentifyResult {
         let options = options ?? PredictionsIdentifyRequest.Options()
         let request = PredictionsIdentifyRequest(

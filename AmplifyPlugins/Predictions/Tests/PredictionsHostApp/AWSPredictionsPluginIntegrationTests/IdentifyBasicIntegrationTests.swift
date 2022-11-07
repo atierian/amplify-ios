@@ -193,7 +193,7 @@ class IdentifyBasicIntegrationTests: AWSPredictionsPluginTestBase {
         }
         XCTAssertFalse(data.fullText.isEmpty)
         XCTAssertFalse(data.words.isEmpty)
-        XCTAssertEqual(data.words.count, 33)
+        XCTAssertEqual(data.words.count, 30)
         XCTAssertFalse(data.rawLineText.isEmpty)
         XCTAssertEqual(data.rawLineText.count, 17)
         XCTAssertFalse(data.identifiedLines.isEmpty)

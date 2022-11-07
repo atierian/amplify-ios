@@ -17,59 +17,59 @@ public extension PredictionsCategoryBehavior {
     /// - Parameter language: The language of the text given
     /// - Parameter targetLanguage: The language to which the text should be translated
     /// - Parameter options: Parameters to specific plugin behavior
-    func convert(
-        textToTranslate: String,
-        language: LanguageType? = nil,
-        targetLanguage: LanguageType? = nil,
-        options: PredictionsTranslateTextRequest.Options? = nil
-    )  async throws -> TranslateTextResult {
-        try await convert(
-            textToTranslate: textToTranslate,
-            language: language,
-            targetLanguage: targetLanguage,
-            options: options
-        )
-    }
+//    func convert(
+//        textToTranslate: String,
+//        language: LanguageType? = nil,
+//        targetLanguage: LanguageType? = nil,
+//        options: PredictionsTranslateTextRequest.Options? = nil
+//    )  async throws -> TranslateTextResult {
+//        try await convert(
+//            textToTranslate: textToTranslate,
+//            language: language,
+//            targetLanguage: targetLanguage,
+//            options: options
+//        )
+//    }
 
     /// - Parameter textToSpeech: The text to be synthesized to audio
     /// - Parameter options: Parameters to specific plugin behavior
-    func convert(
-        textToSpeech: String,
-        options: PredictionsTextToSpeechRequest.Options? = nil
-    ) async throws -> TextToSpeechResult {
-        try await convert(textToSpeech: textToSpeech, options: options)
-    }
+//    func convert(
+//        textToSpeech: String,
+//        options: PredictionsTextToSpeechRequest.Options? = nil
+//    ) async throws -> TextToSpeechResult {
+//        try await convert(textToSpeech: textToSpeech, options: options)
+//    }
 
     /// - Parameter speechToText: The url of the audio to be transcribed
     /// - Parameter options: Parameters to specific plugin behavior
-    func convert(
-        speechToText: URL,
-        options: PredictionsSpeechToTextRequest.Options? = nil
-    ) async throws -> SpeechToTextResult {
-        try await convert(speechToText: speechToText, options: options)
-    }
+//    func convert(
+//        speechToText: URL,
+//        options: PredictionsSpeechToTextRequest.Options? = nil
+//    ) async throws -> SpeechToTextResult {
+//        try await convert(speechToText: speechToText, options: options)
+//    }
 
     /// Translate the text to the language specified.
     /// - Parameter type: The type of image detection you want to perform
     /// - Parameter image: The image you are sending
     /// - Parameter options: Parameters to specific plugin behavior
-    func identify(
-        type: IdentifyAction,
-        image: URL,
-        options: PredictionsIdentifyRequest.Options? = nil
-    ) async throws -> IdentifyResult {
-        try await identify(type: type, image: image, options: options)
-    }
+//    func identify(
+//        type: IdentifyAction,
+//        image: URL,
+//        options: PredictionsIdentifyRequest.Options? = nil
+//    ) async throws -> IdentifyResult {
+//        try await identify(type: type, image: image, options: options)
+//    }
 
     /// Interpret the text and return sentiment analysis, entity detection, language detection,
     /// syntax detection, key phrases detection
     /// - Parameter text: Text to interpret
     /// - Parameter options:Parameters to specific plugin behavior
     /// - Parameter options:Parameters to specific plugin behavior
-    func interpret(
-        text: String,
-        options: PredictionsInterpretRequest.Options? = nil
-    ) async throws -> InterpretResult {
-        try await interpret(text: text, options: options)
-    }
+//    func interpret(
+//        text: String,
+//        options: PredictionsInterpretRequest.Options? = nil
+//    ) async throws -> InterpretResult {
+//        try await interpret(text: text, options: options)
+//    }
 }

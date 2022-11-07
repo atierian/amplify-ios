@@ -119,8 +119,12 @@ extension AWSPredictionsPlugin {
             let offlineResult = try await multiService.fetchOnlineResult()
             return offlineResult
         case .auto:
-            let multiServiceResult = try await multiService.fetchMultiServiceResult()
-            return multiServiceResult
+            // TODO: fetchMultiServiceResult is causing memory explosion. Seems to be due to the offlineResult fetching.
+
+            let result = try await multiService.fetchOnlineResult()
+            return result
+//            let multiServiceResult = try await multiService.fetchMultiServiceResult()
+//            return multiServiceResult
         }
     }
 

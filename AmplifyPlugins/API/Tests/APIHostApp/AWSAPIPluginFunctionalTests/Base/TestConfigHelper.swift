@@ -11,7 +11,6 @@ import Foundation
 class TestConfigHelper {
 
     static func retrieveAmplifyConfiguration(forResource: String) throws -> AmplifyConfiguration {
-
         let data = try retrieve(forResource: forResource)
         return try AmplifyConfiguration.decodeAmplifyConfiguration(from: data)
     }
