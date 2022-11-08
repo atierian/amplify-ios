@@ -294,7 +294,7 @@ let predictionsTargets: [Target] = [
             .product(name: "AWSPolly", package: "aws-sdk-swift"),
             .product(name: "AWSRekognition", package: "aws-sdk-swift"),
             .product(name: "AWSTextract", package: "aws-sdk-swift"),
-//            .product(name: "AWSTranscribeStreaming", package: "aws-sdk-swift"),
+            .product(name: "AWSTranscribeStreaming", package: "aws-sdk-swift"),
             .product(name: "AWSTranslate", package: "aws-sdk-swift")
         ],
         path: "AmplifyPlugins/Predictions/AWSPredictionsPlugin",

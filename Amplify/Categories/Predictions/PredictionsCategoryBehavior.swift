@@ -38,7 +38,8 @@ public protocol PredictionsCategoryBehavior {
     /// - Parameter options: Parameters to specific plugin behavior
     func convert(
         speechToText: URL,
-        options: PredictionsSpeechToTextRequest.Options?
+        options: PredictionsSpeechToTextRequest.Options?,
+        onEvent: @escaping (Event) -> Void
     ) async throws -> SpeechToTextResult
 
     /// Detect contents of an image based on `IdentifyAction`

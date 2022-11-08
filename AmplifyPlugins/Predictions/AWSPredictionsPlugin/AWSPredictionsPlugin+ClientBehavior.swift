@@ -76,7 +76,8 @@ extension AWSPredictionsPlugin {
 
     public func convert(
         speechToText: URL,
-        options: PredictionsSpeechToTextRequest.Options?
+        options: PredictionsSpeechToTextRequest.Options?,
+        onEvent: @escaping (Event) -> Void
     ) async throws -> SpeechToTextResult {
 
         // TODO: Transcribe
