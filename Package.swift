@@ -7,7 +7,9 @@ let dependencies: [Package.Dependency] = [
     .package(url: "https://github.com/awslabs/aws-sdk-swift.git", exact: "0.2.7"),
     .package(url: "https://github.com/aws-amplify/aws-appsync-realtime-client-ios.git", from: "2.1.1"),
     .package(url: "https://github.com/stephencelis/SQLite.swift.git", exact: "0.13.2"),
-    .package(url: "https://github.com/mattgallagher/CwlPreconditionTesting.git", from: "2.1.0")
+    .package(url: "https://github.com/mattgallagher/CwlPreconditionTesting.git", from: "2.1.0"),
+    // TODO: remove
+//    .package(url: "https://github.com/apple/swift-nio", .upToNextMajor(from: "2.13.1"))
 ]
 
 let amplifyTargets: [Target] = [
@@ -295,7 +297,10 @@ let predictionsTargets: [Target] = [
             .product(name: "AWSRekognition", package: "aws-sdk-swift"),
             .product(name: "AWSTextract", package: "aws-sdk-swift"),
             .product(name: "AWSTranscribeStreaming", package: "aws-sdk-swift"),
-            .product(name: "AWSTranslate", package: "aws-sdk-swift")
+            .product(name: "AWSTranslate", package: "aws-sdk-swift"),
+            // TODO: Remove
+//            .product(name: "NIOHTTP1", package: "swift-nio"),
+//            .product(name: "NIO", package: "swift-nio")
         ],
         path: "AmplifyPlugins/Predictions/AWSPredictionsPlugin",
         exclude: [
